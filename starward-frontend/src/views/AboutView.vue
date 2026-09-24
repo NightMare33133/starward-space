@@ -50,7 +50,7 @@
             <span class="px-2 py-0.5 rounded text-[10px] bg-nebula-cyan/10 text-nebula-cyan border border-nebula-cyan/20">硕士研究生</span>
           </div>
           <h3 class="text-base font-bold text-white">香港城市大学 & 复旦大学</h3>
-          <p class="text-xs text-slate-400">计算机科学与技术 · 联合培养硕士</p>
+          <p class="text-xs text-slate-400">商务资讯系统 (BIS) · 联合培养硕士</p>
         </div>
 
         <div class="glass-card rounded-2xl p-5 border border-white/10 space-y-2">
