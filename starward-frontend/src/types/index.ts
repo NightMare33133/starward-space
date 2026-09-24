@@ -19,8 +19,9 @@ export interface PostListVO {
   summary: string;
   coverImage?: string;
   viewCount: number;
-  isPinned: boolean;
-  publishedAt: string;
+  isPinned: boolean | number;
+  createdAt: string;
+  publishedAt?: string;
   tags: Tag[];
 }
 
@@ -29,11 +30,13 @@ export interface PostDetailVO {
   title: string;
   slug: string;
   summary: string;
-  content: string;
+  content?: string;
+  contentMd?: string;
   coverImage?: string;
   viewCount: number;
-  isPinned: boolean;
-  publishedAt: string;
+  isPinned: boolean | number;
+  createdAt: string;
+  publishedAt?: string;
   tags: Tag[];
 }
 

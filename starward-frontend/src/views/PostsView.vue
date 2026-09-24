@@ -64,7 +64,7 @@
             {{ post.title }}
           </h2>
           <span class="text-xs text-slate-500 font-mono shrink-0">
-            {{ formatDate(post.publishedAt) }}
+            {{ formatDate(post.publishedAt || post.createdAt) }}
           </span>
         </div>
 

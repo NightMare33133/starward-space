@@ -47,7 +47,7 @@
         <div class="flex flex-wrap items-center gap-4 text-xs text-slate-400 font-mono pt-2">
           <span class="flex items-center space-x-1.5">
             <Calendar class="w-4 h-4 text-slate-500" />
-            <span>{{ formatDate(post.publishedAt) }}</span>
+            <span>{{ formatDate(postDate) }}</span>
           </span>
           <span class="flex items-center space-x-1.5">
             <Eye class="w-4 h-4 text-slate-500" />
@@ -55,14 +55,14 @@
           </span>
           <span class="flex items-center space-x-1.5">
             <Clock class="w-4 h-4 text-slate-500" />
-            <span>约 {{ Math.ceil(post.content.length / 400) }} 分钟阅读</span>
+            <span>约 {{ Math.max(1, Math.ceil(postContent.length / 400)) }} 分钟阅读</span>
           </span>
         </div>
       </header>
 
       <!-- Markdown 沉浸式阅读器 -->
       <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl border border-white/10">
-        <MarkdownViewer :content="post.content" />
+        <MarkdownViewer :content="postContent" />
       </div>
 
       <!-- 文末声明与分享 -->
@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { ArrowLeft, Calendar, Eye, Clock, Share2 } from 'lucide-vue-next';
 import { getPostDetail } from '@/api/posts';
@@ -96,6 +96,9 @@ const post = ref<PostDetailVO | null>(null);
 const loading = ref(true);
 const error = ref('');
 const copied = ref(false);
+
+const postContent = computed(() => post.value?.content || post.value?.contentMd || '');
+const postDate = computed(() => post.value?.publishedAt || post.value?.createdAt || '');
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '';

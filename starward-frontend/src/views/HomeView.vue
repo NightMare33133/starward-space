@@ -129,7 +129,7 @@
           <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-slate-500 font-mono">
             <span class="flex items-center space-x-1">
               <Calendar class="w-3.5 h-3.5" />
-              <span>{{ formatDate(post.publishedAt) }}</span>
+              <span>{{ formatDate(post.publishedAt || post.createdAt) }}</span>
             </span>
             <span class="flex items-center space-x-1">
               <Eye class="w-3.5 h-3.5" />
