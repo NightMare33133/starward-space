@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.starward.mapper.TagMapper">
+
+    <select id="findTagsByPostId" resultType="top.starward.entity.Tag">
+        SELECT t.id, t.name, t.slug, t.color, t.created_at
+        FROM tags t
+        INNER JOIN post_tags pt ON t.id = pt.tag_id
+        WHERE pt.post_id = #{postId}
+        ORDER BY t.id ASC
+    </select>
+
+    <select id="findAllTags" resultType="top.starward.entity.Tag">
+        SELECT id, name, slug, color, created_at
+        FROM tags
+        ORDER BY id ASC
+    </select>
+
+</mapper>

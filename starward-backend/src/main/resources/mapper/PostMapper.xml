@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.starward.mapper.PostMapper">
+
+    <select id="findPublishedPosts" resultType="top.starward.entity.Post">
+        SELECT id, title, slug, summary, cover_image, status, is_pinned, view_count, created_at, updated_at
+        FROM posts
+        WHERE status = 'PUBLISHED'
+        ORDER BY is_pinned DESC, created_at DESC
+    </select>
+
+    <select id="findPostById" resultType="top.starward.entity.Post">
+        SELECT id, title, slug, summary, content_md, cover_image, status, is_pinned, view_count, created_at, updated_at
+        FROM posts
+        WHERE id = #{id}
+    </select>
+
+    <select id="findPostBySlug" resultType="top.starward.entity.Post">
+        SELECT id, title, slug, summary, content_md, cover_image, status, is_pinned, view_count, created_at, updated_at
+        FROM posts
+        WHERE slug = #{slug}
+    </select>
+
+    <update id="incrementViewCount">
+        UPDATE posts
+        SET view_count = view_count + 1
+        WHERE id = #{id}
+    </update>
+
+</mapper>
