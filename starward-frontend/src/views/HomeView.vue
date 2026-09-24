@@ -35,11 +35,13 @@
           <div class="flex items-start space-x-5">
             <div class="relative group cursor-pointer" @click="$router.push('/about')">
               <div class="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl p-[2px] bg-gradient-to-tr from-nebula-cyan via-nebula-purple to-nebula-pink shadow-xl group-hover:scale-105 transition-transform">
-                <img
-                  src="https://github.com/NightMare33133.png"
-                  alt="NightMare33133"
-                  class="w-full h-full object-cover rounded-[14px]"
-                />
+                <div class="w-full h-full rounded-[14px] overflow-hidden bg-space-900">
+                  <img
+                    src="/images/avatar.png"
+                    alt="NightMare33133"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
               </div>
               <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-space-950 flex items-center justify-center">
                 <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>

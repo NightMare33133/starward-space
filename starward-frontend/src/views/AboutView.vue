@@ -5,11 +5,13 @@
       <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
         <!-- 头像 -->
         <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden p-[2px] bg-gradient-to-tr from-nebula-cyan to-nebula-purple shadow-xl shrink-0">
-          <img
-            src="https://github.com/NightMare33133.png"
-            alt="NightMare33133"
-            class="w-full h-full object-cover rounded-2xl"
-          />
+          <div class="w-full h-full rounded-[14px] overflow-hidden bg-space-900">
+            <img
+              src="/images/avatar.png"
+              alt="NightMare33133"
+              class="w-full h-full object-cover"
+            />
+          </div>
         </div>
 
         <div class="space-y-3 text-center sm:text-left flex-1">
