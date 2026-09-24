@@ -14,3 +14,13 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
     default-property-inclusion: non_null
+
+# OpenAPI 3.0 / Swagger 规范配置 (对接 Apifox)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui/index.html
+    enabled: true
+

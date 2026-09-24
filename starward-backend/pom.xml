@@ -56,6 +56,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- OpenAPI 3.0 & Swagger UI (用于自动化接口文档与 Apifox 同步) -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
         <!-- Test Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
