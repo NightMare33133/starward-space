@@ -6,7 +6,7 @@
         <!-- 头像 -->
         <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden p-[2px] bg-gradient-to-tr from-nebula-cyan to-nebula-purple shadow-xl shrink-0">
           <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80"
+            src="https://github.com/NightMare33133.png"
             alt="NightMare33133"
             class="w-full h-full object-cover rounded-2xl"
           />
@@ -29,7 +29,7 @@
           </div>
 
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            来自福建石狮。探索以严谨的工程思维与纯粹的极客浪漫构建软件系统。
+            探索以严谨的工程思维与纯粹的极客浪漫构建软件系统。
             热衷于深挖现代后端架构底座、打磨高颜值前端界面、以及探索前沿 AI 智能体生态。
           </p>
         </div>

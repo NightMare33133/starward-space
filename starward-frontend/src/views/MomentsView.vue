@@ -116,7 +116,7 @@ const postError = ref('');
 
 const newContent = ref('');
 const selectedMood = ref('🚀');
-const customLocation = ref('福建石狮');
+const customLocation = ref('地球某处');
 const moodOptions = ['🚀', '🌟', '☕️', '🪐', '💻', '🌸'];
 
 const formatTime = (dateStr: string) => {

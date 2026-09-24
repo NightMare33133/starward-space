@@ -122,8 +122,8 @@ const photos = ref<Photo[]>([
   },
   {
     id: '2',
-    title: '海风拂过石狮黄金海岸',
-    location: '福建泉州 · 石狮',
+    title: '海风拂过金色海岸',
+    location: '海滨长廊 · 晴',
     date: '2024.07',
     category: '山川自然',
     url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&auto=format&fit=crop&q=80',

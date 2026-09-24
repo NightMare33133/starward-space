@@ -6,8 +6,8 @@
       <div class="relative inline-block group">
         <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-[2px] bg-gradient-to-tr from-nebula-cyan via-nebula-purple to-nebula-pink animate-pulse-slow shadow-2xl shadow-nebula-cyan/30">
           <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80"
-            alt="Avatar"
+            src="https://github.com/NightMare33133.png"
+            alt="NightMare33133"
             class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-500"
           />
         </div>
