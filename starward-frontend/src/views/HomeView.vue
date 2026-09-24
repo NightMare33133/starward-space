@@ -216,7 +216,7 @@
         <img
           src="/images/hsr/himeko_express.png"
           alt="Featured Article"
-          class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+          class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
         />
         <!-- 暗调渐变蒙版保证文字极致可读 -->
         <div class="absolute inset-0 bg-gradient-to-t from-space-950 via-space-950/60 to-transparent"></div>

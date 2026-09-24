@@ -72,4 +72,5 @@ export interface Photo {
   url: string;
   category: string;
   params?: string; // e.g. "Sony A7M4 · 35mm f/1.4"
+  rarity?: number; // 4 or 5 for light cones
 }

@@ -4,10 +4,10 @@
     <div class="space-y-3 border-b border-white/10 pb-6">
       <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center space-x-3">
         <Camera class="w-8 h-8 text-nebula-pink" />
-        <span>摄影视界 · Visual Odyssey</span>
+        <span>摄影与视界 · Visual Odyssey</span>
       </h1>
       <p class="text-sm text-slate-400">
-        代码之外，用镜头捕获光影流转与现实世界的温柔角落。
+        代码之外，用镜头与原画捕获星轨流转与现实世界的温柔角落。
       </p>
     </div>
 
@@ -24,31 +24,48 @@
       </button>
     </div>
 
-    <!-- 摄影卡片瀑布流网格 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- 真实瀑布流网格 (Masonry Grid: 自适应图片原生比例，告别生硬裁剪) -->
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
       <div
         v-for="photo in filteredPhotos"
         :key="photo.id"
-        class="glass-card rounded-2xl overflow-hidden group cursor-pointer border border-white/10 hover:border-nebula-pink/40 transition-all duration-500"
+        class="break-inside-avoid glass-card rounded-2xl overflow-hidden group cursor-pointer border transition-all duration-500 mb-6"
+        :class="[
+          photo.rarity === 5
+            ? 'border-amber-500/25 hover:border-amber-400/70 hover:shadow-[0_0_30px_rgba(245,158,11,0.25)]'
+            : photo.rarity === 4
+            ? 'border-purple-500/25 hover:border-purple-400/70 hover:shadow-[0_0_30px_rgba(168,85,247,0.25)]'
+            : 'border-white/10 hover:border-nebula-pink/50 hover:shadow-[0_0_25px_rgba(255,114,179,0.2)]'
+        ]"
         @click="previewPhoto = photo"
       >
-        <!-- 图片容器与悬浮缩放 -->
-        <div class="relative aspect-[4/3] overflow-hidden bg-space-950">
+        <!-- 图片容器：自适应高度，完整保留角色与构图细节 -->
+        <div class="relative overflow-hidden bg-space-950">
           <img
             :src="photo.url"
             :alt="photo.title"
             loading="lazy"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            class="w-full h-auto block object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-space-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
-          <!-- 悬停时右上角放大提示图标 -->
-          <div class="absolute top-3 right-3 p-2 rounded-full glass-island opacity-0 group-hover:opacity-100 transition-opacity">
+
+          <!-- 星轨光锥稀有度徽章 -->
+          <div
+            v-if="photo.rarity"
+            class="absolute top-3 left-3 px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold flex items-center space-x-1 shadow-lg backdrop-blur-md"
+            :class="photo.rarity === 5 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-nebula-purple/20 text-purple-300 border border-purple-500/40'"
+          >
+            <span>{{ '★'.repeat(photo.rarity) }}</span>
+            <span>LIGHT CONE</span>
+          </div>
+
+          <!-- 悬停放大图标 -->
+          <div class="absolute top-3 right-3 p-2 rounded-full glass-island opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
             <Maximize2 class="w-4 h-4 text-white" />
           </div>
         </div>
 
-        <!-- 照片说明信息 -->
+        <!-- 卡片说明信息 -->
         <div class="p-4 space-y-2">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-bold text-white group-hover:text-nebula-pink transition-colors">
@@ -76,7 +93,7 @@
       class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8"
       @click="previewPhoto = null"
     >
-      <div class="relative max-w-5xl max-h-[90vh] flex flex-col items-center" @click.stop>
+      <div class="relative max-w-4xl max-h-[92vh] flex flex-col items-center" @click.stop>
         <!-- 关闭按钮 -->
         <button
           @click="previewPhoto = null"
@@ -88,11 +105,16 @@
         <img
           :src="previewPhoto.url"
           :alt="previewPhoto.title"
-          class="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl"
+          class="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl border border-white/10"
         />
 
         <div class="mt-4 text-center space-y-1">
-          <h4 class="text-white font-bold text-base">{{ previewPhoto.title }}</h4>
+          <h4 class="text-white font-bold text-base flex items-center justify-center space-x-2">
+            <span>{{ previewPhoto.title }}</span>
+            <span v-if="previewPhoto.rarity" class="text-amber-400 text-xs">
+              {{ '★'.repeat(previewPhoto.rarity) }}
+            </span>
+          </h4>
           <p class="text-xs text-slate-400 font-mono">{{ previewPhoto.location }} · {{ previewPhoto.params }}</p>
         </div>
       </div>
@@ -118,7 +140,8 @@ const photos = ref<Photo[]>([
     date: 'Official Art',
     category: '星穹列车组',
     url: '/images/hsr/himeko_express.png',
-    params: 'miHoYo / HoYoverse · 官方原画'
+    params: 'miHoYo / HoYoverse · 官方原画',
+    rarity: 5
   },
   {
     id: 'hsr-2',
@@ -127,7 +150,8 @@ const photos = ref<Photo[]>([
     date: 'Official Art',
     category: '星穹列车组',
     url: '/images/hsr/march7th_selfie.png',
-    params: 'miHoYo / HoYoverse · 官方原画'
+    params: 'miHoYo / HoYoverse · 官方原画',
+    rarity: 4
   },
   {
     id: 'hsr-3',
@@ -136,7 +160,8 @@ const photos = ref<Photo[]>([
     date: 'Official Art',
     category: '星穹列车组',
     url: '/images/hsr/danheng.png',
-    params: 'miHoYo / HoYoverse · 官方原画'
+    params: 'miHoYo / HoYoverse · 官方原画',
+    rarity: 4
   },
   {
     id: 'hsr-4',
@@ -145,7 +170,8 @@ const photos = ref<Photo[]>([
     date: 'Official Art',
     category: '星穹列车组',
     url: '/images/hsr/welt.png',
-    params: 'miHoYo / HoYoverse · 官方原画'
+    params: 'miHoYo / HoYoverse · 官方原画',
+    rarity: 5
   },
   {
     id: '1',
