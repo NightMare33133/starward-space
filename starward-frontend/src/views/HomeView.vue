@@ -54,7 +54,7 @@
                 </span>
               </div>
               <p class="text-xs text-slate-300 mt-1.5 leading-relaxed line-clamp-2">
-                在代码、系统与探索间穿梭。行进于复旦与香港城大之间，记录每一次星芒跃迁。
+                在代码、系统与星海间穿梭的普通人。记录每一次思考与探索，愿此行终抵群星。
               </p>
             </div>
           </div>
