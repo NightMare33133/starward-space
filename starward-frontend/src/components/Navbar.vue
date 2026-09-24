@@ -1,11 +1,15 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300" :class="{ 'py-3 backdrop-blur-xl bg-space-950/70 border-b border-white/10 shadow-lg': isScrolled, 'py-5 bg-transparent': !isScrolled }">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-      <!-- 品牌标识 Logo -->
+      <!-- 品牌标识 Logo (帕姆列车长) -->
       <router-link to="/" class="flex items-center space-x-3 group">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-nebula-cyan to-nebula-purple p-[1px] shadow-lg shadow-nebula-cyan/20 group-hover:scale-105 transition-transform">
-          <div class="w-full h-full bg-space-950 rounded-[11px] flex items-center justify-center">
-            <span class="text-base font-bold bg-gradient-to-r from-nebula-cyan to-nebula-pink bg-clip-text text-transparent">✦</span>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 via-nebula-pink to-nebula-cyan p-[1.5px] shadow-lg shadow-amber-500/25 group-hover:scale-110 transition-transform overflow-hidden shrink-0">
+          <div class="w-full h-full rounded-[14px] overflow-hidden bg-space-950">
+            <img
+              src="/images/pompom.png"
+              alt="Pom-Pom"
+              class="w-full h-full object-cover group-hover:rotate-6 transition-transform duration-300"
+            />
           </div>
         </div>
         <div class="flex flex-col">

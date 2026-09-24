@@ -13,31 +13,31 @@ export const useMusicStore = defineStore('music', () => {
   const playlist = ref<Song[]>([
     {
       id: '1',
-      title: 'Take the Journey (星穹列车启航)',
-      artist: 'HOYO-MiX',
+      title: 'Take the Journey (踏上旅途)',
+      artist: 'HOYO-MiX · Anthony Lynch',
       cover: '/images/hsr/himeko_express.png',
-      url: 'https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg',
+      url: '/audio/take_the_journey.mp3',
     },
     {
       id: '2',
-      title: '野火 Wildfire (雅利洛之燃)',
-      artist: 'HOYO-MiX',
+      title: '野火 Wildfire (造物引擎)',
+      artist: 'HOYO-MiX · Jonathan Steingard',
       cover: '/images/hsr/danheng.png',
-      url: 'https://actions.google.com/sounds/v1/weather/light_rain_on_car.ogg',
+      url: '/audio/wildfire.mp3',
     },
     {
       id: '3',
-      title: '这就是我啦! (三月七的自拍手记)',
+      title: '太空漫步 Space Walk',
       artist: 'HOYO-MiX',
       cover: '/images/hsr/march7th_selfie.png',
-      url: 'https://actions.google.com/sounds/v1/water/waves_crashing.ogg',
+      url: '/audio/space_walk.mp3',
     },
     {
       id: '4',
-      title: '以世界之名 (瓦尔特的重力波)',
-      artist: 'HOYO-MiX',
+      title: '猎手的预视 Hunter\'s Intuition',
+      artist: 'HOYO-MiX (卡芙卡战斗曲)',
       cover: '/images/hsr/welt.png',
-      url: 'https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg',
+      url: '/audio/hunters_intuition.mp3',
     }
   ]);
 
@@ -50,10 +50,22 @@ export const useMusicStore = defineStore('music', () => {
     if (!audioElement.value) {
       audioElement.value = new Audio(currentSong.value.url);
       audioElement.value.volume = volume.value;
+      audioElement.value.preload = 'auto';
 
       audioElement.value.addEventListener('timeupdate', () => {
         if (audioElement.value) {
           currentTime.value = audioElement.value.currentTime;
+        }
+      });
+
+      audioElement.value.addEventListener('loadedmetadata', () => {
+        if (audioElement.value) {
+          duration.value = audioElement.value.duration || 0;
+        }
+      });
+
+      audioElement.value.addEventListener('durationchange', () => {
+        if (audioElement.value) {
           duration.value = audioElement.value.duration || 0;
         }
       });
@@ -61,16 +73,25 @@ export const useMusicStore = defineStore('music', () => {
       audioElement.value.addEventListener('ended', () => {
         next();
       });
+
+      audioElement.value.addEventListener('error', (e) => {
+        console.error('Audio playback error:', e);
+        isPlaying.value = false;
+      });
     }
   };
 
   const play = () => {
     initAudio();
     if (audioElement.value) {
+      if (!audioElement.value.src.endsWith(currentSong.value.url)) {
+        audioElement.value.src = currentSong.value.url;
+      }
       audioElement.value.play().then(() => {
         isPlaying.value = true;
       }).catch(err => {
-        console.warn('Audio auto-play blocked by browser policy:', err);
+        console.warn('Audio playback failed or blocked:', err);
+        isPlaying.value = false;
       });
     }
   };
@@ -93,10 +114,17 @@ export const useMusicStore = defineStore('music', () => {
   const switchSong = (index: number) => {
     currentIndex.value = index;
     currentSong.value = playlist.value[index];
+    initAudio();
     if (audioElement.value) {
       audioElement.value.src = currentSong.value.url;
+      audioElement.value.currentTime = 0;
+      currentTime.value = 0;
+      duration.value = 0;
       if (isPlaying.value) {
-        audioElement.value.play();
+        audioElement.value.play().catch(err => {
+          console.warn('Audio switch play blocked:', err);
+          isPlaying.value = false;
+        });
       }
     }
   };
@@ -112,6 +140,7 @@ export const useMusicStore = defineStore('music', () => {
   };
 
   const seek = (time: number) => {
+    initAudio();
     if (audioElement.value) {
       audioElement.value.currentTime = time;
       currentTime.value = time;
