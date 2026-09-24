@@ -1,12 +1,21 @@
 <template>
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <!-- 背景流光星云渐变 -->
-    <div class="absolute -top-[20%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-nebula-cyan/5 blur-[120px] pointer-events-none"></div>
-    <div class="absolute top-[40%] -right-[15%] w-[55vw] h-[55vw] rounded-full bg-nebula-purple/5 blur-[140px] pointer-events-none"></div>
-    <div class="absolute -bottom-[20%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-nebula-blue/5 blur-[130px] pointer-events-none"></div>
+    <!-- 底层高清星穹壁纸（带柔和暗色蒙版与深度模糊） -->
+    <div
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105"
+      :style="{
+        backgroundImage: `url('/images/hsr/himeko_express.png')`,
+        filter: 'brightness(0.35) saturate(1.2)'
+      }"
+    ></div>
 
-    <!-- Canvas 星空粒子画布 -->
-    <canvas ref="canvasRef" class="w-full h-full block opacity-70"></canvas>
+    <!-- 弥散色彩光晕层（星轨紫与深空蓝） -->
+    <div class="absolute -top-[15%] -left-[10%] w-[55vw] h-[55vw] rounded-full bg-nebula-cyan/10 blur-[140px]"></div>
+    <div class="absolute top-[35%] -right-[15%] w-[60vw] h-[60vw] rounded-full bg-nebula-purple/15 blur-[160px]"></div>
+    <div class="absolute -bottom-[20%] left-[25%] w-[50vw] h-[50vw] rounded-full bg-amber-500/10 blur-[150px]"></div>
+
+    <!-- 暗夜微粒画布：星光 + 缓缓升腾的金色流萤粒子 -->
+    <canvas ref="canvasRef" class="w-full h-full block relative z-10"></canvas>
   </div>
 </template>
 
@@ -16,7 +25,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 let animationFrameId: number;
 
-interface Star {
+interface Firefly {
   x: number;
   y: number;
   radius: number;
@@ -24,31 +33,33 @@ interface Star {
   alphaSpeed: number;
   vx: number;
   vy: number;
+  hue: number;
 }
 
-const stars: Star[] = [];
-const starCount = 120;
+const fireflies: Firefly[] = [];
+const count = 65; // 流萤与星芒总数
 let mouseX = 0;
 let mouseY = 0;
 
-const initStars = (width: number, height: number) => {
-  stars.length = 0;
-  for (let i = 0; i < starCount; i++) {
-    stars.push({
+const initFireflies = (width: number, height: number) => {
+  fireflies.length = 0;
+  for (let i = 0; i < count; i++) {
+    fireflies.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      radius: Math.random() * 1.5 + 0.3,
-      alpha: Math.random() * 0.8 + 0.2,
-      alphaSpeed: (Math.random() * 0.01 + 0.003) * (Math.random() > 0.5 ? 1 : -1),
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: (Math.random() - 0.5) * 0.15,
+      radius: Math.random() * 2.2 + 0.8,
+      alpha: Math.random() * 0.7 + 0.2,
+      alphaSpeed: (Math.random() * 0.015 + 0.005) * (Math.random() > 0.5 ? 1 : -1),
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -(Math.random() * 0.4 + 0.15), // 缓缓向上升腾，如流萤
+      hue: Math.random() > 0.4 ? 170 : 45, // 青蓝星芒 vs 暖金流萤
     });
   }
 };
 
 const handleMouseMove = (e: MouseEvent) => {
-  mouseX = (e.clientX - window.innerWidth / 2) * 0.03;
-  mouseY = (e.clientY - window.innerHeight / 2) * 0.03;
+  mouseX = (e.clientX - window.innerWidth / 2) * 0.02;
+  mouseY = (e.clientY - window.innerHeight / 2) * 0.02;
 };
 
 onMounted(() => {
@@ -60,7 +71,7 @@ onMounted(() => {
   const resize = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    initStars(canvas.width, canvas.height);
+    initFireflies(canvas.width, canvas.height);
   };
 
   resize();
@@ -70,32 +81,55 @@ onMounted(() => {
   const render = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let star of stars) {
-      // 粒子微闪烁
-      star.alpha += star.alphaSpeed;
-      if (star.alpha > 0.95 || star.alpha < 0.15) {
-        star.alphaSpeed = -star.alphaSpeed;
+    for (let f of fireflies) {
+      // 呼吸发光
+      f.alpha += f.alphaSpeed;
+      if (f.alpha > 0.95 || f.alpha < 0.15) {
+        f.alphaSpeed = -f.alphaSpeed;
       }
 
-      // 粒子极微弱的宇宙漂移
-      star.x += star.vx;
-      star.y += star.vy;
+      // 运动位移
+      f.x += f.vx;
+      f.y += f.vy;
 
-      if (star.x < 0) star.x = canvas.width;
-      if (star.x > canvas.width) star.x = 0;
-      if (star.y < 0) star.y = canvas.height;
-      if (star.y > canvas.height) star.y = 0;
+      // 循环回到底部
+      if (f.y < -10) {
+        f.y = canvas.height + 10;
+        f.x = Math.random() * canvas.width;
+      }
+      if (f.x < -10) f.x = canvas.width + 10;
+      if (f.x > canvas.width + 10) f.x = -10;
 
-      // 随鼠标发生微妙的视差位移
-      const renderX = star.x + mouseX * star.radius;
-      const renderY = star.y + mouseY * star.radius;
+      // 鼠标微视差
+      const renderX = f.x + mouseX * f.radius;
+      const renderY = f.y + mouseY * f.radius;
 
+      ctx.save();
       ctx.beginPath();
-      ctx.arc(renderX, renderY, star.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(224, 242, 254, ${star.alpha})`;
-      ctx.shadowBlur = star.radius > 1 ? 6 : 0;
-      ctx.shadowColor = 'rgba(56, 189, 248, 0.8)';
+      ctx.arc(renderX, renderY, f.radius, 0, Math.PI * 2);
+
+      // 发光粒子渐变
+      const gradient = ctx.createRadialGradient(
+        renderX, renderY, 0,
+        renderX, renderY, f.radius * 3.5
+      );
+      if (f.hue === 45) {
+        // 暖金流萤（萤火虫）
+        gradient.addColorStop(0, `rgba(253, 224, 71, ${f.alpha})`);
+        gradient.addColorStop(0.5, `rgba(234, 179, 8, ${f.alpha * 0.6})`);
+        gradient.addColorStop(1, 'rgba(234, 179, 8, 0)');
+      } else {
+        // 冰蓝星芒
+        gradient.addColorStop(0, `rgba(186, 230, 253, ${f.alpha})`);
+        gradient.addColorStop(0.5, `rgba(56, 189, 248, ${f.alpha * 0.5})`);
+        gradient.addColorStop(1, 'rgba(56, 189, 248, 0)');
+      }
+
+      ctx.fillStyle = gradient;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = f.hue === 45 ? 'rgba(250, 204, 21, 0.8)' : 'rgba(56, 189, 248, 0.8)';
       ctx.fill();
+      ctx.restore();
     }
 
     animationFrameId = requestAnimationFrame(render);

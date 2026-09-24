@@ -9,28 +9,35 @@ export const useMusicStore = defineStore('music', () => {
   const duration = ref(0);
   const volume = ref(0.7);
 
-  // 精选星际氛围与深夜写码歌单
+  // 星穹列车留声机精选唱片歌单 (Astral Express Phonograph)
   const playlist = ref<Song[]>([
     {
       id: '1',
-      title: 'Voyage to the Stars',
-      artist: 'Starlight Ambient',
-      cover: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=300&auto=format&fit=crop&q=80',
-      url: 'https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg', // 真实免版权高音质流
+      title: 'Take the Journey (星穹列车启航)',
+      artist: 'HOYO-MiX',
+      cover: '/images/hsr/himeko_express.png',
+      url: 'https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg',
     },
     {
       id: '2',
-      title: 'Midnight Code & Tea',
-      artist: 'Lo-Fi Chill Beat',
-      cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&auto=format&fit=crop&q=80',
+      title: '野火 Wildfire (雅利洛之燃)',
+      artist: 'HOYO-MiX',
+      cover: '/images/hsr/danheng.png',
       url: 'https://actions.google.com/sounds/v1/weather/light_rain_on_car.ogg',
     },
     {
       id: '3',
-      title: 'Interstellar Drift',
-      artist: 'Synthwave Odyssey',
-      cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300&auto=format&fit=crop&q=80',
+      title: '这就是我啦! (三月七的自拍手记)',
+      artist: 'HOYO-MiX',
+      cover: '/images/hsr/march7th_selfie.png',
       url: 'https://actions.google.com/sounds/v1/water/waves_crashing.ogg',
+    },
+    {
+      id: '4',
+      title: '以世界之名 (瓦尔特的重力波)',
+      artist: 'HOYO-MiX',
+      cover: '/images/hsr/welt.png',
+      url: 'https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg',
     }
   ]);
 

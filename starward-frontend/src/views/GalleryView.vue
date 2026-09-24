@@ -108,9 +108,45 @@ import type { Photo } from '@/types';
 const selectedCategory = ref('全部');
 const previewPhoto = ref<Photo | null>(null);
 
-const categories = ['全部', '星空与宇宙', '城市建筑', '山川自然'];
+const categories = ['全部', '星穹列车组', '星空与宇宙', '城市建筑', '山川自然'];
 
 const photos = ref<Photo[]>([
+  {
+    id: 'hsr-1',
+    title: '银河铁道之夜 (姬子与列车漫游)',
+    location: '星穹列车 · 观景车厢',
+    date: 'Official Art',
+    category: '星穹列车组',
+    url: '/images/hsr/himeko_express.png',
+    params: 'miHoYo / HoYoverse · 官方原画'
+  },
+  {
+    id: 'hsr-2',
+    title: '这就是我啦! (三月七的自拍手记)',
+    location: '星穹列车 · 客房',
+    date: 'Official Art',
+    category: '星穹列车组',
+    url: '/images/hsr/march7th_selfie.png',
+    params: 'miHoYo / HoYoverse · 官方原画'
+  },
+  {
+    id: 'hsr-3',
+    title: '无处可逃 (丹恒与击云长枪)',
+    location: '星穹列车 · 智库档案室',
+    date: 'Official Art',
+    category: '星穹列车组',
+    url: '/images/hsr/danheng.png',
+    params: 'miHoYo / HoYoverse · 官方原画'
+  },
+  {
+    id: 'hsr-4',
+    title: '以世界之名 (瓦尔特·杨与拟似黑洞)',
+    location: '星穹列车 · 车长室',
+    date: 'Official Art',
+    category: '星穹列车组',
+    url: '/images/hsr/welt.png',
+    params: 'miHoYo / HoYoverse · 官方原画'
+  },
   {
     id: '1',
     title: '银河悬垂于寂静之夜',

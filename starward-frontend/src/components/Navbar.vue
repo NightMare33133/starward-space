@@ -9,8 +9,11 @@
           </div>
         </div>
         <div class="flex flex-col">
-          <span class="text-lg font-bold tracking-wider text-slate-100 group-hover:text-nebula-cyan transition-colors">STARWARD</span>
-          <span class="text-[10px] tracking-widest text-slate-400 font-mono -mt-1">SPACE · 星向空间</span>
+          <div class="flex items-center space-x-1.5">
+            <span class="text-base font-bold tracking-wider text-slate-100 group-hover:text-nebula-cyan transition-colors">STARWARD</span>
+            <span class="text-xs text-slate-400 font-medium">の 星向空间</span>
+          </div>
+          <span class="text-[9px] tracking-wider text-nebula-cyan/80 font-mono -mt-0.5">愿此行，终抵群星 ✦</span>
         </div>
       </router-link>
 
