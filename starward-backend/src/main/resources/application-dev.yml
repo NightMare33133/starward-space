@@ -1,0 +1,22 @@
+# ==============================================================================
+# 🌌 Starward Space - 本地开发环境配置 (Development Profile)
+# ==============================================================================
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/starward_space?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_PASSWORD:123456}
+
+mybatis:
+  configuration:
+    # 开启驼峰命名自动映射 (如 user_name -> userName)
+    map-underscore-to-camel-case: true
+    # 开启执行 SQL 打印日志 (方便开发排查)
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: top.starward.entity
+
+logging:
+  level:
+    top.starward: debug

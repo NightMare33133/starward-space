@@ -1,0 +1,16 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: starward-backend
+  profiles:
+    active: dev
+
+# 全局 Jackson JSON 序列化规范
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
