@@ -1,14 +1,5 @@
-# 🎨 Starward Frontend (星向空间 - 前端交互层)
+# Vue 3 + TypeScript + Vite
 
-基于 **Vue 3 + Vite + Tailwind CSS** 构建的高颜值极客毛玻璃（Glassmorphism）交互系统。
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
----
-
-## 规划特性
-
-- 🌌 **星际毛玻璃美学**：卡片拟态透明感、柔和渐变与流萤微光
-- 📝 **Markdown 渲染引擎**：代码高亮、目录跳转、Mermaid 原生图表渲染、DOMPurify 标签清洗防 XSS
-- 🎵 **悬浮音乐岛**：轻量级音频挂件
-- 💭 **星际碎语**：随想说说瀑布流展示
-- 📷 **深空相册**：摄影胶卷相册墙
-- 🤖 **星际 AI 交互分身**：右下角常驻智能体聊天框
+Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
