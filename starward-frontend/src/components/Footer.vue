@@ -5,7 +5,7 @@
       <div class="space-y-2 text-center md:text-left">
         <div class="flex items-center justify-center md:justify-start space-x-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="text-sm font-semibold tracking-wider text-slate-200">STARWARD SPACE · 星向空间</span>
+          <span class="text-sm font-semibold tracking-wider text-slate-200">STARWARD · starlight の 星向空间</span>
         </div>
         <p class="text-xs text-slate-500 font-mono">
           © {{ currentYear }} Designed & Built with ❤️ by NightMare33133.
