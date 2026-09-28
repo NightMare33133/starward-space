@@ -96,7 +96,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import { Home, BookOpen, MessageSquare, Camera, User, Github, Music, Menu, X } from 'lucide-vue-next';
+import { Home, BookOpen, MessageSquare, Camera, User, Github, Music, Menu, X, Disc3 } from 'lucide-vue-next';
 import { useMusicStore } from '@/stores/music';
 import ConductorModal from '@/components/ConductorModal.vue';
 
@@ -128,6 +128,7 @@ const handleLogoClick = (e: MouseEvent) => {
 const navItems = [
   { title: '首页', path: '/', icon: Home },
   { title: '文章', path: '/posts', icon: BookOpen },
+  { title: '星穹音乐', path: '/music', icon: Disc3 },
   { title: '星际碎语', path: '/moments', icon: MessageSquare },
   { title: '摄影视界', path: '/gallery', icon: Camera },
   { title: '关于我', path: '/about', icon: User },

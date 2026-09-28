@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-6 right-6 z-50 select-none">
+  <div v-if="route.path !== '/music'" class="fixed bottom-6 right-6 z-50 select-none">
     <!-- 展开状态卡片 -->
     <transition
       enter-active-class="transition duration-300 ease-out"
@@ -103,7 +103,7 @@
         </div>
 
         <!-- 歌单快速选择列表 -->
-        <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5 max-h-32 overflow-y-auto pr-1">
+        <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5 max-h-28 overflow-y-auto pr-1">
           <div
             v-for="(song, idx) in musicStore.playlist"
             :key="song.id"
@@ -115,6 +115,16 @@
             <span v-if="musicStore.currentIndex === idx && musicStore.isPlaying" class="text-[10px] font-mono">▶</span>
           </div>
         </div>
+
+        <!-- 进入独立星穹音乐厅直达入口 -->
+        <router-link
+          to="/music"
+          @click="musicStore.isExpanded = false"
+          class="mt-3 flex items-center justify-center space-x-1.5 py-1.5 px-3 rounded-xl bg-gradient-to-r from-nebula-cyan/15 via-nebula-purple/15 to-pink-500/15 hover:from-nebula-cyan/25 hover:to-pink-500/25 border border-white/10 hover:border-nebula-cyan/30 text-xs text-nebula-cyan font-medium transition-all group shadow-sm"
+        >
+          <span>进入星穹音乐厅</span>
+          <ArrowUpRight class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </router-link>
       </div>
     </transition>
 
@@ -157,9 +167,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { Play, Pause, SkipBack, SkipForward, ChevronDown } from 'lucide-vue-next';
+import { useRoute } from 'vue-router';
+import { Play, Pause, SkipBack, SkipForward, ChevronDown, ArrowUpRight } from 'lucide-vue-next';
 import { useMusicStore } from '@/stores/music';
 
+const route = useRoute();
 const musicStore = useMusicStore();
 const progressTrackRef = ref<HTMLElement | null>(null);
 

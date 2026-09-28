@@ -5,6 +5,7 @@ import PostDetailView from '@/views/PostDetailView.vue';
 import MomentsView from '@/views/MomentsView.vue';
 import GalleryView from '@/views/GalleryView.vue';
 import AboutView from '@/views/AboutView.vue';
+import MusicView from '@/views/MusicView.vue';
 
 import AdminLoginView from '@/views/admin/AdminLoginView.vue';
 import AdminLayout from '@/views/admin/AdminLayout.vue';
@@ -51,6 +52,12 @@ const router = createRouter({
       name: 'about',
       component: AboutView,
       meta: { title: '关于我 · Starward Space' }
+    },
+    {
+      path: '/music',
+      name: 'music',
+      component: MusicView,
+      meta: { title: '星穹音乐厅 · Starward Space' }
     },
     {
       path: '/admin/login',

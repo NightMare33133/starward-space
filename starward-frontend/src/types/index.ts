@@ -95,6 +95,8 @@ export interface Song {
   cover: string;
   url: string;
   duration?: number;
+  lyrics?: string;
+  theme?: string;
 }
 
 export interface Photo {
