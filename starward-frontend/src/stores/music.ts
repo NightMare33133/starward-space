@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { Song } from '@/types';
 
 export const useMusicStore = defineStore('music', () => {
@@ -24,21 +24,20 @@ export const useMusicStore = defineStore('music', () => {
       url: '/audio/take_the_journey.mp3',
       theme: '星穹列车 · 启航曲',
       lyrics: `[00:00.00]Take the Journey (踏上旅途) - Anthony Lynch / HOYO-MiX
-[00:02.50]✦ 《崩坏：星穹铁道》星穹列车启航曲 ✦
-[00:06.00]Step out into the world
-[00:09.60]A journey to begin
-[00:13.20]So pack your bags and head on out
-[00:16.80]Don't look back, there is no doubt
-[00:20.60]The road is long, the sky is high
-[00:24.40]We will spread our wings and fly
-[00:28.10]Through the stars and through the night
-[00:31.70]Chasing every beam of light
-[00:35.30]Take the journey, feel the breeze
-[00:38.90]Past the mountains and the seas
-[00:42.60]Every step a memory made
-[00:46.10]In our hearts it will not fade
-[00:50.00]Take the journey!
-[00:53.20]Into the boundless starry sea...
+[00:02.33]The way,
+[00:04.98]To celebrate.
+[00:08.70]I’ll be waiting
+[00:11.62]Till we make it
+[00:15.07]The day,
+[00:17.99]To celebrate.
+[00:21.71]I’ll be waiting
+[00:24.65]Till we make it.
+[00:28.90]Oh——
+[00:35.28]We will see,
+[00:38.99]Come with me take the journey.
+[00:41.93]Oh——
+[00:48.30]We will see,
+[00:52.01]Come with me take the journey.
 [00:58.00]✦ 愿此行，终抵群星 ✦`
     },
     {
@@ -49,32 +48,48 @@ export const useMusicStore = defineStore('music', () => {
       url: '/audio/wildfire.mp3',
       theme: '雅利洛-VI · 可可利亚决战战歌',
       lyrics: `[00:00.00]野火 Wildfire - Jonathan Steingard / HOYO-MiX
-[00:04.00]✦ 雅利洛-VI · 可可利亚造物引擎决战 ✦
-[00:08.50]We've made a choice, go fight against your fate
-[00:12.50]Pain will come with the blade
-[00:16.00]Pain will wake up the despondent crowd in this dormant town
-[00:23.00]Somehow, I remember
-[00:26.50]The warm breeze of that dawn
-[00:30.00]Now the cold wind whispers
-[00:34.00]That the dawn has long been gone
-[00:38.00]We've made a choice, go fight against your fate
-[00:42.00]Pain will come with the blade
-[00:45.50]Never blade will let you bleed
-[00:49.00]We'll defeat the winter's greed
-[00:53.00]We will burn it down, make 'em burn, burn, burn!
-[01:00.50]Wildfire!
-[01:04.50]Ignite the spark within the freezing cold!
-[01:11.50]Let the burning fire unfold!
-[01:18.50]Wildfire!
-[01:25.50]Through the frost and endless snow
-[01:29.50]We will let our passions grow
-[01:33.50]Stand tall, break the ice away
-[01:37.50]Welcome to a brand new day!
-[01:41.00]We've made a choice, go fight against your fate
-[01:45.00]Pain will come with the blade
-[01:48.50]Burn it down, make 'em burn!
-[01:52.50]Wildfire!
-[02:00.00]✦ 存护与开拓的钢铁意志 ✦`
+[00:03.13]Wrapped in biting wind
+[00:06.31]Hearts will never bleed
+[00:09.76]Frozen and banished
+[00:13.22]Out of grief
+[00:16.41]In their restless dreams
+[00:19.60]They try so hard to breathe
+[00:23.07]Pulses flutter and sting
+[00:26.51]Within this bleakness
+[00:43.24]Pain will come with the blade
+[00:46.42]Pain will wake up the despondent crowd in this dormant world somehow
+[00:59.39]Unsheathe a sword not to kill
+[01:00.18]Unsheathe a sword to rend those clouds above the ground
+[01:04.70]Wake up, it’s time to gather now
+[01:09.75]The only warmth remains in hands clasped so tight
+[01:16.91]The only fire exists in brave hearts
+[01:23.29]Seasons that refuse to change over the years
+[01:29.93]Will find their way back, back on track
+[01:45.08]We’ve made a choice
+[01:45.87]Go fight against your fate!
+[01:49.85]Pain will come with the blade
+[01:53.04]Pain will wake up the despondent crowd in this dormant world somehow
+[02:03.14]Unsheathe a sword not to kill
+[02:06.33]Unsheathe a sword to rend those clouds above the ground
+[02:11.63]Wake up, it’s time to gather now
+[02:24.39]Forget about the rules written on weathered rock
+[02:28.64]There were chasers of light
+[02:31.03]Find the way or get lost
+[02:32.89]We have no way to know
+[02:35.28]Where they all headed for
+[02:37.66]See a light from afar
+[02:39.53]Just blaze through the thorns
+[02:42.18]We know it’s right over there
+[02:44.04]We have something to declare
+[02:46.16]Whatever is arriving, we’ll be prepared
+[02:58.39]We’ve made a choice
+[02:59.18]Go fight against your fate!
+[03:02.90]Pain will come with the blade
+[03:06.36]Pain will wake up the despondent crowd in this dormant world somehow
+[03:16.46]Unsheathe a sword not to kill
+[03:19.64]Unsheathe a sword to rend those clouds above the ground
+[03:25.21]Wake up to hear the cheering sound
+[03:32.00]✦ 存护与开拓的钢铁意志 ✦`
     },
     {
       id: '3',
@@ -84,23 +99,40 @@ export const useMusicStore = defineStore('music', () => {
       url: '/audio/robin_heart.mp3',
       theme: '匹诺康尼 · 知更鸟之歌',
       lyrics: `[00:00.00]使一颗心免于哀伤 (If I Can Stop One Heart From Breaking) - 知更鸟 (Chevy) / HOYO-MiX
-[00:05.00]✦ 匹诺康尼 · 知更鸟之歌 ✦
-[00:10.00]雨停之后 拂晓渐落
-[00:18.00]微光抚平了夜的锁
-[00:26.00]若我能让 一颗心免于哀伤
-[00:34.00]我便没有 虚度此生
-[00:42.00]若我能抚慰 哪怕一个人的痛苦
-[00:50.00]或者减轻 一丝折磨
-[00:58.00]若我能帮助 一只昏厥的知更鸟
-[01:06.00]重回它的巢窝
-[01:14.00]If I can stop one heart from breaking
-[01:22.00]I shall not live in vain
-[01:30.00]If I can ease one life the aching
-[01:38.00]Or cool one pain
-[01:46.00]Or help one fainting robin
-[01:54.00]Unto his nest again
-[02:02.00]I shall not live in vain
-[02:10.00]✦ 歌声在梦境与银河间永恒回荡 ✦`
+[00:13.09]Birds are born with no shackles
+[00:18.69]Then what fetters my fate?
+[00:24.96]Blown away, the white petals
+[00:30.15]Leave me trapped in the cage.
+[00:36.34]The endless isolation
+[00:39.52]Can't wear down my illusion
+[00:42.45]Someday, I’ll make a dream unchained
+[00:49.26]Let my heart bravely spread the wings
+[00:53.28]Soaring past the night
+[00:56.16]To trace the bright moonlight
+[01:01.51]Let the clouds heal me of the stings
+[01:05.34]Gently wipe the sorrow off my life
+[01:09.50]I dream
+[01:18.50]What is meant by “miracle”,
+[01:24.68]A word outside my days?
+[01:30.98]Once again, repeat warbles
+[01:36.16]But how could I escape?
+[01:42.83]No further hesitation
+[01:45.64]On those unanswered questions
+[01:48.63]So now, I’ll make a dream unchained
+[02:00.19]Let my heart bravely spread the wings
+[02:05.39]Soaring past the night
+[02:08.02]To trace the bright moonlight
+[02:13.32]Let the clouds heal me of the stings
+[02:17.20]Gently wipe the sorrow off my life
+[02:21.72]I dream
+[02:37.37]Let my heart bravely spread the wings
+[02:41.11]Soaring past the night
+[02:44.04]To trace the bright moonlight
+[02:49.28]Let the clouds heal me of the stings
+[02:53.31]Gently wipe the sorrow off my life
+[03:00.08]I dream
+[03:06.13]I dream
+[03:12.00]✦ 歌声在梦境与银河间永恒回荡 ✦`
     },
     {
       id: '4',
@@ -110,21 +142,34 @@ export const useMusicStore = defineStore('music', () => {
       url: '/audio/white_night.mp3',
       theme: '匹诺康尼 · 盛会之星主题歌',
       lyrics: `[00:00.00]不眠之夜 WHITE NIGHT - 张杰 / HOYO-MiX
-[00:04.00]✦ 匹诺康尼 · 盛会之星梦境嘉年华 ✦
-[00:08.50]倒数声在耳边回响 繁华撕碎了迷茫
-[00:12.50]每一秒都是狂欢的开场
-[00:16.50]Welcome to my world!
-[00:20.50]梦境在霓虹中摇晃 撕开黑夜的伪装
-[00:24.50]在不眠的城邦 放肆歌唱
-[00:28.50]每一束光 都在发烫
-[00:32.50]别去管 昨天的伤
-[00:36.50]把时间抛在脑后 跃入这片星芒
-[00:40.50]Welcome to my world!
-[00:44.50]不眠之夜 狂欢未央
-[00:48.50]随节奏心跳 尽情释放
-[00:52.50]Welcome to my world!
-[00:56.50]这梦境永不散场！
-[01:02.00]✦ 欢迎来到梦境之城 匹诺康尼 ✦`
+[00:15.74]车窗外 这夜色 流光溢彩
+[00:19.61]别忘了 闭上眼 才算醒来
+[00:23.60]你参演 这场戏 变换姿态
+[00:27.44]谜底 结局 我该 怎么猜
+[00:32.07]记忆是梦的开场白
+[00:36.73]（伤疤被掩盖 昨日还在）
+[00:40.37]时间在静候你醒来
+[00:46.69]（Take me away）
+[00:47.92]别再破碎 别再枯萎
+[00:51.73]继续沉醉 自我迂回
+[00:55.70]最后品味 永恒的滋味
+[00:58.90]下一场那夜的梦 再相会
+[01:04.01]越是虚伪 越是完美
+[01:07.60]美梦入睡 绝望轮回
+[01:11.63]一闭一睁 便开始倒退
+[01:15.17]下一场那夜的梦 再相会
+[01:24.89]（伏笔没解开 悬念还在）
+[01:28.51]时间在静候你醒来
+[01:34.86]（Sing with me）
+[01:35.90]别再破碎 别再枯萎
+[01:39.72]继续沉醉 自我迂回
+[01:43.53]最后品味 永恒的滋味
+[01:46.81]来一场不眠之夜 作结尾
+[01:51.99]越要快乐 越要破溃
+[01:55.65]是是非非 别再意会
+[01:59.62]忘记时间 来梦的派对
+[02:02.92]来一场不眠之夜 作结尾
+[02:10.00]✦ 欢迎来到盛会之星 匹诺康尼 ✦`
     },
     {
       id: '5',
@@ -135,15 +180,15 @@ export const useMusicStore = defineStore('music', () => {
       theme: '黑塔空间站 · 纯享氛围原声',
       lyrics: `[00:00.00]太空漫步 Space Walk - HOYO-MiX
 [00:05.00]✦ 黑塔空间站 · 奇物主控舱段 ✦
-[00:12.00]✦ 纯音乐 · 请享受星际漫步的静谧节奏 ✦
-[00:25.00]✦ 虚数引擎平稳巡航中 ✦
-[00:45.00]✦ 观测星云流动，记录引力波纹 ✦
-[01:05.00]✦ 愿此行，终抵群星 ✦`
+[00:15.00]✦ 纯音乐 · 请享受星际漫步的静谧节奏 ✦
+[00:30.00]✦ 虚数引擎平稳巡航中 ✦
+[00:50.00]✦ 观测星云流动，记录引力波纹 ✦
+[01:10.00]✦ 愿此行，终抵群星 ✦`
     }
   ]);
 
   const currentIndex = ref(0);
-  const currentSong = ref<Song>(playlist.value[0]);
+  const currentSong = computed<Song>(() => playlist.value[currentIndex.value] || playlist.value[0]);
   const audioElement = ref<HTMLAudioElement | null>(null);
 
   const initAudio = () => {
@@ -220,7 +265,6 @@ export const useMusicStore = defineStore('music', () => {
 
   const switchSong = (index: number) => {
     currentIndex.value = index;
-    currentSong.value = playlist.value[index];
     initAudio();
     if (audioElement.value) {
       audioElement.value.src = currentSong.value.url;
