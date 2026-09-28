@@ -24,3 +24,8 @@ springdoc:
     path: /swagger-ui/index.html
     enabled: true
 
+# 🌌 星向空间核心业务与安全配置
+starward:
+  auth:
+    admin-token: ${STARWARD_ADMIN_TOKEN:starward-secret-token-2026}
+

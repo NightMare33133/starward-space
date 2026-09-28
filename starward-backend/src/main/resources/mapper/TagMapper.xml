@@ -18,4 +18,29 @@
         ORDER BY id ASC
     </select>
 
+    <select id="findTagById" resultType="top.starward.entity.Tag">
+        SELECT id, name, slug, color, created_at
+        FROM tags
+        WHERE id = #{id}
+    </select>
+
+    <select id="findTagBySlug" resultType="top.starward.entity.Tag">
+        SELECT id, name, slug, color, created_at
+        FROM tags
+        WHERE slug = #{slug}
+    </select>
+
+    <insert id="insertTag" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tags (name, slug, color, created_at)
+        VALUES (#{name}, #{slug}, #{color}, NOW())
+    </insert>
+
+    <delete id="deleteTagById">
+        DELETE FROM tags WHERE id = #{id}
+    </delete>
+
+    <delete id="deletePostTagsByTagId">
+        DELETE FROM post_tags WHERE tag_id = #{tagId}
+    </delete>
+
 </mapper>

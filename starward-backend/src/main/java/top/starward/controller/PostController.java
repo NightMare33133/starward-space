@@ -52,4 +52,45 @@ public class PostController {
     public Result<PostDetailVO> getPostDetailBySlug(@Parameter(description = "语义化短链 Slug", example = "my-first-starward-post") @PathVariable("slug") String slug) {
         return Result.success(postService.getPostDetailBySlug(slug));
     }
+
+    /**
+     * 管理员获取全量文章列表 (包含草稿)
+     */
+    @Operation(summary = "管理员获取全量文章列表", description = "获取包含 DRAFT (草稿) 与 PUBLISHED (已发布) 的所有文章，需 X-Admin-Token 鉴权")
+    @GetMapping("/admin")
+    public Result<List<PostListVO>> getAdminPostList() {
+        return Result.success(postService.getAdminPostList());
+    }
+
+    /**
+     * 创建新文章
+     */
+    @Operation(summary = "创建新文章", description = "发布新博文或保存草稿，需 X-Admin-Token 鉴权，支持关联已有标签")
+    @org.springframework.web.bind.annotation.PostMapping
+    public Result<PostDetailVO> createPost(@jakarta.validation.Valid @org.springframework.web.bind.annotation.RequestBody top.starward.dto.PostCreateRequest request) {
+        PostDetailVO created = postService.createPost(request);
+        return Result.success("文章创建成功 ✨", created);
+    }
+
+    /**
+     * 更新已有文章
+     */
+    @Operation(summary = "修改文章", description = "根据主键 ID 更新文章元数据、Markdown 正文及标签关系，需 X-Admin-Token 鉴权")
+    @org.springframework.web.bind.annotation.PutMapping("/{id}")
+    public Result<PostDetailVO> updatePost(
+            @Parameter(description = "文章主键 ID", example = "1") @PathVariable("id") Long id,
+            @jakarta.validation.Valid @org.springframework.web.bind.annotation.RequestBody top.starward.dto.PostUpdateRequest request) {
+        PostDetailVO updated = postService.updatePost(id, request);
+        return Result.success("文章更新成功 🚀", updated);
+    }
+
+    /**
+     * 删除文章
+     */
+    @Operation(summary = "删除文章", description = "根据主键 ID 彻底删除文章并级联解绑标签，需 X-Admin-Token 鉴权")
+    @org.springframework.web.bind.annotation.DeleteMapping("/{id}")
+    public Result<Void> deletePost(@Parameter(description = "文章主键 ID", example = "1") @PathVariable("id") Long id) {
+        postService.deletePost(id);
+        return Result.success("文章已成功删除 🗑️", null);
+    }
 }
