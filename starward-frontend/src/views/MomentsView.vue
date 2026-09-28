@@ -79,7 +79,7 @@
       >
         <!-- 时间线锚点 -->
         <div class="w-10 h-10 rounded-full glass-card border border-white/20 flex items-center justify-center text-lg shrink-0 shadow-lg group-hover:border-nebula-purple/60 group-hover:scale-110 transition-all z-10 bg-space-950">
-          {{ moment.moodEmoji || '✨' }}
+          {{ moment.moodEmoji || moment.mood || '✨' }}
         </div>
 
         <!-- 碎语卡片内容 -->

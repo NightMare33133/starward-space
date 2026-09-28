@@ -33,6 +33,14 @@
           >
             GitHub 源码
           </a>
+          <span>·</span>
+          <router-link
+            to="/admin"
+            class="hover:text-amber-400 transition-colors flex items-center space-x-1"
+            title="星轨控制中枢"
+          >
+            <span>✦ 控制中枢</span>
+          </router-link>
         </div>
         <p class="text-[11px] text-slate-600 font-mono">
           Powered by Vue 3 · Vite · Spring Boot 3 · Java 21 · MySQL 8.4

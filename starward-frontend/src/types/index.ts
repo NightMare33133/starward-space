@@ -18,9 +18,11 @@ export interface PostListVO {
   slug: string;
   summary: string;
   coverImage?: string;
+  status?: 'PUBLISHED' | 'DRAFT';
   viewCount: number;
   isPinned: boolean | number;
   createdAt: string;
+  updatedAt?: string;
   publishedAt?: string;
   tags: Tag[];
 }
@@ -33,19 +35,50 @@ export interface PostDetailVO {
   content?: string;
   contentMd?: string;
   coverImage?: string;
+  status?: 'PUBLISHED' | 'DRAFT';
   viewCount: number;
   isPinned: boolean | number;
   createdAt: string;
+  updatedAt?: string;
   publishedAt?: string;
   tags: Tag[];
+}
+
+export interface PostCreateRequest {
+  title: string;
+  slug: string;
+  summary: string;
+  contentMd: string;
+  coverImage?: string;
+  status: 'PUBLISHED' | 'DRAFT';
+  isPinned: boolean;
+  tagIds: number[];
+}
+
+export interface PostUpdateRequest {
+  title: string;
+  slug: string;
+  summary: string;
+  contentMd: string;
+  coverImage?: string;
+  status: 'PUBLISHED' | 'DRAFT';
+  isPinned: boolean;
+  tagIds: number[];
+}
+
+export interface TagCreateRequest {
+  name: string;
+  slug: string;
+  color: string;
 }
 
 export interface Moment {
   id: number;
   content: string;
+  mood?: string;
   moodEmoji?: string;
   location?: string;
-  likeCount: number;
+  likeCount?: number;
   createdAt: string;
 }
 

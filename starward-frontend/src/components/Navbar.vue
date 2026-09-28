@@ -1,9 +1,9 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300" :class="{ 'py-3 backdrop-blur-xl bg-space-950/70 border-b border-white/10 shadow-lg': isScrolled, 'py-5 bg-transparent': !isScrolled }">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-      <!-- 品牌标识 Logo (帕姆列车长) -->
-      <router-link to="/" class="flex items-center space-x-3 group">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 via-nebula-pink to-nebula-cyan p-[1.5px] shadow-lg shadow-amber-500/25 group-hover:scale-110 transition-transform overflow-hidden shrink-0">
+      <!-- 品牌标识 Logo (帕姆列车长) - 支持三击触发星轨密令彩蛋 -->
+      <router-link to="/" class="flex items-center space-x-3 group" @click="handleLogoClick">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 via-nebula-pink to-nebula-cyan p-[1.5px] shadow-lg shadow-amber-500/25 group-hover:scale-110 active:scale-95 transition-transform overflow-hidden shrink-0 cursor-pointer">
           <div class="w-full h-full rounded-[14px] overflow-hidden bg-space-950">
             <img
               src="/images/pompom.png"
@@ -88,6 +88,9 @@
         <span>{{ item.title }}</span>
       </router-link>
     </div>
+
+    <!-- 星轨列车长彩蛋暗门弹窗 -->
+    <ConductorModal v-model="showConductorModal" />
   </header>
 </template>
 
@@ -95,10 +98,32 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Home, BookOpen, MessageSquare, Camera, User, Github, Music, Menu, X } from 'lucide-vue-next';
 import { useMusicStore } from '@/stores/music';
+import ConductorModal from '@/components/ConductorModal.vue';
 
 const musicStore = useMusicStore();
 const isScrolled = ref(false);
 const mobileMenuOpen = ref(false);
+const showConductorModal = ref(false);
+
+// 三击帕姆头像彩蛋检测
+let clickCount = 0;
+let clickTimer: any = null;
+
+const handleLogoClick = (e: MouseEvent) => {
+  clickCount++;
+  if (clickTimer) clearTimeout(clickTimer);
+
+  if (clickCount >= 3) {
+    e.preventDefault();
+    clickCount = 0;
+    showConductorModal.value = true;
+    return;
+  }
+
+  clickTimer = setTimeout(() => {
+    clickCount = 0;
+  }, 1000);
+};
 
 const navItems = [
   { title: '首页', path: '/', icon: Home },
