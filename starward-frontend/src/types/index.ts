@@ -78,6 +78,7 @@ export interface Moment {
   mood?: string;
   moodEmoji?: string;
   location?: string;
+  imagesJson?: string;
   likeCount?: number;
   createdAt: string;
 }
@@ -85,6 +86,7 @@ export interface Moment {
 export interface MomentCreateRequest {
   content: string;
   mood?: string;
+  location?: string;
   imagesJson?: string;
 }
 
