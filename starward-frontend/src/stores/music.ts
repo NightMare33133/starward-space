@@ -27,17 +27,24 @@ export const useMusicStore = defineStore('music', () => {
     },
     {
       id: '3',
-      title: '太空漫步 Space Walk',
-      artist: 'HOYO-MiX',
+      title: '使一颗心免于哀伤',
+      artist: '知更鸟 · Chevy · HOYO-MiX',
       cover: '/images/hsr/march7th_selfie.png',
-      url: '/audio/space_walk.mp3',
+      url: '/audio/robin_heart.mp3',
     },
     {
       id: '4',
-      title: '猎手的预视 Hunter\'s Intuition',
-      artist: 'HOYO-MiX (卡芙卡战斗曲)',
+      title: '不眠之夜 WHITE NIGHT',
+      artist: '张杰 · HOYO-MiX',
+      cover: '/images/pompom.png',
+      url: '/audio/white_night.mp3',
+    },
+    {
+      id: '5',
+      title: '太空漫步 Space Walk',
+      artist: 'HOYO-MiX',
       cover: '/images/hsr/welt.png',
-      url: '/audio/hunters_intuition.mp3',
+      url: '/audio/space_walk.mp3',
     }
   ]);
 
