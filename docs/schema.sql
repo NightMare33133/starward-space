@@ -62,7 +62,7 @@ CREATE TABLE `moments` (
     `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '碎语主键ID',
     `content` TEXT NOT NULL COMMENT '随想内容 (支持换行与表情)',
     `mood` VARCHAR(30) DEFAULT '✨' COMMENT '此刻的心情Emoji或微状态',
-    `images_json` TEXT DEFAULT NULL COMMENT '附带的图片URL列表 (JSON字符串)',
+    `images_json` LONGTEXT DEFAULT NULL COMMENT '附带的图片URL或Base64列表 (JSON字符串)',
     `is_pinned` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否置顶',
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',

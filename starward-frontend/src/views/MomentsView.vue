@@ -551,7 +551,7 @@ const handlePublish = async () => {
 
     await loadMoments();
   } catch (err: any) {
-    postError.value = err.message || '发布失败';
+    postError.value = err.response?.data?.message || err.message || '发布失败';
   } finally {
     publishing.value = false;
   }

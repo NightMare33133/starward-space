@@ -553,7 +553,7 @@ const handlePublish = async () => {
 
     alert('星际碎语发射成功 ✨');
   } catch (err: any) {
-    alert(err.message || '碎语发射失败');
+    alert(err.response?.data?.message || err.message || '碎语发射失败');
   } finally {
     publishing.value = false;
   }
