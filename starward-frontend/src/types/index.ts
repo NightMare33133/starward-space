@@ -51,7 +51,7 @@ export interface PostCreateRequest {
   contentMd: string;
   coverImage?: string;
   status: 'PUBLISHED' | 'DRAFT';
-  isPinned: boolean;
+  isPinned: number | boolean;
   tagIds: number[];
 }
 
@@ -62,7 +62,7 @@ export interface PostUpdateRequest {
   contentMd: string;
   coverImage?: string;
   status: 'PUBLISHED' | 'DRAFT';
-  isPinned: boolean;
+  isPinned: number | boolean;
   tagIds: number[];
 }
 

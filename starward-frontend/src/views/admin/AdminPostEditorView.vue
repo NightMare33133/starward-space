@@ -542,7 +542,7 @@ const submitForm = async (targetStatus?: 'PUBLISHED' | 'DRAFT') => {
       contentMd: form.contentMd,
       coverImage: form.coverImage.trim() || undefined,
       status: finalStatus,
-      isPinned: form.isPinned,
+      isPinned: form.isPinned ? 1 : 0,
       tagIds: form.tagIds,
     };
 

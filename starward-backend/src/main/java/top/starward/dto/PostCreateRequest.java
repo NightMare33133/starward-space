@@ -41,6 +41,19 @@ public class PostCreateRequest {
     @Schema(description = "是否置顶: 0-否, 1-是", example = "0")
     private Integer isPinned = 0;
 
+    @com.fasterxml.jackson.annotation.JsonSetter
+    public void setIsPinned(Object value) {
+        if (value instanceof Boolean b) {
+            this.isPinned = b ? 1 : 0;
+        } else if (value instanceof Number n) {
+            this.isPinned = n.intValue();
+        } else if (value != null) {
+            this.isPinned = "true".equalsIgnoreCase(value.toString()) || "1".equals(value.toString()) ? 1 : 0;
+        } else {
+            this.isPinned = 0;
+        }
+    }
+
     @Schema(description = "关联的标签 ID 列表", example = "[1, 2]")
     private List<Long> tagIds;
 }

@@ -58,6 +58,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 5. 拦截 JSON 请求体格式或数据类型反序列化异常
+     */
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public Result<Void> handleHttpMessageNotReadableException(org.springframework.http.converter.HttpMessageNotReadableException e) {
+        log.warn("请求体 JSON 解析失败: {}", e.getMessage());
+        return Result.error(ResultCode.BAD_REQUEST.getCode(), "请求参数格式或数据类型错误，请检查提交内容");
+    }
+
+    /**
      * 5. 兜底防御：拦截一切未知内部异常
      * 严格脱敏：记录完整日志，但只给外部返回模糊且安全的友好提示，绝不泄露表名、行号与数据库结构！
      */
