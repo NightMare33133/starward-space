@@ -3,11 +3,11 @@
     <!-- 动态微光星空粒子画布 -->
     <StarBackground />
 
-    <!-- 顶部玻璃导航栏 -->
-    <Navbar />
+    <!-- 顶部玻璃导航栏 (仅在前台非管理路由展示，防止后台出现双导航栏) -->
+    <Navbar v-if="!isAdminRoute" />
 
     <!-- 路由主视口与页面平滑过渡 -->
-    <main class="flex-1 relative z-10 pt-16">
+    <main class="flex-1 relative z-10" :class="{ 'pt-16': !isAdminRoute }">
       <router-view v-slot="{ Component }">
         <transition
           enter-active-class="transition duration-300 ease-out"
@@ -23,23 +23,28 @@
       </router-view>
     </main>
 
-    <!-- 网易云悬浮音乐岛 -->
+    <!-- 网易云悬浮音乐岛 (全站常驻) -->
     <MusicPlayer />
 
-    <!-- 页脚 -->
-    <Footer />
+    <!-- 页脚 (仅在前台展示) -->
+    <Footer v-if="!isAdminRoute" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import StarBackground from '@/components/StarBackground.vue';
 import Navbar from '@/components/Navbar.vue';
 import MusicPlayer from '@/components/MusicPlayer.vue';
 import Footer from '@/components/Footer.vue';
 import { useThemeStore } from '@/stores/theme';
 
+const route = useRoute();
 const themeStore = useThemeStore();
+
+// 判断是否为后台管理路由 (/admin/**)
+const isAdminRoute = computed(() => route.path.startsWith('/admin'));
 
 onMounted(() => {
   themeStore.initTheme();

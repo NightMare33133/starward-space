@@ -39,8 +39,18 @@
           </router-link>
         </nav>
 
-        <!-- 右侧返回前台与注销 -->
+        <!-- 右侧音乐控制、返回前台与注销 -->
         <div class="flex items-center space-x-2">
+          <!-- 音乐岛触发器 -->
+          <button
+            @click="musicStore.isExpanded = !musicStore.isExpanded"
+            class="p-2 rounded-xl text-slate-400 hover:text-nebula-cyan hover:bg-white/5 transition-all relative"
+            title="星际音乐岛"
+          >
+            <Music class="w-4 h-4" :class="{ 'text-nebula-cyan animate-pulse': musicStore.isPlaying }" />
+            <span v-if="musicStore.isPlaying" class="absolute top-1 right-1 w-2 h-2 rounded-full bg-nebula-cyan animate-ping"></span>
+          </button>
+
           <router-link
             to="/"
             class="px-3 py-1.5 rounded-xl border border-white/10 hover:border-nebula-cyan/40 bg-white/5 hover:bg-white/10 text-xs text-slate-300 hover:text-white transition-all flex items-center space-x-1.5"
@@ -103,11 +113,14 @@ import {
   Tag as TagIcon,
   MessageSquare,
   ExternalLink,
-  LogOut
+  LogOut,
+  Music
 } from 'lucide-vue-next';
+import { useMusicStore } from '@/stores/music';
 
 const route = useRoute();
 const router = useRouter();
+const musicStore = useMusicStore();
 
 const navTabs = [
   { title: '文章管理', path: '/admin/posts', icon: FileText },
