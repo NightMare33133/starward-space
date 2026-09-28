@@ -37,7 +37,7 @@
             ? 'border-purple-500/25 hover:border-purple-400/70 hover:shadow-[0_0_30px_rgba(168,85,247,0.25)]'
             : 'border-white/10 hover:border-nebula-pink/50 hover:shadow-[0_0_25px_rgba(255,114,179,0.2)]'
         ]"
-        @click="previewPhoto = photo"
+        @click="openPreview(photo)"
       >
         <!-- 图片容器：自适应高度，完整保留角色与构图细节 -->
         <div class="relative overflow-hidden bg-space-950">
@@ -87,48 +87,86 @@
       </div>
     </div>
 
-    <!-- 大图全屏预览模态框 (Lightbox Modal) -->
-    <div
-      v-if="previewPhoto"
-      class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8"
-      @click="previewPhoto = null"
-    >
-      <div class="relative max-w-4xl max-h-[92vh] flex flex-col items-center" @click.stop>
-        <!-- 关闭按钮 -->
-        <button
-          @click="previewPhoto = null"
-          class="absolute -top-12 right-0 p-2 text-slate-400 hover:text-white transition-colors"
+    <!-- 大图全屏预览模态框 (Lightbox Modal) - Teleport 至 body 彻底置于顶层，彻底杜绝导航栏遮挡 -->
+    <teleport to="body">
+      <transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <div
+          v-if="previewPhoto"
+          class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 sm:p-6"
+          @click="closePreview"
         >
-          <X class="w-6 h-6" />
-        </button>
+          <!-- 独立右上角关闭按钮 -->
+          <button
+            @click="closePreview"
+            class="fixed top-6 right-6 z-[110] p-3 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white backdrop-blur-xl border border-white/15 transition-all shadow-2xl active:scale-95 group"
+            title="关闭预览 (Esc 或点击空白)"
+          >
+            <X class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" />
+          </button>
 
-        <img
-          :src="previewPhoto.url"
-          :alt="previewPhoto.title"
-          class="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl border border-white/10"
-        />
+          <!-- 居中大图与说明容器 -->
+          <div class="relative max-w-5xl max-h-[92vh] flex flex-col items-center justify-center select-none" @click.stop>
+            <img
+              :src="previewPhoto.url"
+              :alt="previewPhoto.title"
+              class="max-w-full max-h-[78vh] object-contain rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] border border-white/15"
+            />
 
-        <div class="mt-4 text-center space-y-1">
-          <h4 class="text-white font-bold text-base flex items-center justify-center space-x-2">
-            <span>{{ previewPhoto.title }}</span>
-            <span v-if="previewPhoto.rarity" class="text-amber-400 text-xs">
-              {{ '★'.repeat(previewPhoto.rarity) }}
-            </span>
-          </h4>
-          <p class="text-xs text-slate-400 font-mono">{{ previewPhoto.location }} · {{ previewPhoto.params }}</p>
+            <div class="mt-4 text-center space-y-1.5 px-4">
+              <h4 class="text-white font-bold text-base flex items-center justify-center space-x-2">
+                <span>{{ previewPhoto.title }}</span>
+                <span v-if="previewPhoto.rarity" class="text-amber-400 text-xs">
+                  {{ '★'.repeat(previewPhoto.rarity) }}
+                </span>
+              </h4>
+              <p class="text-xs text-slate-400 font-mono">{{ previewPhoto.location }} · {{ previewPhoto.params }}</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </transition>
+    </teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Camera, MapPin, Maximize2, X } from 'lucide-vue-next';
 import type { Photo } from '@/types';
 
 const selectedCategory = ref('全部');
 const previewPhoto = ref<Photo | null>(null);
+
+const openPreview = (photo: Photo) => {
+  previewPhoto.value = photo;
+  document.body.style.overflow = 'hidden';
+};
+
+const closePreview = () => {
+  previewPhoto.value = null;
+  document.body.style.overflow = '';
+};
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && previewPhoto.value) {
+    closePreview();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
+  document.body.style.overflow = '';
+});
 
 const categories = ['全部', '星穹列车组', '星空与宇宙', '城市建筑', '山川自然'];
 
