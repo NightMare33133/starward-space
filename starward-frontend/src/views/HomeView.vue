@@ -405,7 +405,7 @@
             :class="themeStore.isDark ? 'bg-pink-500/10 text-pink-400 border border-pink-500/20 hover:bg-pink-500/20' : 'bg-pink-100 text-pink-700 border border-pink-300 hover:bg-pink-200'"
             title="萌号备案"
           >
-            <span>萌ICP备 20263313号</span>
+            <span>萌ICP备20263313号</span>
           </a>
         </div>
         <p class="text-[10px] font-mono" :class="themeStore.isDark ? 'text-slate-600' : 'text-slate-400'">
