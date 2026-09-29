@@ -1,5 +1,5 @@
 <template>
-  <footer class="mt-20 border-t border-pink-200/40 dark:border-white/10 bg-white/60 dark:bg-space-950/60 backdrop-blur-md py-10 relative z-10 transition-colors duration-500">
+  <footer class="mt-20 border-t border-pink-200/40 dark:border-white/10 bg-white/60 dark:bg-space-950/60 backdrop-blur-md pt-10 pb-20 md:pb-14 relative z-10 transition-colors duration-500">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-pink-200/20 dark:border-white/5">
         <!-- 左侧版权与航行时间 -->
@@ -49,23 +49,21 @@
         </div>
       </div>
 
-      <!-- 页脚底部：非商业声明与醒目的萌国ICP备案专属徽章 -->
-      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center">
+      <!-- 页脚底部：正中居中醒目展示萌备徽章与免责声明，完全避开右下角悬浮音乐播放器 -->
+      <div class="pt-6 flex flex-col items-center justify-center space-y-3 text-center">
+        <a
+          href="https://icp.gov.moe/?keyword=20263313"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-300 border bg-pink-50 text-pink-600 border-pink-200 hover:bg-pink-100 hover:border-pink-300 hover:scale-105 dark:bg-pink-500/10 dark:text-pink-300 dark:border-pink-500/25 dark:hover:bg-pink-500/20 dark:hover:border-pink-400/40 shadow-sm"
+          title="萌国ICP备案认证"
+        >
+          <span>🌸</span>
+          <span>萌ICP备20263313号</span>
+        </a>
         <p class="text-[11px] font-mono text-slate-400 dark:text-slate-600">
           All Star Rail visual assets belong to miHoYo / HoYoverse · Non-commercial personal blog
         </p>
-        <div class="flex items-center space-x-2">
-          <a
-            href="https://icp.gov.moe/?keyword=20263313"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium transition-all duration-300 border bg-pink-50 text-pink-600 border-pink-200 hover:bg-pink-100 hover:border-pink-300 dark:bg-pink-500/10 dark:text-pink-300 dark:border-pink-500/25 dark:hover:bg-pink-500/20 dark:hover:border-pink-400/40 shadow-sm"
-            title="萌国ICP备案认证"
-          >
-            <span>🌸</span>
-            <span>萌ICP备20263313号</span>
-          </a>
-        </div>
       </div>
     </div>
   </footer>
