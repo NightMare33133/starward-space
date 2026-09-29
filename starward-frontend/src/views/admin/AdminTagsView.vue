@@ -156,7 +156,9 @@ import {
 } from 'lucide-vue-next';
 import { getAllTags, createTag, deleteTag } from '@/api/admin';
 import type { Tag } from '@/types';
+import { useToast } from '@/composables/useToast';
 
+const toast = useToast();
 const tags = ref<Tag[]>([]);
 const loading = ref(false);
 const creating = ref(false);
@@ -212,9 +214,9 @@ const handleCreateTag = async () => {
     tags.value.push(created);
     newTag.name = '';
     newTag.slug = '';
-    alert('标签创建成功 ✨');
+    toast.success('标签创建成功 ✨');
   } catch (err: any) {
-    alert(err.message || '创建标签失败');
+    toast.error(err.response?.data?.message || err.message || '创建标签失败');
   } finally {
     creating.value = false;
   }
@@ -225,8 +227,9 @@ const handleDeleteTag = async (tag: Tag) => {
     try {
       await deleteTag(tag.id);
       tags.value = tags.value.filter(t => t.id !== tag.id);
+      toast.success('标签已删除 🗑️');
     } catch (err: any) {
-      alert(err.message || '删除标签失败');
+      toast.error(err.response?.data?.message || err.message || '删除标签失败');
     }
   }
 };

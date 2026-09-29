@@ -1,5 +1,8 @@
 <template>
   <div class="min-h-screen bg-space-950 text-slate-100 flex flex-col relative selection:bg-nebula-cyan/30 selection:text-white">
+    <!-- 全局星际轻提示组件 (Toast) -->
+    <ToastContainer />
+
     <!-- 动态微光星空粒子画布 -->
     <StarBackground />
 
@@ -38,6 +41,7 @@ import StarBackground from '@/components/StarBackground.vue';
 import Navbar from '@/components/Navbar.vue';
 import MusicPlayer from '@/components/MusicPlayer.vue';
 import Footer from '@/components/Footer.vue';
+import ToastContainer from '@/components/ToastContainer.vue';
 import { useThemeStore } from '@/stores/theme';
 
 const route = useRoute();

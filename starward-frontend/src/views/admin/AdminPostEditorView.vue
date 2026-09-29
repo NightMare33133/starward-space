@@ -373,9 +373,11 @@ import {
   getAllTags
 } from '@/api/admin';
 import type { Tag, PostCreateRequest, PostUpdateRequest } from '@/types';
+import { useToast } from '@/composables/useToast';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 
 const postId = computed(() => {
   const p = route.params.id;
@@ -519,15 +521,15 @@ const handleGlobalKeydown = (e: KeyboardEvent) => {
 // 表单提交
 const submitForm = async (targetStatus?: 'PUBLISHED' | 'DRAFT') => {
   if (!form.title.trim()) {
-    alert('请填写文章标题');
+    toast.warning('请填写文章标题');
     return;
   }
   if (!form.slug.trim()) {
-    alert('请填写文章 Slug');
+    toast.warning('请填写文章 Slug');
     return;
   }
   if (!form.contentMd.trim()) {
-    alert('请填写 Markdown 正文');
+    toast.warning('请填写 Markdown 正文');
     return;
   }
 
@@ -559,10 +561,10 @@ const submitForm = async (targetStatus?: 'PUBLISHED' | 'DRAFT') => {
       colors: ['#38bdf8', '#f59e0b', '#ec4899', '#10b981'],
     });
 
-    alert(isEditMode.value ? '文章更新成功 ✨' : '文章创建并发布成功 🚀');
+    toast.success(isEditMode.value ? '文章更新成功 ✨' : '文章创建并发布成功 🚀');
     router.push('/admin/posts');
   } catch (err: any) {
-    alert(err.message || '操作失败，请重试');
+    toast.error(err.response?.data?.message || err.message || '操作失败，请重试');
   } finally {
     submitting.value = false;
   }
@@ -589,7 +591,7 @@ const initData = async () => {
       form.isPinned = detail.isPinned === true || detail.isPinned === 1;
       form.tagIds = detail.tags ? detail.tags.map(t => t.id) : [];
     } catch (err: any) {
-      alert(err.message || '加载文章数据失败');
+      toast.error(err.response?.data?.message || err.message || '加载文章数据失败');
       router.push('/admin/posts');
     }
   }

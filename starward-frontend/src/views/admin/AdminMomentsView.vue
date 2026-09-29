@@ -341,7 +341,9 @@ import confetti from 'canvas-confetti';
 import { publishMoment } from '@/api/admin';
 import { getMoments } from '@/api/moments';
 import type { Moment } from '@/types';
+import { useToast } from '@/composables/useToast';
 
+const toast = useToast();
 const moments = ref<Moment[]>([]);
 const loading = ref(false);
 const publishing = ref(false);
@@ -551,9 +553,9 @@ const handlePublish = async () => {
       colors: ['#38bdf8', '#f59e0b', '#ec4899', '#10b981'],
     });
 
-    alert('星际碎语发射成功 ✨');
+    toast.success('星际碎语发射成功 ✨');
   } catch (err: any) {
-    alert(err.response?.data?.message || err.message || '碎语发射失败');
+    toast.error(err.response?.data?.message || err.message || '碎语发射失败');
   } finally {
     publishing.value = false;
   }

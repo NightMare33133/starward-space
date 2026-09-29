@@ -287,7 +287,9 @@ import {
 } from 'lucide-vue-next';
 import { getAdminPosts, deletePost, updatePost, getPostForEdit } from '@/api/admin';
 import type { PostListVO } from '@/types';
+import { useToast } from '@/composables/useToast';
 
+const toast = useToast();
 const posts = ref<PostListVO[]>([]);
 const loading = ref(false);
 const searchQuery = ref('');
@@ -333,7 +335,7 @@ const fetchPosts = async () => {
     posts.value = list || [];
   } catch (err: any) {
     console.error('获取文章列表失败:', err);
-    alert(err.message || '获取文章列表失败');
+    toast.error(err.response?.data?.message || err.message || '获取文章列表失败');
   } finally {
     loading.value = false;
   }
@@ -360,8 +362,9 @@ const toggleStatus = async (post: PostListVO) => {
       tagIds: detail.tags ? detail.tags.map(t => t.id) : [],
     });
     post.status = newStatus;
+    toast.success(newStatus === 'PUBLISHED' ? '文章已设为公开上线 🌟' : '文章已转为私密草稿 📝');
   } catch (err: any) {
-    alert(err.message || '切换状态失败');
+    toast.error(err.response?.data?.message || err.message || '切换状态失败');
   }
 };
 
@@ -381,8 +384,9 @@ const togglePin = async (post: PostListVO) => {
       tagIds: detail.tags ? detail.tags.map(t => t.id) : [],
     });
     post.isPinned = newPinned ? 1 : 0;
+    toast.success(newPinned ? '文章已置顶 📌' : '已取消置顶');
   } catch (err: any) {
-    alert(err.message || '切换置顶失败');
+    toast.error(err.response?.data?.message || err.message || '切换置顶失败');
   }
 };
 
@@ -392,8 +396,9 @@ const handleDelete = async (post: PostListVO) => {
     try {
       await deletePost(post.id);
       posts.value = posts.value.filter(p => p.id !== post.id);
+      toast.success('文章已彻底删除 🗑️');
     } catch (err: any) {
-      alert(err.message || '删除文章失败');
+      toast.error(err.response?.data?.message || err.message || '删除文章失败');
     }
   }
 };
