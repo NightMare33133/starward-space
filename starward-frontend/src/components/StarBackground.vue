@@ -1,11 +1,11 @@
 <template>
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <!-- 底层高清星穹壁纸（带柔和暗色蒙版与深度模糊） -->
+    <!-- 底层流萤深空夜景壁纸（带柔和暗色蒙版与通透粒子融合） -->
     <div
       class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105"
       :style="{
-        backgroundImage: `url('/images/hsr/himeko_express.png')`,
-        filter: 'brightness(0.35) saturate(1.2)'
+        backgroundImage: `url('/images/hsr/firefly_night.jpg')`,
+        filter: 'brightness(0.38) saturate(1.15)'
       }"
     ></div>
 

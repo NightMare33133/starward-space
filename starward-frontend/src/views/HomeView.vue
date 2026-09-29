@@ -209,32 +209,42 @@
 
     <!-- 便当盒第三排 (Bento Row 3): 重点文章大图卡 + 摄影卡 + 碎语卡 + 跃迁卡 -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-      <!-- 卡片 1 (左侧大卡，占 5 列): LATEST INSIGHT 重点推荐文章 -->
+      <!-- 卡片 1 (左侧大卡，占 5 列): LATEST INSIGHT 重点推荐文章 (日间绯英 vs 夜间流萤) -->
       <div
-        class="lg:col-span-5 rounded-3xl overflow-hidden relative group cursor-pointer border border-white/10 hover:border-nebula-cyan/40 transition-all duration-500 min-h-[340px] flex flex-col justify-end p-7"
+        class="lg:col-span-5 rounded-3xl overflow-hidden relative group cursor-pointer border transition-all duration-500 min-h-[340px] flex flex-col justify-end p-7"
+        :class="themeStore.isDark ? 'border-white/10 hover:border-nebula-cyan/40 hover:shadow-nebula-cyan/20' : 'border-pink-200/50 hover:border-pink-400/50 hover:shadow-pink-300/30'"
         @click="posts.length > 0 && $router.push(`/posts/${posts[0].id}`)"
       >
-        <!-- 背景大图：姬子与星穹列车 (银河铁道之夜) -->
+        <!-- 背景大图：夜间流萤 vs 日间绯英 -->
         <img
-          src="/images/hsr/himeko_express.png"
-          alt="Featured Article"
-          class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+          :src="themeStore.isDark ? '/images/hsr/firefly_night.jpg' : '/images/hsr/feiying_sakura.jpg'"
+          :alt="themeStore.isDark ? 'Firefly' : 'Fei Ying'"
+          class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700"
         />
         <!-- 暗调渐变蒙版保证文字极致可读 -->
-        <div class="absolute inset-0 bg-gradient-to-t from-space-950 via-space-950/60 to-transparent"></div>
+        <div
+          class="absolute inset-0 transition-colors duration-500"
+          :class="themeStore.isDark ? 'bg-gradient-to-t from-space-950 via-space-950/60 to-transparent' : 'bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-transparent'"
+        ></div>
 
         <!-- 内容 -->
         <div class="relative z-10 space-y-3">
           <div class="flex items-center space-x-2">
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono bg-nebula-cyan text-space-950 uppercase tracking-wider">
-              LATEST INSIGHT
+            <span
+              class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase tracking-wider transition-colors"
+              :class="themeStore.isDark ? 'bg-nebula-cyan text-space-950' : 'bg-pink-400 text-white shadow-sm'"
+            >
+              {{ themeStore.isDark ? 'LATEST INSIGHT · 流萤' : 'LATEST INSIGHT · 绯英' }}
             </span>
             <span v-if="posts.length > 0" class="text-xs font-mono text-slate-300">
               {{ formatDate(posts[0].createdAt || posts[0].publishedAt) }}
             </span>
           </div>
 
-          <h3 class="text-xl font-bold text-white group-hover:text-nebula-cyan transition-colors leading-tight">
+          <h3
+            class="text-xl font-bold text-white transition-colors leading-tight"
+            :class="themeStore.isDark ? 'group-hover:text-nebula-cyan' : 'group-hover:text-pink-300'"
+          >
             {{ posts.length > 0 ? posts[0].title : '你好，星向空间 (Hello Starward Space)' }}
           </h3>
 
@@ -333,10 +343,10 @@
           <!-- 模式标题与二次元叙事副标 -->
           <div class="relative z-10 space-y-0.5">
             <h4 class="text-base font-bold transition-colors" :class="themeStore.isDark ? 'text-white group-hover:text-nebula-cyan' : 'text-slate-800 group-hover:text-pink-600'">
-              {{ themeStore.isDark ? '夜间模式' : '日间模式' }}
+              {{ themeStore.isDark ? '夜间模式 · 流萤' : '日间模式 · 绯英' }}
             </h4>
             <p class="text-xs transition-colors" :class="themeStore.isDark ? 'text-slate-400' : 'text-slate-500'">
-              {{ themeStore.isDark ? '流萤飞舞的深空' : '落樱漫舞的清晨' }}
+              {{ themeStore.isDark ? '流萤飞舞的深空' : '绯英落樱的晨曦' }}
             </p>
           </div>
 
@@ -347,7 +357,7 @@
               :class="themeStore.isDark ? 'bg-sky-400' : 'bg-pink-500'"
             ></span>
             <span :class="themeStore.isDark ? 'text-sky-300' : 'text-pink-600 font-medium'">
-              {{ themeStore.isDark ? '✦ 点击切换落樱晨曦' : '✦ 点击切换深空流萤' }}
+              {{ themeStore.isDark ? '✦ 点击切换绯英落樱' : '✦ 点击切换流萤深空' }}
             </span>
           </div>
         </div>

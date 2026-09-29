@@ -1,5 +1,14 @@
 <template>
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-gradient-to-br from-[#fff7f9] via-[#fdf4f7] to-[#f4f2ff] transition-colors duration-1000">
+    <!-- 底层绯英落樱晨曦壁纸（带柔和晨曦高亮与半透明融合） -->
+    <div
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105 opacity-30"
+      :style="{
+        backgroundImage: `url('/images/hsr/feiying_sakura.jpg')`,
+        filter: 'brightness(1.05) saturate(1.1) blur(0.5px)'
+      }"
+    ></div>
+
     <!-- 晨曦温润光晕层（落樱粉、晨曦金与柔紫晨雾） -->
     <div class="absolute -top-[15%] -left-[10%] w-[55vw] h-[55vw] rounded-full bg-pink-300/25 blur-[140px] pointer-events-none"></div>
     <div class="absolute top-[20%] -right-[15%] w-[60vw] h-[60vw] rounded-full bg-rose-200/30 blur-[160px] pointer-events-none"></div>
