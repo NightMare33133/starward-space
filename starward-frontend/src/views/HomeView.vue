@@ -217,9 +217,10 @@
       >
         <!-- 背景大图：夜间流萤 vs 日间绯英 -->
         <img
-          :src="themeStore.isDark ? '/images/hsr/firefly_night.jpg' : '/images/hsr/feiying_sakura.jpg'"
+          :src="themeStore.isDark ? '/images/hsr/firefly_night.jpg' : '/images/hsr/feiying_sakura.png'"
           :alt="themeStore.isDark ? 'Firefly' : 'Fei Ying'"
-          class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700"
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+          :class="themeStore.isDark ? 'object-center' : 'object-[70%_center]'"
         />
         <!-- 暗调渐变蒙版保证文字极致可读 -->
         <div

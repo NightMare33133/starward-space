@@ -4,8 +4,8 @@
     <div
       class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105 opacity-30"
       :style="{
-        backgroundImage: `url('/images/hsr/feiying_sakura.jpg')`,
-        filter: 'brightness(1.05) saturate(1.1) blur(0.5px)'
+        backgroundImage: `url('/images/hsr/feiying_sakura.png')`,
+        filter: 'brightness(1.02) saturate(1.1) blur(0.5px)'
       }"
     ></div>
 
