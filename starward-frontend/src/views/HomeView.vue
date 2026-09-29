@@ -386,7 +386,7 @@
         </div>
       </div>
 
-      <!-- 技术栈与萌ICP备案 -->
+      <!-- 技术栈架构生态 -->
       <div class="flex flex-col items-center md:items-end space-y-1 text-center md:text-right">
         <div class="flex flex-wrap items-center justify-center gap-1.5">
           <span
@@ -397,19 +397,9 @@
           >
             {{ t }}
           </span>
-          <a
-            href="https://icp.gov.moe/?keyword=20263313"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors flex items-center space-x-1"
-            :class="themeStore.isDark ? 'bg-pink-500/10 text-pink-400 border border-pink-500/20 hover:bg-pink-500/20' : 'bg-pink-100 text-pink-700 border border-pink-300 hover:bg-pink-200'"
-            title="萌号备案"
-          >
-            <span>萌ICP备20263313号</span>
-          </a>
         </div>
         <p class="text-[10px] font-mono" :class="themeStore.isDark ? 'text-slate-600' : 'text-slate-400'">
-          All Star Rail visual assets belong to miHoYo / HoYoverse · Non-commercial personal blog
+          Full-Stack Architectural Ecosystem · Reactive & Cloud Native
         </p>
       </div>
     </div>
