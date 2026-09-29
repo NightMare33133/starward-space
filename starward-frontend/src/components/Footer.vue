@@ -74,8 +74,8 @@ import { computed } from 'vue';
 
 const currentYear = new Date().getFullYear();
 
-// 计算建站航行天数（以 2024-09-01 或当前基准）
-const startDate = new Date('2024-09-01').getTime();
+// 计算建站航行天数（以 2026-09-24 初次建站启航真实起算）
+const startDate = new Date('2026-09-24T00:00:00').getTime();
 const runningDays = computed(() => {
   const diff = Date.now() - startDate;
   return Math.max(1, Math.floor(diff / (1000 * 60 * 60 * 24)));

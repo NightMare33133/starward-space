@@ -437,8 +437,8 @@ const updateClock = () => {
   currentTimeStr.value = `${h}:${m}:${s}`;
 };
 
-// 稳定运行天数
-const startDate = new Date('2024-09-01').getTime();
+// 稳定运行天数（以 2026-09-24 初次建站启航真实起算）
+const startDate = new Date('2026-09-24T00:00:00').getTime();
 const runningDays = computed(() => {
   const diff = Date.now() - startDate;
   return Math.max(1, Math.floor(diff / (1000 * 60 * 60 * 24)));
