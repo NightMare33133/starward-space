@@ -301,51 +301,104 @@
           </div>
         </div>
 
-        <!-- 卡片 4 (跃迁模式/深空控制卡) -->
-        <div class="glass-card rounded-3xl p-5 border border-white/10 space-y-3 flex flex-col justify-between text-center relative overflow-hidden">
-          <div class="w-10 h-10 mx-auto rounded-2xl bg-gradient-to-tr from-amber-400 to-nebula-pink p-[1px] shadow-lg">
-            <div class="w-full h-full bg-space-950 rounded-[15px] flex items-center justify-center">
-              <Sparkles class="w-5 h-5 text-amber-400 animate-pulse" />
+        <!-- 卡片 4 (特色便当盒主题切换大卡：夜间深空流萤 vs 日间落樱晨曦) -->
+        <div
+          @click="themeStore.toggleTheme"
+          class="glass-card rounded-3xl p-5 border cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 space-y-3 flex flex-col justify-between text-center relative overflow-hidden group select-none"
+          :class="themeStore.isDark ? 'border-white/10 hover:border-nebula-cyan/40 hover:shadow-nebula-cyan/15' : 'border-pink-200/50 hover:border-pink-400/50 shadow-pink-500/10'"
+          title="点击切换全站主题风格"
+        >
+          <!-- 悬浮弥散光晕 -->
+          <div
+            class="absolute inset-0 pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity blur-2xl"
+            :class="themeStore.isDark ? 'bg-gradient-to-br from-indigo-500 via-sky-500 to-transparent' : 'bg-gradient-to-br from-pink-400 via-rose-300 to-amber-200'"
+          ></div>
+
+          <!-- 模式核心动态光球 (夜间深空微芒 vs 日间落樱花瓣) -->
+          <div class="relative z-10 flex justify-center pt-1">
+            <div
+              v-if="themeStore.isDark"
+              class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-900 via-slate-900 to-sky-950 p-[2px] shadow-lg shadow-sky-500/20 group-hover:shadow-sky-400/40 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-sky-400/30"
+            >
+              <span class="text-2xl animate-pulse">✨</span>
+            </div>
+            <div
+              v-else
+              class="w-14 h-14 rounded-full bg-gradient-to-br from-rose-200 via-pink-100 to-amber-100 p-[2px] shadow-lg shadow-pink-400/25 group-hover:shadow-pink-400/50 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-pink-300/60"
+            >
+              <span class="text-2xl animate-bounce">🌸</span>
             </div>
           </div>
 
-          <div>
-            <h4 class="text-sm font-bold text-white">跃迁漫游模式</h4>
-            <p class="text-[11px] text-slate-400 mt-1">金色流萤 飞舞的星轨深空</p>
+          <!-- 模式标题与二次元叙事副标 -->
+          <div class="relative z-10 space-y-0.5">
+            <h4 class="text-base font-bold transition-colors" :class="themeStore.isDark ? 'text-white group-hover:text-nebula-cyan' : 'text-slate-800 group-hover:text-pink-600'">
+              {{ themeStore.isDark ? '夜间模式' : '日间模式' }}
+            </h4>
+            <p class="text-xs transition-colors" :class="themeStore.isDark ? 'text-slate-400' : 'text-slate-500'">
+              {{ themeStore.isDark ? '流萤飞舞的深空' : '落樱漫舞的清晨' }}
+            </p>
           </div>
 
-          <div class="flex items-center justify-center space-x-1 text-[10px] font-mono text-emerald-400">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>SYSTEM OPTIMAL</span>
+          <!-- 底部交互提示胶囊 -->
+          <div class="relative z-10 flex items-center justify-center space-x-1.5 text-[10px] font-mono pt-1">
+            <span
+              class="w-1.5 h-1.5 rounded-full animate-ping"
+              :class="themeStore.isDark ? 'bg-sky-400' : 'bg-pink-500'"
+            ></span>
+            <span :class="themeStore.isDark ? 'text-sky-300' : 'text-pink-600 font-medium'">
+              {{ themeStore.isDark ? '✦ 点击切换落樱晨曦' : '✦ 点击切换深空流萤' }}
+            </span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 便当盒第四排 (Bento Row 4): 实时数字时钟 + 系统运行时间 + 技术栈与米哈游声明 -->
-    <div class="glass-island rounded-2xl p-4 sm:p-5 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- 便当盒第四排 (Bento Row 4): 实时数字时钟 + 系统运行时间 + 技术栈与萌ICP备案 -->
+    <div
+      class="glass-island rounded-2xl p-4 sm:p-5 border flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300"
+      :class="themeStore.isDark ? 'border-white/10' : 'border-pink-200/40'"
+    >
       <!-- 实时 OLED 动态数字时钟 -->
       <div class="flex items-center space-x-4">
-        <div class="px-4 py-2 rounded-xl bg-black border border-white/15 text-nebula-cyan font-mono text-xl sm:text-2xl font-bold tracking-widest shadow-inner shadow-nebula-cyan/20">
+        <div
+          class="px-4 py-2 rounded-xl font-mono text-xl sm:text-2xl font-bold tracking-widest transition-all duration-300"
+          :class="themeStore.isDark ? 'bg-black border border-white/15 text-nebula-cyan shadow-inner shadow-nebula-cyan/20' : 'bg-pink-50 border border-pink-200 text-pink-600 shadow-inner shadow-pink-200/50'"
+        >
           {{ currentTimeStr }}
         </div>
         <div class="space-y-0.5">
-          <div class="flex items-center space-x-1.5 text-xs text-slate-300 font-mono">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>系统已稳定运行：<span class="text-nebula-cyan font-bold">{{ runningDays }}</span> 天</span>
+          <div class="flex items-center space-x-1.5 text-xs font-mono" :class="themeStore.isDark ? 'text-slate-300' : 'text-slate-700'">
+            <span class="w-2 h-2 rounded-full animate-pulse" :class="themeStore.isDark ? 'bg-emerald-400' : 'bg-pink-500'"></span>
+            <span>系统已稳定运行：<span class="font-bold" :class="themeStore.isDark ? 'text-nebula-cyan' : 'text-pink-600'">{{ runningDays }}</span> 天</span>
           </div>
-          <p class="text-[10px] text-slate-500 font-mono">Astral Express Node: #01-EAST-ASIA</p>
+          <p class="text-[10px] font-mono" :class="themeStore.isDark ? 'text-slate-500' : 'text-slate-400'">Astral Express Node: #01-EAST-ASIA</p>
         </div>
       </div>
 
-      <!-- 技术栈与版权说明 -->
+      <!-- 技术栈与萌ICP备案 -->
       <div class="flex flex-col items-center md:items-end space-y-1 text-center md:text-right">
         <div class="flex flex-wrap items-center justify-center gap-1.5">
-          <span v-for="t in ['Vue 3.5', 'Vite 8', 'Tailwind', 'Spring Boot 3', 'Java 21 LTS']" :key="t" class="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 text-slate-400 border border-white/5">
+          <span
+            v-for="t in ['Vue 3.5', 'Vite 8', 'Tailwind', 'Spring Boot 3', 'Java 21 LTS']"
+            :key="t"
+            class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors"
+            :class="themeStore.isDark ? 'bg-white/5 text-slate-400 border border-white/5' : 'bg-pink-50 text-slate-600 border border-pink-200/60'"
+          >
             {{ t }}
           </span>
+          <a
+            href="https://icp.gov.moe/?keyword=20263313"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors flex items-center space-x-1"
+            :class="themeStore.isDark ? 'bg-pink-500/10 text-pink-400 border border-pink-500/20 hover:bg-pink-500/20' : 'bg-pink-100 text-pink-700 border border-pink-300 hover:bg-pink-200'"
+            title="萌号备案"
+          >
+            <span>萌ICP备 20263313号</span>
+          </a>
         </div>
-        <p class="text-[10px] text-slate-600 font-mono">
+        <p class="text-[10px] font-mono" :class="themeStore.isDark ? 'text-slate-600' : 'text-slate-400'">
           All Star Rail visual assets belong to miHoYo / HoYoverse · Non-commercial personal blog
         </p>
       </div>
@@ -360,10 +413,12 @@ import { Search, Github, User, Sparkles, SkipBack, SkipForward, Play, Pause } fr
 import { getPostList } from '@/api/posts';
 import { getMoments } from '@/api/moments';
 import { useMusicStore } from '@/stores/music';
+import { useThemeStore } from '@/stores/theme';
 import type { PostListVO, Moment } from '@/types';
 
 const router = useRouter();
 const musicStore = useMusicStore();
+const themeStore = useThemeStore();
 
 const posts = ref<PostListVO[]>([]);
 const moments = ref<Moment[]>([]);

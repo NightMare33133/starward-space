@@ -1,27 +1,27 @@
 <template>
-  <footer class="mt-24 border-t border-white/10 bg-space-950/60 backdrop-blur-md py-12 relative z-10">
+  <footer class="mt-24 border-t border-pink-200/40 dark:border-white/10 bg-white/60 dark:bg-space-950/60 backdrop-blur-md py-12 relative z-10 transition-colors duration-500">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
       <!-- 左侧版权与航行时间 -->
       <div class="space-y-2 text-center md:text-left">
         <div class="flex items-center justify-center md:justify-start space-x-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="text-sm font-semibold tracking-wider text-slate-200">STARWARD · starlight の 星向空间</span>
+          <span class="text-sm font-semibold tracking-wider text-slate-800 dark:text-slate-200">STARWARD · starlight の 星向空间</span>
         </div>
         <p class="text-xs text-slate-500 font-mono">
           © {{ currentYear }} Designed & Built with ❤️ by NightMare33133.
         </p>
         <p class="text-xs text-slate-500 font-mono">
-          🚀 本站已在数字星海漫游 <span class="text-nebula-cyan font-semibold">{{ runningDays }}</span> 天
+          🚀 本站已在数字星海漫游 <span class="text-pink-600 dark:text-nebula-cyan font-semibold">{{ runningDays }}</span> 天
         </p>
       </div>
 
       <!-- 右侧开源协议与技术栈标识 -->
       <div class="flex flex-col items-center md:items-end space-y-2">
-        <div class="flex items-center space-x-4 text-xs text-slate-400">
+        <div class="flex items-center space-x-4 text-xs text-slate-500 dark:text-slate-400">
           <a
             href="https://github.com/NightMare33133/starward-space/blob/main/LICENSE"
             target="_blank"
-            class="hover:text-nebula-cyan transition-colors underline underline-offset-4"
+            class="hover:text-pink-600 dark:hover:text-nebula-cyan transition-colors underline underline-offset-4"
           >
             Apache 2.0 License
           </a>
@@ -29,20 +29,20 @@
           <a
             href="https://github.com/NightMare33133/starward-space"
             target="_blank"
-            class="hover:text-nebula-cyan transition-colors"
+            class="hover:text-pink-600 dark:hover:text-nebula-cyan transition-colors"
           >
             GitHub 源码
           </a>
           <span>·</span>
           <router-link
             to="/admin"
-            class="hover:text-amber-400 transition-colors flex items-center space-x-1"
+            class="hover:text-amber-500 transition-colors flex items-center space-x-1"
             title="星轨控制中枢"
           >
             <span>✦ 控制中枢</span>
           </router-link>
         </div>
-        <p class="text-[11px] text-slate-600 font-mono">
+        <p class="text-[11px] text-slate-400 dark:text-slate-600 font-mono">
           Powered by Vue 3 · Vite · Spring Boot 3 · Java 21 · MySQL 8.4
         </p>
       </div>

@@ -9,8 +9,18 @@
     <meta name="theme-color" content="#07090e" />
     <link rel="preload" as="image" href="/images/avatar.png" />
     <link rel="preload" as="image" href="/images/pompom.png" />
+    <script>
+      (function() {
+        var saved = localStorage.getItem('starward_theme');
+        if (saved === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-space-950 text-slate-100 antialiased selection:bg-nebula-cyan/30">
+  <body class="antialiased selection:bg-pink-400/30 dark:selection:bg-nebula-cyan/30 transition-colors duration-500">
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

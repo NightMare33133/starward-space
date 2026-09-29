@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    --bg-primary: #fff7f9;
+    --text-primary: #1e293b;
+  }
+
+  html.dark {
     --bg-primary: #07090e;
     --text-primary: #f1f5f9;
   }
@@ -14,6 +19,7 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     overflow-x: hidden;
     min-height: 100vh;
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* 自定义高颜值平滑滚动条 */
@@ -25,51 +31,149 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(244, 114, 182, 0.3);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
+    background: rgba(244, 114, 182, 0.5);
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  html.dark ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
   }
 }
 
 @layer components {
-  /* 星空毛玻璃卡片 */
+  /* 基础毛玻璃卡片 (默认落樱晨曦浅色模式) */
   .glass-card {
-    background: rgba(18, 24, 38, 0.65);
+    background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(244, 114, 182, 0.2);
+    box-shadow: 0 10px 30px -10px rgba(244, 114, 182, 0.12);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .glass-card:hover {
+    border-color: rgba(236, 72, 153, 0.35);
+    box-shadow: 0 14px 35px -8px rgba(236, 72, 153, 0.22);
+    transform: translateY(-2px);
+  }
+
+  /* 深空流萤夜间毛玻璃卡片 */
+  html.dark .glass-card {
+    background: rgba(18, 24, 38, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+  }
+
+  html.dark .glass-card:hover {
     border-color: rgba(56, 189, 248, 0.3);
     box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.15);
     transform: translateY(-2px);
   }
 
-  /* 悬浮微光岛（如音乐播放器、底栏） */
+  /* 悬浮微光岛（如音乐播放器、底栏、导航栏） */
   .glass-island {
-    background: rgba(13, 17, 26, 0.75);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(244, 114, 182, 0.25);
+    box-shadow: 0 20px 40px -15px rgba(244, 114, 182, 0.18);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html.dark .glass-island {
+    background: rgba(13, 17, 26, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
   }
 
   /* 渐变文本 */
   .gradient-text-star {
+    background: linear-gradient(135deg, #0284c7 0%, #6366f1 50%, #9333ea 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  html.dark .gradient-text-star {
     background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .gradient-text-gold {
+    background: linear-gradient(135deg, #d97706 0%, #db2777 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  html.dark .gradient-text-gold {
     background: linear-gradient(135deg, #fbbf24 0%, #f472b6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+}
+
+/* 浅色落樱模式文字与边框深度适配 (针对非独立背景图片卡片) */
+html:not(.dark) .glass-card:not([class*="bg-cover"]):not([class*="bg-gradient-"]) .text-white,
+html:not(.dark) .glass-island .text-white,
+html:not(.dark) h1.text-white,
+html:not(.dark) h2.text-white,
+html:not(.dark) h3.text-white,
+html:not(.dark) h4.text-white {
+  color: #0f172a;
+}
+
+html:not(.dark) .glass-card:not([class*="bg-cover"]) .text-slate-100,
+html:not(.dark) .glass-island .text-slate-100 {
+  color: #1e293b;
+}
+
+html:not(.dark) .glass-card:not([class*="bg-cover"]) .text-slate-200,
+html:not(.dark) .glass-island .text-slate-200 {
+  color: #334155;
+}
+
+html:not(.dark) .glass-card:not([class*="bg-cover"]) .text-slate-300,
+html:not(.dark) .glass-island .text-slate-300 {
+  color: #475569;
+}
+
+html:not(.dark) .glass-card:not([class*="bg-cover"]) .text-slate-400,
+html:not(.dark) .glass-island .text-slate-400 {
+  color: #64748b;
+}
+
+html:not(.dark) .border-white\/10 {
+  border-color: rgba(244, 114, 182, 0.2);
+}
+
+html:not(.dark) .border-white\/15 {
+  border-color: rgba(244, 114, 182, 0.25);
+}
+
+html:not(.dark) .border-white\/5 {
+  border-color: rgba(244, 114, 182, 0.12);
+}
+
+html:not(.dark) .glass-card .bg-white\/5,
+html:not(.dark) .glass-island .bg-white\/5 {
+  background-color: rgba(244, 114, 182, 0.08);
+}
+
+html:not(.dark) .glass-card .bg-white\/10,
+html:not(.dark) .glass-island .bg-white\/10 {
+  background-color: rgba(244, 114, 182, 0.12);
+}
+
+html:not(.dark) .mermaid-block {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(244, 114, 182, 0.25) !important;
+  box-shadow: 0 4px 20px -2px rgba(244, 114, 182, 0.1);
 }
 
 /* Markdown 文章排版优化 */
@@ -168,3 +272,48 @@
   background: rgba(255, 255, 255, 0.05);
   font-weight: 600;
 }
+
+/* 日间模式 Markdown 优雅排版适配 */
+html:not(.dark) .markdown-body {
+  color: #334155;
+}
+html:not(.dark) .markdown-body h1,
+html:not(.dark) .markdown-body h2,
+html:not(.dark) .markdown-body h3,
+html:not(.dark) .markdown-body h4 {
+  color: #0f172a;
+}
+html:not(.dark) .markdown-body h1 { border-bottom-color: rgba(244, 114, 182, 0.2); }
+html:not(.dark) .markdown-body h2 { border-bottom-color: rgba(244, 114, 182, 0.15); }
+html:not(.dark) .markdown-body a {
+  color: #ec4899;
+}
+html:not(.dark) .markdown-body a:hover {
+  color: #be185d;
+}
+html:not(.dark) .markdown-body blockquote {
+  border-left-color: #f472b6;
+  background: rgba(244, 114, 182, 0.08);
+  color: #64748b;
+}
+html:not(.dark) .markdown-body code:not(pre code) {
+  background: rgba(244, 114, 182, 0.12);
+  color: #db2777;
+}
+html:not(.dark) .markdown-body pre {
+  background: #ffffff !important;
+  border-color: rgba(244, 114, 182, 0.25);
+  box-shadow: 0 4px 20px -2px rgba(244, 114, 182, 0.1);
+}
+html:not(.dark) .markdown-body pre code {
+  color: #334155;
+}
+html:not(.dark) .markdown-body th,
+html:not(.dark) .markdown-body td {
+  border-color: rgba(244, 114, 182, 0.15);
+}
+html:not(.dark) .markdown-body th {
+  background: rgba(244, 114, 182, 0.06);
+  color: #0f172a;
+}
+

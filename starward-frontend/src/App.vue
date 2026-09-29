@@ -1,10 +1,16 @@
 <template>
-  <div class="min-h-screen bg-space-950 text-slate-100 flex flex-col relative selection:bg-nebula-cyan/30 selection:text-white">
+  <div class="min-h-screen bg-[#fff7f9] text-slate-800 dark:bg-space-950 dark:text-slate-100 flex flex-col relative selection:bg-pink-400/30 selection:text-pink-900 dark:selection:bg-nebula-cyan/30 dark:selection:text-white transition-colors duration-500">
     <!-- 全局星际轻提示组件 (Toast) -->
     <ToastContainer />
 
-    <!-- 动态微光星空粒子画布 -->
-    <StarBackground />
+    <!-- 动态双模沉浸式背景：深空流萤 (夜) vs 落樱晨曦 (昼) -->
+    <transition
+      enter-active-class="transition-opacity duration-700 ease-in-out"
+      leave-active-class="transition-opacity duration-700 ease-in-out"
+    >
+      <StarBackground v-if="themeStore.isDark" key="star-bg" />
+      <SakuraBackground v-else key="sakura-bg" />
+    </transition>
 
     <!-- 顶部玻璃导航栏 (仅在前台非管理路由展示，防止后台出现双导航栏) -->
     <Navbar v-if="!isAdminRoute" />
@@ -38,6 +44,7 @@
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import StarBackground from '@/components/StarBackground.vue';
+import SakuraBackground from '@/components/SakuraBackground.vue';
 import Navbar from '@/components/Navbar.vue';
 import MusicPlayer from '@/components/MusicPlayer.vue';
 import Footer from '@/components/Footer.vue';
