@@ -3,50 +3,50 @@
     <!-- 顶部说明与新建标签面板 -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- 左侧：新建标签卡片 -->
-      <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+      <div class="glass-card p-6 rounded-2xl border border-pink-200/50 dark:border-white/10 space-y-4">
         <div class="flex items-center space-x-2">
-          <div class="p-2 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/20">
+          <div class="p-2 rounded-xl bg-amber-400/15 text-amber-600 dark:text-amber-400 border border-amber-400/30">
             <Plus class="w-4 h-4" />
           </div>
           <div>
-            <h3 class="text-sm font-bold text-white">创建新星轨标签</h3>
-            <p class="text-[11px] text-slate-400">为星向空间文章构建专属分类体系</p>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-white">创建新星轨标签</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">为星向空间文章构建专属分类体系</p>
           </div>
         </div>
 
         <form @submit.prevent="handleCreateTag" class="space-y-4">
           <!-- 标签名称 -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1">
-              标签名称 <span class="text-rose-400">*</span>
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+              标签名称 <span class="text-rose-500">*</span>
             </label>
             <input
               v-model="newTag.name"
               type="text"
               placeholder="例如：星穹铁道"
-              class="w-full px-3.5 py-2 rounded-xl bg-space-950/80 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all"
+              class="w-full px-3.5 py-2 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
               @blur="autoSlug"
             />
           </div>
 
           <!-- Slug -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1">
-              标签 Slug (唯一标识) <span class="text-rose-400">*</span>
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+              标签 Slug (唯一标识) <span class="text-rose-500">*</span>
             </label>
             <input
               v-model="newTag.slug"
               type="text"
               placeholder="例如：hsr"
-              class="w-full px-3.5 py-2 rounded-xl bg-space-950/80 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all font-mono"
+              class="w-full px-3.5 py-2 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
             />
           </div>
 
           <!-- 主题色选取 -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
               <span>专属主题霓虹色</span>
-              <span class="font-mono text-[10px] text-slate-400">{{ newTag.color }}</span>
+              <span class="font-mono text-[10px] text-slate-500 dark:text-slate-400">{{ newTag.color }}</span>
             </label>
             <div class="flex items-center space-x-2">
               <input
@@ -81,16 +81,16 @@
       </div>
 
       <!-- 右侧：现有标签列表 -->
-      <div class="md:col-span-2 glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+      <div class="md:col-span-2 glass-card p-6 rounded-2xl border border-pink-200/50 dark:border-white/10 space-y-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <TagIcon class="w-4 h-4 text-nebula-cyan" />
-            <h3 class="text-sm font-bold text-white">已有星轨标签 ({{ tags.length }})</h3>
+            <TagIcon class="w-4 h-4 text-sky-600 dark:text-nebula-cyan" />
+            <h3 class="text-sm font-bold text-slate-800 dark:text-white">已有星轨标签 ({{ tags.length }})</h3>
           </div>
           <button
             @click="fetchTags"
             :disabled="loading"
-            class="p-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-white/5 text-slate-300 hover:text-white transition-colors"
+            class="p-1.5 rounded-lg border border-pink-200/60 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
             title="刷新"
           >
             <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': loading }" />
@@ -98,12 +98,12 @@
         </div>
 
         <!-- 标签加载状态 -->
-        <div v-if="loading" class="py-12 text-center text-slate-400 flex flex-col items-center justify-center space-y-2">
+        <div v-if="loading" class="py-12 text-center text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center space-y-2">
           <Loader2 class="w-5 h-5 animate-spin text-amber-400" />
           <span class="text-xs font-mono">加载标签中...</span>
         </div>
 
-        <div v-else-if="tags.length === 0" class="py-12 text-center text-slate-500 text-xs">
+        <div v-else-if="tags.length === 0" class="py-12 text-center text-slate-400 dark:text-slate-500 text-xs">
           暂无标签，请在左侧创建
         </div>
 
@@ -112,7 +112,7 @@
           <div
             v-for="tag in tags"
             :key="tag.id"
-            class="p-3.5 rounded-xl bg-space-950/70 border border-white/10 flex items-center justify-between group hover:border-white/20 transition-all"
+            class="p-3.5 rounded-xl bg-white/70 dark:bg-space-950/70 border border-pink-200/50 dark:border-white/10 flex items-center justify-between group hover:border-pink-300 dark:hover:border-white/20 transition-all shadow-sm"
           >
             <div class="flex items-center space-x-3">
               <span
@@ -120,7 +120,7 @@
                 :style="{ backgroundColor: tag.color || '#6366f1' }"
               ></span>
               <div>
-                <p class="text-xs font-bold text-slate-100 flex items-center space-x-1.5">
+                <p class="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center space-x-1.5">
                   <span>{{ tag.name }}</span>
                 </p>
                 <p class="text-[10px] text-slate-500 font-mono mt-0.5">
@@ -132,7 +132,7 @@
             <!-- 删除标签 -->
             <button
               @click="handleDeleteTag(tag)"
-              class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-all"
+              class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-all"
               title="删除标签"
             >
               <Trash2 class="w-3.5 h-3.5" />

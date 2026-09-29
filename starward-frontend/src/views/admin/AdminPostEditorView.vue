@@ -25,12 +25,12 @@
       <!-- 右侧视图切换与保存发布按钮 -->
       <div class="flex items-center space-x-3">
         <!-- 视图切换器 -->
-        <div class="hidden sm:flex items-center p-1 rounded-xl bg-space-950/80 border border-white/10 text-xs">
+        <div class="hidden sm:flex items-center p-1 rounded-xl bg-pink-100/70 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs">
           <button
             type="button"
             @click="viewMode = 'split'"
             class="px-2.5 py-1 rounded-lg transition-colors flex items-center space-x-1"
-            :class="viewMode === 'split' ? 'bg-amber-400/20 text-amber-300 font-bold' : 'text-slate-400 hover:text-white'"
+            :class="viewMode === 'split' ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
             title="双栏并排编辑与实时预览"
           >
             <Columns class="w-3.5 h-3.5" />
@@ -40,7 +40,7 @@
             type="button"
             @click="viewMode = 'editor'"
             class="px-2.5 py-1 rounded-lg transition-colors flex items-center space-x-1"
-            :class="viewMode === 'editor' ? 'bg-amber-400/20 text-amber-300 font-bold' : 'text-slate-400 hover:text-white'"
+            :class="viewMode === 'editor' ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
             title="纯净编辑模式"
           >
             <PenTool class="w-3.5 h-3.5" />
@@ -50,7 +50,7 @@
             type="button"
             @click="viewMode = 'preview'"
             class="px-2.5 py-1 rounded-lg transition-colors flex items-center space-x-1"
-            :class="viewMode === 'preview' ? 'bg-amber-400/20 text-amber-300 font-bold' : 'text-slate-400 hover:text-white'"
+            :class="viewMode === 'preview' ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
             title="纯渲染预览模式"
           >
             <Eye class="w-3.5 h-3.5" />
@@ -103,25 +103,25 @@
       <!-- 核心必填：标题与 Slug（常驻显示） -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="md:col-span-2">
-          <label class="block text-xs font-medium text-slate-300 mb-1">
-            文章标题 (Title) <span class="text-rose-400">*</span>
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+            文章标题 (Title) <span class="text-rose-500">*</span>
           </label>
           <input
             v-model="form.title"
             type="text"
             placeholder="例如：星际拓荒记：从苍穹外卖到星向空间"
-            class="w-full px-3.5 py-2.5 rounded-xl bg-space-950/80 border border-white/10 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-medium"
             @blur="autoGenerateSlug"
           />
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1 flex items-center justify-between">
-            <span>路由 Slug (唯一标识) <span class="text-rose-400">*</span></span>
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 flex items-center justify-between">
+            <span>路由 Slug (唯一标识) <span class="text-rose-500">*</span></span>
             <button
               type="button"
               @click="generateSlugFromTitle"
-              class="text-[10px] text-amber-400 hover:underline"
+              class="text-[10px] text-amber-600 dark:text-amber-400 hover:underline"
             >
               一键生成
             </button>
@@ -130,40 +130,40 @@
             v-model="form.slug"
             type="text"
             placeholder="from-takeaway-to-starward"
-            class="w-full px-3.5 py-2.5 rounded-xl bg-space-950/80 border border-white/10 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all font-mono"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
           />
         </div>
       </div>
 
       <!-- 展开设置：摘要、封面、标签、置顶 -->
-      <div v-show="metaExpanded" class="space-y-4 pt-2 border-t border-white/5">
+      <div v-show="metaExpanded" class="space-y-4 pt-2 border-t border-pink-200/40 dark:border-white/5">
         <!-- 摘要 -->
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1">
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
             文章摘要 (Summary)
           </label>
           <textarea
             v-model="form.summary"
             rows="2"
             placeholder="简要概括本文的核心亮点或思考感悟（若为空将自动截取正文前 120 字）..."
-            class="w-full px-3.5 py-2 rounded-xl bg-space-950/80 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all"
+            class="w-full px-3.5 py-2 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all"
           ></textarea>
         </div>
 
         <!-- 封面图设置与预设 -->
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1 flex items-center justify-between">
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 flex items-center justify-between">
             <span>封面图 URL (Cover Image)</span>
-            <span class="text-[10px] text-slate-500">点击下方快捷选用预设壁纸</span>
+            <span class="text-[10px] text-slate-500 dark:text-slate-500">点击下方快捷选用预设壁纸</span>
           </label>
           <div class="flex items-center space-x-3">
             <input
               v-model="form.coverImage"
               type="text"
               placeholder="https://... 或 /images/hsr/himeko_express.png"
-              class="flex-1 px-3.5 py-2 rounded-xl bg-space-950/80 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all font-mono"
+              class="flex-1 px-3.5 py-2 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
             />
-            <div class="w-10 h-8 rounded-lg bg-space-900 border border-white/10 overflow-hidden shrink-0">
+            <div class="w-10 h-8 rounded-lg bg-pink-100 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 overflow-hidden shrink-0">
               <img
                 v-if="form.coverImage"
                 :src="form.coverImage"
@@ -192,13 +192,13 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
           <!-- 标签多选 -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
               <span>选择所属标签 (Tags)</span>
-              <router-link to="/admin/tags" class="text-[10px] text-nebula-cyan hover:underline">
+              <router-link to="/admin/tags" class="text-[10px] text-pink-600 dark:text-nebula-cyan hover:underline">
                 管理标签库 →
               </router-link>
             </label>
-            <div class="flex flex-wrap gap-1.5 p-2 rounded-xl bg-space-950/80 border border-white/10 min-h-[42px]">
+            <div class="flex flex-wrap gap-1.5 p-2 rounded-xl bg-white/70 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 min-h-[42px]">
               <button
                 v-for="tag in allTags"
                 :key="tag.id"
@@ -207,12 +207,12 @@
                 class="px-2.5 py-1 rounded-lg text-xs font-mono border transition-all flex items-center space-x-1"
                 :style="isTagSelected(tag.id) ? {
                   backgroundColor: `${tag.color || '#6366f1'}30`,
-                  color: '#fff',
+                  color: tag.color || '#6366f1',
                   borderColor: tag.color || '#6366f1'
                 } : {
                   backgroundColor: 'transparent',
-                  color: '#94a3b8',
-                  borderColor: 'rgba(255, 255, 255, 0.1)'
+                  color: '#64748b',
+                  borderColor: 'rgba(244, 114, 182, 0.3)'
                 }"
               >
                 <Check v-if="isTagSelected(tag.id)" class="w-3 h-3" />
@@ -223,26 +223,26 @@
           </div>
 
           <!-- 置顶与状态选项 -->
-          <div class="flex items-center space-x-6 p-3 rounded-xl bg-space-950/80 border border-white/10">
+          <div class="flex items-center space-x-6 p-3 rounded-xl bg-white/70 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10">
             <!-- 置顶开关 -->
             <label class="flex items-center space-x-2.5 cursor-pointer">
               <input
                 v-model="form.isPinned"
                 type="checkbox"
-                class="w-4 h-4 rounded text-amber-400 focus:ring-amber-400 bg-space-900 border-white/20"
+                class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400 bg-white dark:bg-space-900 border-slate-300 dark:border-white/20"
               />
-              <span class="text-xs font-medium text-slate-200 flex items-center space-x-1">
-                <Pin class="w-3.5 h-3.5 text-amber-400" />
+              <span class="text-xs font-medium text-slate-800 dark:text-slate-200 flex items-center space-x-1">
+                <Pin class="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
                 <span>置顶此文章</span>
               </span>
             </label>
 
             <!-- 状态 -->
             <div class="text-xs flex items-center space-x-2">
-              <span class="text-slate-400">初始状态:</span>
+              <span class="text-slate-500 dark:text-slate-400">初始状态:</span>
               <span
                 class="px-2 py-0.5 rounded text-[11px] font-medium"
-                :class="form.status === 'PUBLISHED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'"
+                :class="form.status === 'PUBLISHED' ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300' : 'bg-amber-500/20 text-amber-700 dark:text-amber-300'"
               >
                 {{ form.status === 'PUBLISHED' ? '公开发布' : '草稿' }}
               </span>
@@ -321,16 +321,16 @@
       <!-- 右栏：实时渲染预览 -->
       <div
         v-show="viewMode === 'split' || viewMode === 'preview'"
-        class="glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col h-[650px]"
+        class="glass-card rounded-2xl border border-pink-200/50 dark:border-white/10 overflow-hidden flex flex-col h-[650px] shadow-lg"
       >
-        <div class="px-4 py-2 bg-white/5 border-b border-white/5 flex items-center justify-between text-xs text-slate-400 font-mono">
+        <div class="px-4 py-2 bg-pink-500/5 dark:bg-white/5 border-b border-pink-200/40 dark:border-white/5 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 font-mono">
           <span class="flex items-center space-x-1.5">
-            <Eye class="w-3.5 h-3.5 text-nebula-cyan" />
+            <Eye class="w-3.5 h-3.5 text-pink-600 dark:text-nebula-cyan" />
             <span>实时渲染视口 (Live Preview)</span>
           </span>
           <span class="text-[10px] text-slate-500">Mermaid · 代码高亮实时同步</span>
         </div>
-        <div class="flex-1 p-6 overflow-y-auto bg-space-950/60">
+        <div class="flex-1 p-6 overflow-y-auto bg-white/70 dark:bg-space-950/60">
           <MarkdownViewer :content="form.contentMd || '*暂无内容，请在左侧编辑器中输入 Markdown 正文...*'" />
         </div>
       </div>

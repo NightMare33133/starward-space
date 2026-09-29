@@ -18,7 +18,7 @@
         :key="cat"
         @click="selectedCategory = cat"
         class="px-4 py-1.5 rounded-full text-xs font-medium transition-all"
-        :class="selectedCategory === cat ? 'bg-nebula-pink text-white font-bold shadow-md shadow-nebula-pink/25' : 'glass-card text-slate-400 hover:text-slate-200'"
+        :class="selectedCategory === cat ? 'bg-pink-500 dark:bg-nebula-pink text-white font-bold shadow-md shadow-pink-500/25' : 'glass-card text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'"
       >
         {{ cat }}
       </button>
@@ -35,7 +35,7 @@
             ? 'border-amber-500/25 hover:border-amber-400/70 hover:shadow-[0_0_30px_rgba(245,158,11,0.25)]'
             : photo.rarity === 4
             ? 'border-purple-500/25 hover:border-purple-400/70 hover:shadow-[0_0_30px_rgba(168,85,247,0.25)]'
-            : 'border-white/10 hover:border-nebula-pink/50 hover:shadow-[0_0_25px_rgba(255,114,179,0.2)]'
+            : 'border-pink-200/50 dark:border-white/10 hover:border-pink-400 dark:hover:border-nebula-pink/50 hover:shadow-[0_0_25px_rgba(255,114,179,0.2)]'
         ]"
         @click="openPreview(photo)"
       >
@@ -68,15 +68,15 @@
         <!-- 卡片说明信息 -->
         <div class="p-4 space-y-2">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-white group-hover:text-nebula-pink transition-colors">
+            <h3 class="text-sm font-bold text-slate-800 dark:text-white group-hover:text-pink-600 dark:group-hover:text-nebula-pink transition-colors">
               {{ photo.title }}
             </h3>
-            <span class="text-[10px] text-slate-500 font-mono">{{ photo.date }}</span>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 font-mono">{{ photo.date }}</span>
           </div>
 
-          <div class="flex items-center justify-between text-xs text-slate-400 font-mono pt-1">
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono pt-1">
             <span class="flex items-center space-x-1">
-              <MapPin class="w-3 h-3 text-nebula-pink" />
+              <MapPin class="w-3 h-3 text-pink-600 dark:text-nebula-pink" />
               <span>{{ photo.location }}</span>
             </span>
             <span v-if="photo.params" class="text-[10px] text-slate-500">

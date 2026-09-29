@@ -27,7 +27,7 @@
                 type="button"
                 @click="selectedEmoji = item.emoji"
                 class="px-2.5 py-1 rounded-xl text-xs border transition-all flex items-center space-x-1"
-                :class="selectedEmoji === item.emoji ? 'bg-amber-400/20 border-amber-400 text-white shadow' : 'bg-space-950/80 border-white/10 text-slate-400 hover:text-white'"
+                :class="selectedEmoji === item.emoji ? 'bg-amber-500/20 border-amber-400 text-amber-700 dark:text-white font-bold shadow' : 'bg-white/80 dark:bg-space-950/80 border-pink-200/70 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
               >
                 <span>{{ item.emoji }}</span>
                 <span class="text-[10px]">{{ item.label }}</span>
@@ -37,16 +37,16 @@
 
           <!-- 地点 / 空间坐标 -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1">
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
               空间坐标 (Location)
             </label>
             <div class="relative">
-              <MapPin class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+              <MapPin class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
               <input
                 v-model="locationInput"
                 type="text"
                 placeholder="例如：星穹列车 · 观景车厢"
-                class="w-full pl-8 pr-3 py-2 rounded-xl bg-space-950/80 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all font-mono"
+                class="w-full pl-8 pr-3 py-2 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
               />
             </div>
             <!-- 预设地点 -->
@@ -56,7 +56,7 @@
                 :key="loc"
                 type="button"
                 @click="locationInput = loc"
-                class="text-[10px] text-slate-500 hover:text-nebula-cyan transition-colors"
+                class="text-[10px] text-slate-500 hover:text-pink-600 dark:hover:text-nebula-cyan transition-colors"
               >
                 #{{ loc }}
               </button>
@@ -65,28 +65,28 @@
 
           <!-- 正文 -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1">
-              碎语正文 <span class="text-rose-400">*</span>
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+              碎语正文 <span class="text-rose-500">*</span>
             </label>
             <textarea
               v-model="content"
               rows="3"
               placeholder="分享此时此刻的技术突破、列车航行记录或摸鱼瞬间..."
-              class="w-full px-3.5 py-2.5 rounded-xl bg-space-950/80 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all leading-relaxed resize-none"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all leading-relaxed resize-none font-mono"
             ></textarea>
           </div>
 
           <!-- 待发射配图预览 -->
           <div v-if="selectedImages.length > 0" class="space-y-1.5">
-            <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+            <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono">
               <span>已选配图 ({{ selectedImages.length }}/9)</span>
-              <button type="button" @click="selectedImages = []" class="text-rose-400 hover:underline">清空</button>
+              <button type="button" @click="selectedImages = []" class="text-rose-500 hover:underline">清空</button>
             </div>
             <div class="flex flex-wrap gap-2">
               <div
                 v-for="(img, idx) in selectedImages"
                 :key="idx"
-                class="w-14 h-14 rounded-lg border border-white/15 overflow-hidden relative group shrink-0 bg-space-900 shadow"
+                class="w-14 h-14 rounded-lg border border-pink-200/50 dark:border-white/15 overflow-hidden relative group shrink-0 bg-pink-100 dark:bg-space-900 shadow"
               >
                 <img :src="img" class="w-full h-full object-cover" />
                 <button
@@ -135,19 +135,19 @@
             </div>
 
             <!-- 外链与预设输入框 -->
-            <div v-if="showUrlInput" class="p-2.5 rounded-xl bg-space-950 border border-white/10 space-y-2">
+            <div v-if="showUrlInput" class="p-2.5 rounded-xl bg-pink-100/70 dark:bg-space-950 border border-pink-200/70 dark:border-white/10 space-y-2">
               <div class="flex items-center space-x-1.5">
                 <input
                   v-model="imageUrlInput"
                   type="text"
                   placeholder="图片 URL (https://...)"
-                  class="flex-1 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400 font-mono"
+                  class="flex-1 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-white/5 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   @keyup.enter="addImageUrl"
                 />
                 <button
                   type="button"
                   @click="addImageUrl"
-                  class="px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 text-xs font-semibold hover:bg-amber-400/30"
+                  class="px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-400/30"
                 >
                   添加
                 </button>
@@ -159,7 +159,7 @@
                   :key="p.url"
                   type="button"
                   @click="addPresetImage(p.url)"
-                  class="px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10 text-slate-400 hover:text-amber-400"
+                  class="px-1.5 py-0.5 rounded bg-white/60 dark:bg-white/5 hover:bg-pink-100 dark:hover:bg-white/10 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400"
                 >
                   +{{ p.label }}
                 </button>
@@ -181,28 +181,28 @@
       </div>
 
       <!-- 右侧：最近碎语时间线预览 -->
-      <div class="md:col-span-2 glass-card p-6 rounded-2xl border border-white/10 space-y-4 shadow-xl">
+      <div class="md:col-span-2 glass-card p-6 rounded-2xl border border-pink-200/50 dark:border-white/10 space-y-4 shadow-xl">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <MessageSquare class="w-4 h-4 text-amber-400" />
-            <h3 class="text-sm font-bold text-white">碎语时间线广播记录 ({{ moments.length }})</h3>
+            <MessageSquare class="w-4 h-4 text-amber-500 dark:text-amber-400" />
+            <h3 class="text-sm font-bold text-slate-800 dark:text-white">碎语时间线广播记录 ({{ moments.length }})</h3>
           </div>
           <button
             @click="fetchMoments"
             :disabled="loading"
-            class="p-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-white/5 text-slate-300 hover:text-white transition-colors"
+            class="p-1.5 rounded-lg border border-pink-200/60 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
             title="刷新"
           >
             <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': loading }" />
           </button>
         </div>
 
-        <div v-if="loading" class="py-12 text-center text-slate-400 flex flex-col items-center justify-center space-y-2">
+        <div v-if="loading" class="py-12 text-center text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center space-y-2">
           <Loader2 class="w-5 h-5 animate-spin text-amber-400" />
           <span class="text-xs font-mono">接收碎语广播中...</span>
         </div>
 
-        <div v-else-if="moments.length === 0" class="py-12 text-center text-slate-500 text-xs">
+        <div v-else-if="moments.length === 0" class="py-12 text-center text-slate-400 dark:text-slate-500 text-xs">
           暂无碎语，请在左侧发射第一条说说
         </div>
 
@@ -210,13 +210,13 @@
           <div
             v-for="item in moments"
             :key="item.id"
-            class="p-4 rounded-xl bg-space-950/70 border border-white/10 space-y-2.5 hover:border-white/20 transition-all shadow-sm"
+            class="p-4 rounded-xl bg-white/70 dark:bg-space-950/70 border border-pink-200/50 dark:border-white/10 space-y-2.5 hover:border-pink-300 dark:hover:border-white/20 transition-all shadow-sm"
           >
             <div class="flex items-center justify-between text-xs">
               <div class="flex items-center space-x-2">
                 <span class="text-base">{{ item.moodEmoji || item.mood || '✨' }}</span>
-                <span v-if="item.location" class="text-slate-400 font-mono text-[11px] flex items-center space-x-1">
-                  <MapPin class="w-3 h-3 text-nebula-cyan" />
+                <span v-if="item.location" class="text-slate-500 dark:text-slate-400 font-mono text-[11px] flex items-center space-x-1">
+                  <MapPin class="w-3 h-3 text-pink-600 dark:text-nebula-cyan" />
                   <span>{{ item.location }}</span>
                 </span>
               </div>
@@ -224,7 +224,7 @@
             </div>
 
             <!-- 正文 -->
-            <p class="text-xs text-slate-200 leading-relaxed whitespace-pre-wrap">
+            <p class="text-xs text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">
               {{ item.content }}
             </p>
 

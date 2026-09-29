@@ -15,12 +15,12 @@
     <div class="space-y-4">
       <!-- 搜索框 -->
       <div class="relative">
-        <Search class="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
+        <Search class="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
         <input
           v-model="searchQuery"
           type="text"
           placeholder="搜索文章标题或摘要关键词..."
-          class="w-full pl-11 pr-4 py-2.5 rounded-2xl glass-card bg-space-950/60 border border-white/10 text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-nebula-cyan/50 transition-colors"
+          class="w-full pl-11 pr-4 py-2.5 rounded-2xl glass-card bg-white/80 dark:bg-space-950/60 border border-pink-200/70 dark:border-white/10 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:border-pink-400 dark:focus:border-nebula-cyan/50 transition-colors shadow-sm"
         />
       </div>
 
@@ -29,7 +29,7 @@
         <button
           @click="selectedTag = ''"
           class="px-3.5 py-1 rounded-full text-xs font-medium transition-all"
-          :class="selectedTag === '' ? 'bg-nebula-cyan text-space-950 font-bold shadow-md shadow-nebula-cyan/20' : 'glass-card text-slate-400 hover:text-slate-200'"
+          :class="selectedTag === '' ? 'bg-pink-500 text-white dark:bg-nebula-cyan dark:text-space-950 font-bold shadow-md shadow-pink-500/20 dark:shadow-nebula-cyan/20' : 'glass-card text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'"
         >
           全部 ({{ posts.length }})
         </button>
@@ -38,7 +38,7 @@
           :key="tag"
           @click="selectedTag = tag"
           class="px-3.5 py-1 rounded-full text-xs font-medium transition-all"
-          :class="selectedTag === tag ? 'bg-nebula-cyan text-space-950 font-bold shadow-md shadow-nebula-cyan/20' : 'glass-card text-slate-400 hover:text-slate-200'"
+          :class="selectedTag === tag ? 'bg-pink-500 text-white dark:bg-nebula-cyan dark:text-space-950 font-bold shadow-md shadow-pink-500/20 dark:shadow-nebula-cyan/20' : 'glass-card text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'"
         >
           # {{ tag }}
         </button>
@@ -46,8 +46,8 @@
     </div>
 
     <!-- 加载中 -->
-    <div v-if="loading" class="text-center py-16 text-slate-500 text-sm">
-      <div class="inline-block w-6 h-6 border-2 border-nebula-cyan border-t-transparent rounded-full animate-spin mb-2"></div>
+    <div v-if="loading" class="text-center py-20 text-slate-500 dark:text-slate-400 text-sm">
+      <div class="inline-block w-6 h-6 border-2 border-pink-500 dark:border-nebula-cyan border-t-transparent rounded-full animate-spin mb-2"></div>
       <p>正在读取星向知识库...</p>
     </div>
 
@@ -57,27 +57,27 @@
         v-for="post in filteredPosts"
         :key="post.id"
         @click="$router.push(`/posts/${post.id}`)"
-        class="glass-card rounded-2xl p-6 group cursor-pointer transition-all duration-300 hover:border-nebula-cyan/40"
+        class="glass-card rounded-2xl p-6 group cursor-pointer transition-all duration-300 hover:border-pink-300 dark:hover:border-nebula-cyan/40"
       >
         <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-3">
-          <h2 class="text-lg font-bold text-white group-hover:text-nebula-cyan transition-colors">
+          <h2 class="text-lg font-bold text-slate-800 dark:text-white group-hover:text-pink-600 dark:group-hover:text-nebula-cyan transition-colors">
             {{ post.title }}
           </h2>
-          <span class="text-xs text-slate-500 font-mono shrink-0">
+          <span class="text-xs text-slate-400 dark:text-slate-500 font-mono shrink-0">
             {{ formatDate(post.publishedAt || post.createdAt) }}
           </span>
         </div>
 
-        <p class="text-xs text-slate-400 leading-relaxed mb-4 line-clamp-2">
+        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2">
           {{ post.summary }}
         </p>
 
-        <div class="flex items-center justify-between text-xs text-slate-500">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <div class="flex items-center gap-2 flex-wrap">
             <span
               v-for="tag in post.tags"
               :key="tag.id"
-              class="px-2 py-0.5 rounded-full text-[11px] bg-white/5 text-slate-300 border border-white/10"
+              class="px-2 py-0.5 rounded-full text-[11px] bg-pink-100/70 text-slate-700 border border-pink-200/60 dark:bg-white/5 dark:text-slate-300 dark:border-white/10"
             >
               # {{ tag.name }}
             </span>

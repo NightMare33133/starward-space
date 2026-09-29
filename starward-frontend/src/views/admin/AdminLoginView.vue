@@ -1,13 +1,13 @@
 <template>
   <div class="min-h-[80vh] flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-md p-8 rounded-3xl glass-island border border-amber-400/30 shadow-2xl shadow-amber-500/10 relative overflow-hidden text-slate-100">
+    <div class="w-full max-w-md p-8 rounded-3xl glass-island border border-amber-400/30 shadow-2xl shadow-amber-500/10 relative overflow-hidden text-slate-800 dark:text-slate-100">
       <!-- 顶部星际流光装饰线 -->
       <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-rose-500 to-nebula-cyan"></div>
 
       <!-- 帕姆全息头像 -->
       <div class="flex flex-col items-center text-center mb-8">
         <div class="w-24 h-24 mb-4 rounded-3xl bg-gradient-to-tr from-amber-400 via-nebula-pink to-nebula-cyan p-[2px] shadow-xl shadow-amber-500/25">
-          <div class="w-full h-full rounded-[22px] overflow-hidden bg-space-950 flex items-center justify-center">
+          <div class="w-full h-full rounded-[22px] overflow-hidden bg-pink-100 dark:bg-space-950 flex items-center justify-center">
             <img
               src="/images/pompom.png"
               alt="Pom-Pom Conductor"
@@ -15,12 +15,12 @@
             />
           </div>
         </div>
-        <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-300 text-xs font-semibold mb-2">
+        <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-700 dark:text-amber-300 text-xs font-semibold mb-2">
           <Sparkles class="w-3.5 h-3.5" />
           <span>星穹列车 · 控制中枢</span>
         </div>
-        <h2 class="text-2xl font-bold tracking-wide text-white">列车长密令认证</h2>
-        <p class="text-xs text-slate-400 mt-1.5">
+        <h2 class="text-2xl font-bold tracking-wide text-slate-800 dark:text-white">列车长密令认证</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5">
           请输入跃迁密钥以解锁博客全量管理与内容编辑权限
         </p>
       </div>
@@ -28,9 +28,9 @@
       <!-- 表单输入 -->
       <form @submit.prevent="handleLogin" class="space-y-5">
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-2 flex items-center justify-between">
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center justify-between">
             <span class="flex items-center space-x-1.5">
-              <Key class="w-4 h-4 text-amber-400" />
+              <Key class="w-4 h-4 text-amber-500 dark:text-amber-400" />
               <span>管理员密钥 (X-Admin-Token)</span>
             </span>
             <span class="text-[10px] text-slate-500">默认: starward-secret-token-2026</span>
@@ -40,13 +40,13 @@
               v-model="tokenInput"
               :type="showPassword ? 'text' : 'password'"
               placeholder="请输入星轨管理密钥..."
-              class="w-full px-4 py-3 rounded-xl bg-space-950/80 border border-white/10 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/50 transition-all font-mono"
+              class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/50 transition-all font-mono"
               autofocus
             />
             <button
               type="button"
               @click="showPassword = !showPassword"
-              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
             >
               <Eye v-if="!showPassword" class="w-4 h-4" />
               <EyeOff v-else class="w-4 h-4" />

@@ -2,49 +2,49 @@
   <div class="space-y-6">
     <!-- 顶部数据看板 Metric Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      <div class="glass-card p-4 rounded-2xl border border-white/10 flex items-center space-x-3">
-        <div class="p-2.5 rounded-xl bg-nebula-cyan/10 text-nebula-cyan border border-nebula-cyan/20">
+      <div class="glass-card p-4 rounded-2xl border border-pink-200/50 dark:border-white/10 flex items-center space-x-3">
+        <div class="p-2.5 rounded-xl bg-nebula-cyan/15 text-sky-600 dark:text-nebula-cyan border border-sky-400/30 dark:border-nebula-cyan/20">
           <BookOpen class="w-5 h-5" />
         </div>
         <div>
-          <p class="text-xs text-slate-400">文章总数</p>
-          <p class="text-xl font-bold text-white font-mono">{{ posts.length }}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">文章总数</p>
+          <p class="text-xl font-bold text-slate-800 dark:text-white font-mono">{{ posts.length }}</p>
         </div>
       </div>
 
-      <div class="glass-card p-4 rounded-2xl border border-white/10 flex items-center space-x-3">
-        <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+      <div class="glass-card p-4 rounded-2xl border border-pink-200/50 dark:border-white/10 flex items-center space-x-3">
+        <div class="p-2.5 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
           <CheckCircle class="w-5 h-5" />
         </div>
         <div>
-          <p class="text-xs text-slate-400">已发布</p>
-          <p class="text-xl font-bold text-white font-mono">{{ publishedCount }}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">已发布</p>
+          <p class="text-xl font-bold text-slate-800 dark:text-white font-mono">{{ publishedCount }}</p>
         </div>
       </div>
 
-      <div class="glass-card p-4 rounded-2xl border border-white/10 flex items-center space-x-3">
-        <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+      <div class="glass-card p-4 rounded-2xl border border-pink-200/50 dark:border-white/10 flex items-center space-x-3">
+        <div class="p-2.5 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
           <FileClock class="w-5 h-5" />
         </div>
         <div>
-          <p class="text-xs text-slate-400">草稿箱</p>
-          <p class="text-xl font-bold text-white font-mono">{{ draftCount }}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">草稿箱</p>
+          <p class="text-xl font-bold text-slate-800 dark:text-white font-mono">{{ draftCount }}</p>
         </div>
       </div>
 
-      <div class="glass-card p-4 rounded-2xl border border-white/10 flex items-center space-x-3">
-        <div class="p-2.5 rounded-xl bg-nebula-pink/10 text-nebula-pink border border-nebula-pink/20">
+      <div class="glass-card p-4 rounded-2xl border border-pink-200/50 dark:border-white/10 flex items-center space-x-3">
+        <div class="p-2.5 rounded-xl bg-pink-500/15 text-pink-600 dark:text-nebula-pink border border-pink-400/30 dark:border-nebula-pink/20">
           <Eye class="w-5 h-5" />
         </div>
         <div>
-          <p class="text-xs text-slate-400">累计阅读量</p>
-          <p class="text-xl font-bold text-white font-mono">{{ totalViews }}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">累计阅读量</p>
+          <p class="text-xl font-bold text-slate-800 dark:text-white font-mono">{{ totalViews }}</p>
         </div>
       </div>
     </div>
 
     <!-- 搜索筛选与操作栏 -->
-    <div class="glass-card p-4 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="glass-card p-4 rounded-2xl border border-pink-200/50 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center space-x-3 w-full sm:w-auto">
         <!-- 搜索框 -->
         <div class="relative flex-1 sm:w-64">
@@ -53,30 +53,30 @@
             v-model="searchQuery"
             type="text"
             placeholder="搜索文章标题或 Slug..."
-            class="w-full pl-9 pr-3 py-2 rounded-xl bg-space-950/70 border border-white/10 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400/80 transition-all font-mono"
+            class="w-full pl-9 pr-3 py-2 rounded-xl bg-white/80 dark:bg-space-950/70 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono shadow-inner"
           />
         </div>
 
         <!-- 状态过滤器 -->
-        <div class="flex items-center space-x-1 p-1 rounded-xl bg-space-950/80 border border-white/10 text-xs">
+        <div class="flex items-center space-x-1 p-1 rounded-xl bg-pink-100/60 dark:bg-space-950/80 border border-pink-200/60 dark:border-white/10 text-xs">
           <button
             @click="filterStatus = 'ALL'"
             class="px-2.5 py-1 rounded-lg transition-colors font-medium"
-            :class="filterStatus === 'ALL' ? 'bg-amber-400/20 text-amber-300 font-bold' : 'text-slate-400 hover:text-white'"
+            :class="filterStatus === 'ALL' ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
           >
             全部
           </button>
           <button
             @click="filterStatus = 'PUBLISHED'"
             class="px-2.5 py-1 rounded-lg transition-colors font-medium"
-            :class="filterStatus === 'PUBLISHED' ? 'bg-emerald-500/20 text-emerald-300 font-bold' : 'text-slate-400 hover:text-white'"
+            :class="filterStatus === 'PUBLISHED' ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
           >
             已发布
           </button>
           <button
             @click="filterStatus = 'DRAFT'"
             class="px-2.5 py-1 rounded-lg transition-colors font-medium"
-            :class="filterStatus === 'DRAFT' ? 'bg-amber-500/20 text-amber-300 font-bold' : 'text-slate-400 hover:text-white'"
+            :class="filterStatus === 'DRAFT' ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
           >
             草稿
           </button>
@@ -88,7 +88,7 @@
         <button
           @click="fetchPosts"
           :disabled="loading"
-          class="p-2.5 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-slate-300 transition-colors"
+          class="p-2.5 rounded-xl border border-pink-200/60 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/60 dark:bg-white/5 hover:bg-white/90 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 transition-colors shadow-sm"
           title="刷新列表"
         >
           <RefreshCw class="w-4 h-4" :class="{ 'animate-spin': loading }" />
@@ -106,16 +106,16 @@
     </div>
 
     <!-- 文章列表表格 -->
-    <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+    <div class="glass-card rounded-2xl border border-pink-200/50 dark:border-white/10 overflow-hidden shadow-lg">
       <!-- 加载中 -->
-      <div v-if="loading" class="py-16 text-center text-slate-400 flex flex-col items-center justify-center space-y-2">
+      <div v-if="loading" class="py-16 text-center text-slate-500 dark:text-slate-400 flex flex-col items-center justify-center space-y-2">
         <Loader2 class="w-6 h-6 animate-spin text-amber-400" />
         <span class="text-xs font-mono">从星际数据库加载文章中...</span>
       </div>
 
       <!-- 空状态 -->
-      <div v-else-if="filteredPosts.length === 0" class="py-16 text-center text-slate-400 space-y-2">
-        <BookOpen class="w-8 h-8 mx-auto text-slate-600" />
+      <div v-else-if="filteredPosts.length === 0" class="py-16 text-center text-slate-500 dark:text-slate-400 space-y-2">
+        <BookOpen class="w-8 h-8 mx-auto text-slate-400 dark:text-slate-600" />
         <p class="text-sm">暂未检索到符合条件的星向文章</p>
       </div>
 
@@ -123,7 +123,7 @@
       <div v-else class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="border-b border-white/10 bg-white/5 text-[11px] font-mono uppercase tracking-wider text-slate-400">
+            <tr class="border-b border-pink-200/40 dark:border-white/10 bg-pink-500/5 dark:bg-white/5 text-[11px] font-mono uppercase tracking-wider text-slate-600 dark:text-slate-400">
               <th class="py-3 px-4 w-12">#</th>
               <th class="py-3 px-4">文章标题 / Slug</th>
               <th class="py-3 px-4 w-32">标签分类</th>
@@ -134,21 +134,21 @@
               <th class="py-3 px-4 w-32 text-center">操作</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-white/5 text-xs text-slate-300">
+          <tbody class="divide-y divide-pink-200/30 dark:divide-white/5 text-xs text-slate-700 dark:text-slate-300">
             <tr
               v-for="post in filteredPosts"
               :key="post.id"
-              class="hover:bg-white/[0.03] transition-colors group"
+              class="hover:bg-pink-500/[0.04] dark:hover:bg-white/[0.03] transition-colors group"
             >
               <!-- ID -->
-              <td class="py-3 px-4 font-mono text-slate-500">
+              <td class="py-3 px-4 font-mono text-slate-400 dark:text-slate-500">
                 {{ post.id }}
               </td>
 
               <!-- 标题与封面 -->
               <td class="py-3 px-4">
                 <div class="flex items-center space-x-3">
-                  <div class="w-10 h-10 rounded-lg bg-space-900 border border-white/10 overflow-hidden shrink-0">
+                  <div class="w-10 h-10 rounded-lg bg-pink-100 dark:bg-space-900 border border-pink-200/50 dark:border-white/10 overflow-hidden shrink-0">
                     <img
                       v-if="post.coverImage"
                       :src="post.coverImage"
@@ -156,18 +156,18 @@
                       class="w-full h-full object-cover"
                       onerror="this.src='/images/hsr/himeko_express.png'"
                     />
-                    <div v-else class="w-full h-full flex items-center justify-center text-slate-600">
+                    <div v-else class="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-600">
                       <BookOpen class="w-4 h-4" />
                     </div>
                   </div>
                   <div class="min-w-0 max-w-md">
                     <router-link
                       :to="`/admin/posts/edit/${post.id}`"
-                      class="font-semibold text-slate-100 hover:text-amber-400 transition-colors line-clamp-1"
+                      class="font-semibold text-slate-800 dark:text-slate-100 hover:text-pink-600 dark:hover:text-amber-400 transition-colors line-clamp-1"
                     >
                       {{ post.title }}
                     </router-link>
-                    <p class="text-[11px] text-slate-500 font-mono truncate mt-0.5">
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono truncate mt-0.5">
                       /posts/{{ post.slug }}
                     </p>
                   </div>
@@ -189,7 +189,7 @@
                   >
                     {{ tag.name }}
                   </span>
-                  <span v-if="!post.tags || post.tags.length === 0" class="text-slate-600 text-[10px]">
+                  <span v-if="!post.tags || post.tags.length === 0" class="text-slate-400 dark:text-slate-600 text-[10px]">
                     无
                   </span>
                 </div>
@@ -200,7 +200,7 @@
                 <button
                   @click="toggleStatus(post)"
                   class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all"
-                  :class="post.status === 'PUBLISHED' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25' : 'bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'"
+                  :class="post.status === 'PUBLISHED' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25' : 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'"
                   :title="post.status === 'PUBLISHED' ? '点击切换为草稿' : '点击切换为发布'"
                 >
                   {{ post.status === 'PUBLISHED' ? '● 已发布' : '○ 草稿箱' }}
@@ -212,7 +212,7 @@
                 <button
                   @click="togglePin(post)"
                   class="p-1.5 rounded-lg transition-colors"
-                  :class="isPinned(post) ? 'text-amber-400 hover:text-amber-300' : 'text-slate-600 hover:text-slate-400'"
+                  :class="isPinned(post) ? 'text-amber-500 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300' : 'text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400'"
                   :title="isPinned(post) ? '取消置顶' : '置顶文章'"
                 >
                   <Pin class="w-4 h-4" :class="{ 'fill-amber-400': isPinned(post) }" />
@@ -220,7 +220,7 @@
               </td>
 
               <!-- 阅读量 -->
-              <td class="py-3 px-4 text-right font-mono text-slate-400">
+              <td class="py-3 px-4 text-right font-mono text-slate-600 dark:text-slate-400">
                 {{ post.viewCount }}
               </td>
 
@@ -235,7 +235,7 @@
                   <!-- 编辑 -->
                   <router-link
                     :to="`/admin/posts/edit/${post.id}`"
-                    class="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-white/5 transition-colors"
+                    class="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 hover:bg-pink-100/60 dark:hover:bg-white/5 transition-colors"
                     title="编辑文章"
                   >
                     <Edit3 class="w-4 h-4" />
@@ -245,7 +245,7 @@
                   <a
                     :href="`/posts/${post.id}`"
                     target="_blank"
-                    class="p-1.5 rounded-lg text-slate-400 hover:text-nebula-cyan hover:bg-white/5 transition-colors"
+                    class="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-pink-600 dark:hover:text-nebula-cyan hover:bg-pink-100/60 dark:hover:bg-white/5 transition-colors"
                     title="新窗口预览"
                   >
                     <ExternalLink class="w-4 h-4" />
@@ -254,7 +254,7 @@
                   <!-- 删除 -->
                   <button
                     @click="handleDelete(post)"
-                    class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                    class="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
                     title="删除文章"
                   >
                     <Trash2 class="w-4 h-4" />
