@@ -1,0 +1,64 @@
+name: Starward Fullstack CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ----------------------------------------------------
+  # 前端自动化门禁：Node.js 22 + Vue 3 + TypeScript + Vite 静态打包自检
+  # ----------------------------------------------------
+  frontend-ci:
+    name: 🎨 Frontend Check (Vue 3 + Vite)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: starward-frontend
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: starward-frontend/package-lock.json
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: ⚡ Build frontend
+        run: npm run build
+
+  # ----------------------------------------------------
+  # 后端自动化门禁：Java 21 LTS + Spring Boot 3 + Maven 生产打包自检
+  # ----------------------------------------------------
+  backend-ci:
+    name: ⚙️ Backend Check (Java 21 + Spring Boot)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: starward-backend
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: 🔨 Package Spring Boot Application
+        run: mvn clean package -DskipTests --batch-mode

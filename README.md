@@ -9,6 +9,15 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/NightMare33133/starward-space/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/NightMare33133/starward-space/ci.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=CI%20Pipeline" alt="CI Pipeline" />
+  </a>
+  <a href="https://starward-space.pages.dev">
+    <img src="https://img.shields.io/badge/Cloudflare_Pages-Deployed-F38020?style=for-the-badge&logo=cloudflarepages&logoColor=white" alt="Cloudflare Pages" />
+  </a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Java-21_LTS-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 21" />
   <img src="https://img.shields.io/badge/Spring_Boot-3.3.4-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot 3" />
   <img src="https://img.shields.io/badge/Vue.js-3.5-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="Vue 3" />
