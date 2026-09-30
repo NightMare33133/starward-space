@@ -278,54 +278,70 @@
       </div>
 
       <!-- 模式 3：极简书签纯净模式 (Minimalist List) -->
-      <div v-else-if="layoutMode === 'minimal'" class="max-w-4xl mx-auto space-y-4">
+      <div v-else-if="layoutMode === 'minimal'" class="space-y-4">
         <article
           v-for="post in filteredPosts"
           :key="post.id"
           @click="$router.push(`/posts/${post.id}`)"
-          class="glass-card rounded-2xl p-5 sm:p-6 group cursor-pointer border border-pink-200/50 dark:border-white/10 hover:border-pink-400/70 dark:hover:border-nebula-cyan/50 hover:shadow-md transition-all duration-300"
+          class="glass-card rounded-3xl p-5 sm:p-6 group cursor-pointer border border-pink-200/50 dark:border-white/10 hover:border-pink-400/70 dark:hover:border-nebula-cyan/50 hover:shadow-lg hover:shadow-pink-400/5 dark:hover:shadow-nebula-cyan/10 hover:-translate-y-0.5 transition-all duration-300"
         >
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1 min-w-0 space-y-2">
-              <div class="flex items-center space-x-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div class="flex-1 min-w-0 space-y-2.5">
+              <!-- 元信息顶栏：统一对齐基准 -->
+              <div class="flex items-center space-x-2.5 text-xs font-mono text-slate-500 dark:text-slate-400">
                 <span
                   v-if="post.isPinned"
-                  class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-500 text-white dark:bg-nebula-cyan dark:text-space-950"
+                  class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-sm flex items-center space-x-1"
                 >
-                  置顶
+                  <Bookmark class="w-2.5 h-2.5 fill-current" />
+                  <span>置顶</span>
                 </span>
-                <span class="text-xs text-slate-400 dark:text-slate-500 font-mono">
-                  {{ formatDate(post.publishedAt || post.createdAt) }}
+                <span class="flex items-center space-x-1">
+                  <Calendar class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
+                  <span>{{ formatDate(post.publishedAt || post.createdAt) }}</span>
+                </span>
+                <span class="text-slate-300 dark:text-slate-700">•</span>
+                <span class="flex items-center space-x-1">
+                  <Clock class="w-3.5 h-3.5 text-slate-400" />
+                  <span>约 {{ estimateReadTime(post.summary) }} 分钟阅读</span>
                 </span>
               </div>
 
-              <h2 class="text-lg font-bold text-slate-800 dark:text-white group-hover:text-pink-600 dark:group-hover:text-nebula-cyan transition-colors">
+              <!-- 标题 -->
+              <h2 class="text-base sm:text-lg font-bold text-slate-800 dark:text-white group-hover:text-pink-600 dark:group-hover:text-nebula-cyan transition-colors leading-snug">
                 {{ post.title }}
               </h2>
 
-              <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+              <!-- 摘要 -->
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
                 {{ post.summary || '暂无详细摘要，点击卡片探索更多星向记录...' }}
               </p>
 
-              <div class="flex items-center justify-between pt-2 text-xs text-slate-500 dark:text-slate-400">
+              <!-- 标签与底栏统计 -->
+              <div class="flex items-center justify-between pt-2 border-t border-pink-200/40 dark:border-white/5 text-xs text-slate-500 dark:text-slate-400">
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span
                     v-for="tag in post.tags"
                     :key="tag.id"
-                    class="px-2 py-0.5 rounded-md text-[10px] bg-pink-100/70 text-slate-700 dark:bg-white/5 dark:text-slate-300"
+                    class="px-2.5 py-0.5 rounded-lg text-[10px] font-medium bg-pink-100/70 text-pink-700 border border-pink-200/60 dark:bg-white/5 dark:text-slate-300 dark:border-white/10"
                   >
                     # {{ tag.name }}
                   </span>
                 </div>
-                <span class="flex items-center space-x-1 font-mono text-xs">
-                  <Eye class="w-3.5 h-3.5" />
-                  <span>{{ post.viewCount || 0 }} 阅读</span>
-                </span>
+                <div class="flex items-center space-x-3 font-mono shrink-0 pl-3">
+                  <span class="flex items-center space-x-1">
+                    <Eye class="w-3.5 h-3.5 text-slate-400" />
+                    <span>{{ post.viewCount || 0 }} 阅读</span>
+                  </span>
+                  <span class="text-pink-600 dark:text-nebula-cyan font-bold group-hover:translate-x-1 transition-transform">
+                    阅读全文 ➔
+                  </span>
+                </div>
               </div>
             </div>
 
-            <!-- 右侧小巧方形缩略图 -->
-            <div class="hidden sm:block w-24 h-24 rounded-xl overflow-hidden shrink-0 bg-slate-900/10 dark:bg-space-900/60 border border-pink-200/50 dark:border-white/10">
+            <!-- 右侧精巧 16:10 宽幅缩略图 (纵向居中对齐，消除空白突兀) -->
+            <div class="hidden sm:block w-44 md:w-56 aspect-[16/10] rounded-2xl overflow-hidden shrink-0 bg-slate-900/10 dark:bg-space-900/60 border border-pink-200/50 dark:border-white/10 shadow-sm relative group">
               <img
                 :src="getPostCover(post)"
                 :alt="post.title"
@@ -333,6 +349,7 @@
                 @error="handleImageError(post.id)"
                 class="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-500"
               />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-20"></div>
             </div>
           </div>
         </article>
