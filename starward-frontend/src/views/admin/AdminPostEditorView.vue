@@ -331,7 +331,7 @@
           <span class="text-[10px] text-slate-500">Mermaid · 代码高亮实时同步</span>
         </div>
         <div class="flex-1 p-6 overflow-y-auto bg-white/70 dark:bg-space-950/60">
-          <MarkdownViewer :content="form.contentMd || '*暂无内容，请在左侧编辑器中输入 Markdown 正文...*'" />
+          <MarkdownViewer :content="previewContent || '*暂无内容，请在左侧编辑器中输入 Markdown 正文...*'" />
         </div>
       </div>
     </div>
@@ -339,7 +339,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   ArrowLeft,
@@ -410,6 +410,16 @@ const form = reactive<{
   status: 'PUBLISHED',
   isPinned: false,
   tagIds: [],
+});
+
+const previewContent = ref(form.contentMd);
+let previewDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+watch(() => form.contentMd, (val) => {
+  if (previewDebounceTimer) clearTimeout(previewDebounceTimer);
+  previewDebounceTimer = setTimeout(() => {
+    previewContent.value = val;
+  }, 100);
 });
 
 const coverPresets = [
@@ -586,6 +596,7 @@ const initData = async () => {
       form.slug = detail.slug || '';
       form.summary = detail.summary || '';
       form.contentMd = detail.contentMd || detail.content || '';
+      previewContent.value = form.contentMd;
       form.coverImage = detail.coverImage || '';
       form.status = (detail.status || 'PUBLISHED').toUpperCase() as 'PUBLISHED' | 'DRAFT';
       form.isPinned = detail.isPinned === true || detail.isPinned === 1;
