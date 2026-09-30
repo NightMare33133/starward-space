@@ -267,27 +267,124 @@
 
       <!-- 右侧四宫格区块 (占 7 列) -->
       <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <!-- 卡片 2 (摄影视界大卡) -->
+        <!-- 卡片 2 (摄影视界大卡：拍立得光影叠放交互展台) -->
         <div
-          class="sm:col-span-2 rounded-3xl overflow-hidden relative group cursor-pointer border border-white/10 hover:border-nebula-pink/40 transition-all duration-500 min-h-[170px] flex flex-col justify-end p-6"
+          class="sm:col-span-2 rounded-3xl overflow-hidden relative group cursor-pointer border transition-all duration-500 min-h-[170px] p-5 sm:p-6 flex items-center justify-between glass-card shadow-lg"
+          :class="themeStore.isDark
+            ? 'border-white/10 hover:border-pink-500/40 hover:shadow-[0_0_30px_rgba(236,72,153,0.15)] bg-space-950/60'
+            : 'border-pink-200/60 hover:border-pink-400/80 hover:shadow-[0_10px_30px_rgba(244,114,182,0.18)] bg-white/80'"
           @click="$router.push('/gallery')"
         >
-          <!-- 背景图：三月七自拍 -->
-          <img
-            src="/images/hsr/march7th_selfie.png"
-            alt="Photography Gallery"
-            class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-space-950 via-space-950/60 to-transparent"></div>
+          <!-- 背景漫反射与装饰光斑 -->
+          <div
+            class="absolute -right-6 -bottom-6 w-48 h-48 rounded-full blur-3xl pointer-events-none transition-all duration-700 group-hover:scale-125"
+            :class="themeStore.isDark ? 'bg-pink-500/15' : 'bg-pink-300/25'"
+          ></div>
 
-          <div class="relative z-10 space-y-1">
-            <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-nebula-pink/20 text-nebula-pink border border-nebula-pink/30 uppercase">
-              VISUAL ODYSSEY · 摄影视界
-            </span>
-            <h4 class="text-base font-bold !text-white keep-white group-hover:text-nebula-pink transition-colors drop-shadow-md">
+          <!-- 背景极简取景器水印 -->
+          <div class="absolute left-6 top-3 pointer-events-none text-pink-500/15 dark:text-white/10 font-mono text-[10px] select-none">
+            [ REC · 35mm F/1.4 · ISO 100 ]
+          </div>
+
+          <!-- 左侧：文案与摄影标签 -->
+          <div class="relative z-10 space-y-2 max-w-[58%] sm:max-w-[62%]">
+            <div class="flex items-center space-x-2">
+              <span
+                class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider flex items-center space-x-1.5 transition-colors shadow-sm"
+                :class="themeStore.isDark
+                  ? 'bg-nebula-pink/20 text-nebula-pink border border-nebula-pink/30'
+                  : 'bg-pink-100 text-pink-700 border border-pink-300/60'"
+              >
+                <Camera class="w-3 h-3 text-pink-500 dark:text-nebula-pink" />
+                <span>VISUAL ODYSSEY · 摄影视界</span>
+              </span>
+              <span class="text-[10px] font-mono text-slate-400 dark:text-slate-400 hidden xs:inline">
+                9 篇相册收录
+              </span>
+            </div>
+
+            <h4
+              class="text-base sm:text-lg font-extrabold transition-colors leading-snug tracking-tight"
+              :class="themeStore.isDark
+                ? 'text-white group-hover:text-nebula-pink'
+                : 'text-slate-800 group-hover:text-pink-600'"
+            >
               列车组日常与现实光影漫游
             </h4>
-            <p class="text-xs text-slate-200 drop-shadow">代码之外，用镜头捕获光影流转与温柔角落 ➔</p>
+
+            <p class="text-xs text-slate-500 dark:text-slate-300 line-clamp-1 leading-relaxed">
+              代码之外，用镜头捕获光影流转与温柔角落
+            </p>
+
+            <div class="flex items-center space-x-2 pt-1 text-[11px] font-mono font-semibold text-pink-600 dark:text-nebula-pink">
+              <span class="flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+                <span>探索光影相册</span>
+                <ArrowRight class="w-3 h-3" />
+              </span>
+              <span class="text-slate-300 dark:text-white/20">·</span>
+              <span class="text-slate-400 font-normal text-[10px]">#星穹列车 #宇宙星海</span>
+            </div>
+          </div>
+
+          <!-- 右侧：拍立得错落微缩相片展示区 (悬停扇形展开动效) -->
+          <div class="relative z-10 w-36 sm:w-44 h-28 sm:h-32 shrink-0 select-none">
+            <!-- 拍立得 1 (底层：银河铁道风景) -->
+            <div
+              class="absolute right-10 sm:right-12 top-0 w-20 sm:w-24 rounded-xl p-1 sm:p-1.5 pb-2.5 sm:pb-3 shadow-lg -rotate-12 group-hover:-rotate-16 group-hover:-translate-x-3 group-hover:-translate-y-1.5 transition-all duration-500 ease-out border"
+              :class="themeStore.isDark
+                ? 'bg-slate-800/95 border-white/10 shadow-black/60'
+                : 'bg-white border-slate-200/80 shadow-slate-300/60'"
+            >
+              <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900">
+                <img src="/images/hsr/astral_express_bg.jpg" alt="Express" class="w-full h-full object-cover" />
+              </div>
+              <p class="text-[8px] font-mono text-center text-slate-400 dark:text-slate-400 pt-1 truncate">
+                01 · 铁道之夜
+              </p>
+            </div>
+
+            <!-- 拍立得 2 (中层：深空流萤) -->
+            <div
+              class="absolute right-4 sm:right-5 top-1.5 w-20 sm:w-24 rounded-xl p-1 sm:p-1.5 pb-2.5 sm:pb-3 shadow-xl rotate-6 group-hover:rotate-12 group-hover:translate-x-2 group-hover:-translate-y-2 transition-all duration-500 ease-out border"
+              :class="themeStore.isDark
+                ? 'bg-slate-800/95 border-white/10 shadow-black/70'
+                : 'bg-white border-slate-200/80 shadow-slate-300/70'"
+            >
+              <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900">
+                <img src="/images/hsr/firefly_night.jpg" alt="Firefly" class="w-full h-full object-cover" />
+              </div>
+              <p class="text-[8px] font-mono text-center text-slate-400 dark:text-slate-400 pt-1 truncate">
+                02 · 极光深空
+              </p>
+            </div>
+
+            <!-- 拍立得 3 (顶层前景：三月七自拍 - 拍立得经典样式配胶带贴纸) -->
+            <div
+              class="absolute right-0 top-3 w-22 sm:w-26 rounded-xl p-1.5 sm:p-1.5 pb-3 sm:pb-3.5 shadow-2xl -rotate-2 group-hover:rotate-0 group-hover:scale-105 group-hover:translate-y-1 transition-all duration-500 ease-out border"
+              :class="themeStore.isDark
+                ? 'bg-slate-800 border-pink-500/30 shadow-black/80'
+                : 'bg-white border-pink-200 shadow-pink-200/50'"
+            >
+              <!-- 拍立得顶部胶带小贴纸装饰 (Cute Washi Tape) -->
+              <div
+                class="absolute -top-1.5 left-4 w-7 h-2.5 rounded-xs -rotate-6 backdrop-blur-sm pointer-events-none transition-transform group-hover:rotate-0"
+                :class="themeStore.isDark ? 'bg-pink-400/40' : 'bg-pink-300/70'"
+              ></div>
+
+              <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900 relative">
+                <img
+                  src="/images/hsr/march7th_selfie.png"
+                  alt="March 7th Selfie"
+                  class="w-full h-full object-cover object-[center_35%]"
+                />
+                <span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/60 text-[7px] font-mono text-white/90">
+                  📸 自拍
+                </span>
+              </div>
+              <p class="text-[8px] font-mono text-center text-pink-600 dark:text-nebula-pink font-semibold pt-1 truncate">
+                03 · 自拍手记 ♡
+              </p>
+            </div>
           </div>
         </div>
 
@@ -409,7 +506,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Search, Github, User, Sparkles, SkipBack, SkipForward, Play, Pause } from 'lucide-vue-next';
+import { Search, Github, User, Sparkles, SkipBack, SkipForward, Play, Pause, Camera, ArrowRight } from 'lucide-vue-next';
 import { getPostList } from '@/api/posts';
 import { getMoments } from '@/api/moments';
 import { useMusicStore } from '@/stores/music';
