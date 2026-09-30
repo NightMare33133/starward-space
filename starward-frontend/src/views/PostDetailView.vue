@@ -78,17 +78,84 @@
         </div>
       </header>
 
-      <!-- 文章内嵌精选封面插画展台 (融合一体化设计，参考 Rainzt / CuteLeaf) -->
-      <div
-        v-if="postCover"
-        class="w-full rounded-2xl overflow-hidden shadow-lg border border-pink-200/40 dark:border-white/10 max-h-[420px] bg-slate-900/10 dark:bg-space-950/60 relative group"
-      >
-        <img
-          :src="postCover"
-          :alt="post.title"
-          class="w-full h-full max-h-[420px] object-cover object-[center_20%] group-hover:scale-102 transition-transform duration-700 ease-out"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent opacity-20"></div>
+      <!-- 文章内嵌精选封面插画展台 (智能自适应：横图宽屏，竖图居中垂直原画展台) -->
+      <div v-if="postCover" class="space-y-2">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1 font-mono">
+          <span class="flex items-center space-x-1.5">
+            <Sparkles class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
+            <span>精选文章封面 · {{ isVerticalCover ? '竖版插画完整原画' : '宽屏全景画框' }}</span>
+          </span>
+
+          <div class="flex items-center space-x-2">
+            <!-- 模式切换开关 -->
+            <button
+              type="button"
+              @click="toggleCoverMode"
+              class="px-2.5 py-1 rounded-lg glass-card border border-pink-200/60 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 text-[11px] text-slate-600 dark:text-slate-300 transition-colors flex items-center space-x-1 shadow-sm"
+              :title="coverDisplayMode === 'banner' ? '切换为自适应原画完整展示' : '切换为宽屏横条画框'"
+            >
+              <SlidersHorizontal class="w-3 h-3 text-pink-500 dark:text-nebula-cyan" />
+              <span>{{ coverDisplayMode === 'banner' ? '自适应完整原图' : '宽屏全景画框' }}</span>
+            </button>
+
+            <!-- 放大灯箱按钮 -->
+            <button
+              type="button"
+              @click="showLightbox = true"
+              class="p-1 rounded-lg glass-card border border-pink-200/60 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 text-slate-600 dark:text-slate-300 transition-colors shadow-sm"
+              title="全屏查看高清原图"
+            >
+              <Maximize2 class="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        <!-- 展台主体容器 -->
+        <!-- 模式 A：自适应原图展示 (竖图竖放居中精致展台，横图舒展铺满) -->
+        <div
+          v-if="coverDisplayMode === 'natural'"
+          class="relative group rounded-3xl overflow-hidden shadow-xl border border-pink-200/50 dark:border-white/10 p-2 sm:p-4 bg-slate-900/5 dark:bg-space-950/40"
+          :class="isVerticalCover ? 'max-w-md md:max-w-lg mx-auto' : 'w-full'"
+        >
+          <!-- 竖图专属：背后柔和星辉环境漫反射光晕 -->
+          <div
+            v-if="isVerticalCover"
+            class="absolute inset-0 -z-10 scale-105 filter blur-3xl opacity-25 dark:opacity-35 bg-cover bg-center pointer-events-none transition-opacity duration-700"
+            :style="{ backgroundImage: `url(${postCover})` }"
+          ></div>
+
+          <div class="rounded-2xl overflow-hidden relative cursor-zoom-in" @click="showLightbox = true">
+            <img
+              :src="postCover"
+              :alt="post.title"
+              @load="handleCoverLoad"
+              class="w-full h-auto max-h-[720px] object-contain mx-auto block group-hover:scale-101 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs space-x-1.5 backdrop-blur-[2px]">
+              <Maximize2 class="w-4 h-4" />
+              <span>点击查看高清无损原图</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模式 B：宽屏画框全景模式 (固定横向视口) -->
+        <div
+          v-else
+          class="w-full rounded-2xl overflow-hidden shadow-lg border border-pink-200/40 dark:border-white/10 max-h-[460px] bg-slate-900/10 dark:bg-space-950/60 relative group cursor-zoom-in"
+          @click="showLightbox = true"
+        >
+          <img
+            :src="postCover"
+            :alt="post.title"
+            @load="handleCoverLoad"
+            class="w-full h-full max-h-[460px] object-cover object-[center_20%] group-hover:scale-102 transition-transform duration-700 ease-out"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent opacity-20"></div>
+          <div class="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/60 text-white text-[11px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-1 backdrop-blur-md">
+            <Maximize2 class="w-3.5 h-3.5" />
+            <span>点击查看原图</span>
+          </div>
+        </div>
       </div>
 
       <!-- Markdown 沉浸式阅读器 -->
@@ -111,13 +178,60 @@
         </button>
       </div>
     </article>
+
+    <!-- 高清大图全屏画廊灯箱 (Lightbox) -->
+    <div
+      v-if="showLightbox"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md animate-fade-in"
+      @click="showLightbox = false"
+    >
+      <div class="relative max-w-5xl max-h-[95vh] flex flex-col items-center" @click.stop>
+        <button
+          type="button"
+          @click="showLightbox = false"
+          class="absolute -top-12 right-0 p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+          title="关闭"
+        >
+          <X class="w-6 h-6" />
+        </button>
+
+        <img
+          :src="postCover"
+          :alt="post?.title"
+          class="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl border border-white/10"
+        />
+
+        <div class="mt-3 flex items-center space-x-4 text-xs font-mono text-white/80">
+          <span>尺寸: {{ naturalW }} × {{ naturalH }} px</span>
+          <a
+            :href="postCover"
+            target="_blank"
+            class="text-pink-300 hover:text-pink-200 underline flex items-center space-x-1"
+          >
+            <ExternalLink class="w-3.5 h-3.5" />
+            <span>新标签页打开原始文件</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { ArrowLeft, Calendar, Eye, Clock, Share2 } from 'lucide-vue-next';
+import {
+  ArrowLeft,
+  Calendar,
+  Eye,
+  Clock,
+  Share2,
+  Maximize2,
+  SlidersHorizontal,
+  Sparkles,
+  X,
+  ExternalLink
+} from 'lucide-vue-next';
 import { getPostDetail } from '@/api/posts';
 import MarkdownViewer from '@/components/MarkdownViewer.vue';
 import type { PostDetailVO } from '@/types';
@@ -145,6 +259,31 @@ const postCover = computed(() => {
   const idx = Math.abs(Number(post.value.id) || 0) % defaultCovers.length;
   return defaultCovers[idx];
 });
+
+// 封面展台展示模式与智能比例自适应
+const isVerticalCover = ref(false);
+const coverDisplayMode = ref<'natural' | 'banner'>('natural');
+const showLightbox = ref(false);
+const naturalW = ref(0);
+const naturalH = ref(0);
+
+const handleCoverLoad = (e: Event) => {
+  const img = e.target as HTMLImageElement;
+  if (!img) return;
+  naturalW.value = img.naturalWidth;
+  naturalH.value = img.naturalHeight;
+  // 如果高度大于宽度的 1.05 倍，判断为竖版立绘/插画
+  if (img.naturalHeight > img.naturalWidth * 1.05) {
+    isVerticalCover.value = true;
+    coverDisplayMode.value = 'natural';
+  } else {
+    isVerticalCover.value = false;
+  }
+};
+
+const toggleCoverMode = () => {
+  coverDisplayMode.value = coverDisplayMode.value === 'banner' ? 'natural' : 'banner';
+};
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '';

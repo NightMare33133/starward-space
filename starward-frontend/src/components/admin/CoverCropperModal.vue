@@ -339,16 +339,29 @@
         </div>
 
         <!-- 右侧提交与取消按钮 -->
-        <div class="flex items-center space-x-3">
+        <div class="flex flex-wrap items-center justify-end gap-2.5">
           <button
             type="button"
             @click="handleClose"
             :disabled="uploading"
-            class="px-4 py-2 rounded-xl border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 text-xs font-semibold transition-colors"
+            class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 text-xs font-semibold transition-colors"
           >
             取消
           </button>
 
+          <!-- 一键保留原始原画（竖图竖放自适应展台） -->
+          <button
+            type="button"
+            @click="handleUploadOriginal"
+            :disabled="uploading || !imageLoaded"
+            class="px-4 py-2 rounded-xl border border-pink-300/80 dark:border-nebula-cyan/40 bg-pink-50 dark:bg-white/5 text-pink-700 dark:text-nebula-cyan hover:bg-pink-100/80 dark:hover:bg-white/10 text-xs font-semibold transition-colors flex items-center space-x-1.5 disabled:opacity-50"
+            title="不进行切片，直接将无损原始图片作为封面（文章内将以完整原画竖放展示）"
+          >
+            <Maximize2 class="w-3.5 h-3.5" />
+            <span>保留完整原图 (原画竖放)</span>
+          </button>
+
+          <!-- 裁切为 16:10 宽屏切片 -->
           <button
             type="button"
             @click="handleConfirmCrop"
@@ -357,7 +370,7 @@
           >
             <Loader2 v-if="uploading" class="w-4 h-4 animate-spin" />
             <Sparkles v-else class="w-4 h-4" />
-            <span>{{ uploading ? '正在生成切片并上传...' : '确定截取并应用封面' }}</span>
+            <span>{{ uploading ? '正在生成切片并上传...' : '确定截取为 16:10 封面' }}</span>
           </button>
         </div>
       </div>
@@ -385,7 +398,8 @@ import {
   ArrowRight,
   Upload,
   Loader2,
-  Sparkles
+  Sparkles,
+  Maximize2
 } from 'lucide-vue-next';
 import { uploadImage } from '@/api/admin';
 import { useToast } from '@/composables/useToast';
@@ -393,6 +407,7 @@ import { useToast } from '@/composables/useToast';
 interface Props {
   show: boolean;
   initialImage?: string;
+  rawFile?: File | null;
   articleTitle?: string;
   articleSummary?: string;
   tags?: string[];
@@ -614,6 +629,8 @@ const triggerReselect = () => {
   reselectInputRef.value?.click();
 };
 
+const selectedRawFile = ref<File | null>(null);
+
 const handleReselectFile = (e: Event) => {
   const target = e.target as HTMLInputElement;
   const file = target.files?.[0];
@@ -624,6 +641,7 @@ const handleReselectFile = (e: Event) => {
     return;
   }
 
+  selectedRawFile.value = file;
   const reader = new FileReader();
   reader.onload = (event) => {
     imageSrc.value = event.target?.result as string;
@@ -631,6 +649,36 @@ const handleReselectFile = (e: Event) => {
   };
   reader.readAsDataURL(file);
   target.value = '';
+};
+
+// 一键保留完整原图上传 (不进行裁切，竖图竖放自适应)
+const handleUploadOriginal = async () => {
+  if (!imageLoaded.value) return;
+
+  uploading.value = true;
+  try {
+    if (selectedRawFile.value) {
+      const result = await uploadImage(selectedRawFile.value, selectedRawFile.value.name);
+      toast.success('已保留原始插画大图 ✨ 文章内将自适应竖版原画展现！');
+      emit('crop-success', result.url);
+      handleClose();
+      return;
+    }
+
+    // 若当前为已有图片或 URL，拉取为 blob 并保存为无损原图
+    const res = await fetch(imageSrc.value);
+    const blob = await res.blob();
+    const ext = blob.type.includes('png') ? '.png' : blob.type.includes('jpeg') ? '.jpg' : '.webp';
+    const result = await uploadImage(blob, `cover_original_${Date.now()}${ext}`);
+    toast.success('已保留原始插画大图 ✨ 文章内将自适应竖版原画展现！');
+    emit('crop-success', result.url);
+    handleClose();
+  } catch (err: any) {
+    console.error('上传完整原图异常:', err);
+    toast.error(err.response?.data?.message || err.message || '上传原图失败');
+  } finally {
+    uploading.value = false;
+  }
 };
 
 // 确认截取并上传生成高清切片
@@ -701,6 +749,7 @@ watch(
   () => props.show,
   (val) => {
     if (val) {
+      selectedRawFile.value = props.rawFile || null;
       imageLoaded.value = false;
       imageSrc.value = props.initialImage || '/images/hsr/himeko_express.png';
       nextTick(() => {

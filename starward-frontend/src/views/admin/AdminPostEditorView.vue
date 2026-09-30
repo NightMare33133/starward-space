@@ -205,13 +205,34 @@
                 @change="handleCoverFileSelected"
               />
 
+              <input
+                ref="rawCoverFileInputRef"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                @change="handleDirectUploadOriginal"
+              />
+
               <div class="flex items-center space-x-2 shrink-0">
+                <!-- 直接上传原图 (文章内竖图竖放自适应展示) -->
+                <button
+                  type="button"
+                  @click="triggerRawCoverUpload"
+                  :disabled="uploadingRawCover"
+                  class="px-3 py-2 rounded-xl border border-pink-200/70 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/80 dark:bg-white/5 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors flex items-center space-x-1.5"
+                  title="直接上传无损原始图片（不强制横向切片，文章内将以完整原画竖放展示）"
+                >
+                  <Loader2 v-if="uploadingRawCover" class="w-3.5 h-3.5 animate-spin" />
+                  <ImageIcon v-else class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
+                  <span>直接上传原图</span>
+                </button>
+
                 <!-- 上传本地图片并裁切按钮 -->
                 <button
                   type="button"
                   @click="triggerCoverUpload"
                   class="px-3 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-semibold shadow-md shadow-pink-500/20 transition-all flex items-center space-x-1.5"
-                  title="选择本地任意图片（支持竖图立绘、横图壁纸）并进行可视化裁切"
+                  title="选择本地任意图片并调起 16:10 构图工坊微调取景区块"
                 >
                   <Upload class="w-3.5 h-3.5" />
                   <span>上传并裁切</span>
@@ -402,6 +423,7 @@
     <CoverCropperModal
       v-model:show="showCropperModal"
       :initial-image="cropperImageSource"
+      :raw-file="currentRawCoverFile"
       :article-title="form.title"
       :article-summary="form.summary"
       :tags="selectedTagNames"
@@ -445,7 +467,8 @@ import {
   getPostForEdit,
   createPost,
   updatePost,
-  getAllTags
+  getAllTags,
+  uploadImage
 } from '@/api/admin';
 import type { Tag, PostCreateRequest, PostUpdateRequest } from '@/types';
 import { useToast } from '@/composables/useToast';
@@ -535,7 +558,10 @@ const toggleTagSelection = (tagId: number) => {
 // 封面裁切弹窗与本地上传状态
 const showCropperModal = ref(false);
 const cropperImageSource = ref('');
+const currentRawCoverFile = ref<File | null>(null);
 const coverFileInputRef = ref<HTMLInputElement | null>(null);
+const rawCoverFileInputRef = ref<HTMLInputElement | null>(null);
+const uploadingRawCover = ref(false);
 
 const selectedTagNames = computed(() => {
   return allTags.value
@@ -545,6 +571,10 @@ const selectedTagNames = computed(() => {
 
 const triggerCoverUpload = () => {
   coverFileInputRef.value?.click();
+};
+
+const triggerRawCoverUpload = () => {
+  rawCoverFileInputRef.value?.click();
 };
 
 const handleCoverFileSelected = (e: Event) => {
@@ -557,6 +587,7 @@ const handleCoverFileSelected = (e: Event) => {
     return;
   }
 
+  currentRawCoverFile.value = file;
   const reader = new FileReader();
   reader.onload = (event) => {
     cropperImageSource.value = event.target?.result as string;
@@ -564,6 +595,31 @@ const handleCoverFileSelected = (e: Event) => {
   };
   reader.readAsDataURL(file);
   target.value = '';
+};
+
+// 直接上传无损原始大图（文章内自适应竖放/横放，列表卡片自动聚焦头部）
+const handleDirectUploadOriginal = async (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    toast.warning('请选择图片格式文件');
+    return;
+  }
+
+  uploadingRawCover.value = true;
+  try {
+    const result = await uploadImage(file, file.name);
+    form.coverImage = result.url;
+    toast.success('原始图片上传成功 ✨ 文章内将以自适应竖版/横版原画展现！');
+  } catch (err: any) {
+    console.error('上传原图失败:', err);
+    toast.error(err.response?.data?.message || err.message || '上传原图失败');
+  } finally {
+    uploadingRawCover.value = false;
+    target.value = '';
+  }
 };
 
 const handleCoverDrop = (e: DragEvent) => {
@@ -575,6 +631,7 @@ const handleCoverDrop = (e: DragEvent) => {
     return;
   }
 
+  currentRawCoverFile.value = file;
   const reader = new FileReader();
   reader.onload = (event) => {
     cropperImageSource.value = event.target?.result as string;
@@ -584,6 +641,7 @@ const handleCoverDrop = (e: DragEvent) => {
 };
 
 const openCropperWithCurrent = () => {
+  currentRawCoverFile.value = null;
   cropperImageSource.value = form.coverImage || '/images/hsr/himeko_express.png';
   showCropperModal.value = true;
 };
