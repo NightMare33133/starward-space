@@ -102,3 +102,17 @@ export const deleteTag = (id: number): Promise<void> => {
 export const publishMoment = (data: MomentCreateRequest): Promise<Moment> => {
   return apiClient.post('/v1/moments', data);
 };
+
+/**
+ * 上传图片文件 (如文章自定义封面、插图等)
+ */
+export const uploadImage = (file: File | Blob, filename = 'cover.webp'): Promise<{ url: string; filename: string }> => {
+  const formData = new FormData();
+  formData.append('file', file, filename);
+  return apiClient.post('/v1/admin/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+

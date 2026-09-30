@@ -151,40 +151,102 @@
         </div>
 
         <!-- 封面图设置与预设 -->
-        <div>
-          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 flex items-center justify-between">
-            <span>封面图 URL (Cover Image)</span>
-            <span class="text-[10px] text-slate-500 dark:text-slate-500">点击下方快捷选用预设壁纸</span>
-          </label>
-          <div class="flex items-center space-x-3">
-            <input
-              v-model="form.coverImage"
-              type="text"
-              placeholder="https://... 或 /images/hsr/himeko_express.png"
-              class="flex-1 px-3.5 py-2 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
-            />
-            <div class="w-10 h-8 rounded-lg bg-pink-100 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 overflow-hidden shrink-0">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-1.5">
+              <ImageIcon class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
+              <span>文章封面设置 (Cover Image)</span>
+            </label>
+            <div class="flex items-center space-x-2">
+              <span class="text-[10px] text-slate-500 dark:text-slate-400">支持拖拽图片入内 · 16:10 实机裁切取景</span>
+            </div>
+          </div>
+
+          <!-- 封面操作主控制栏 -->
+          <div
+            class="p-3 rounded-2xl bg-white/70 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 transition-colors"
+            @dragover.prevent
+            @drop.prevent="handleCoverDrop"
+          >
+            <!-- 缩略图视窗（点击亦可直接调起裁切） -->
+            <div
+              @click="openCropperWithCurrent"
+              class="relative w-full sm:w-28 aspect-[16/10] rounded-xl bg-pink-100 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 overflow-hidden shrink-0 cursor-pointer group shadow-sm"
+              title="点击打开可视化裁切调整"
+            >
               <img
                 v-if="form.coverImage"
                 :src="form.coverImage"
                 alt="Preview"
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 onerror="this.src='/images/hsr/himeko_express.png'"
               />
+              <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-medium space-x-1">
+                <Crop class="w-3.5 h-3.5" />
+                <span>裁切调整</span>
+              </div>
+            </div>
+
+            <!-- URL 输入框与功能按钮组 -->
+            <div class="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <input
+                v-model="form.coverImage"
+                type="text"
+                placeholder="https://... 或 /images/hsr/himeko_express.png"
+                class="flex-1 px-3.5 py-2 rounded-xl bg-white/80 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
+              />
+
+              <!-- 隐藏的本地文件上传 input -->
+              <input
+                ref="coverFileInputRef"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                @change="handleCoverFileSelected"
+              />
+
+              <div class="flex items-center space-x-2 shrink-0">
+                <!-- 上传本地图片并裁切按钮 -->
+                <button
+                  type="button"
+                  @click="triggerCoverUpload"
+                  class="px-3 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-semibold shadow-md shadow-pink-500/20 transition-all flex items-center space-x-1.5"
+                  title="选择本地任意图片（支持竖图立绘、横图壁纸）并进行可视化裁切"
+                >
+                  <Upload class="w-3.5 h-3.5" />
+                  <span>上传并裁切</span>
+                </button>
+
+                <!-- 裁切微调现有图片 -->
+                <button
+                  type="button"
+                  @click="openCropperWithCurrent"
+                  :disabled="!form.coverImage"
+                  class="px-3 py-2 rounded-xl border border-pink-200/70 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/80 dark:bg-white/5 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors flex items-center space-x-1.5 disabled:opacity-40"
+                  title="对当前封面打开 16:10 构图调整"
+                >
+                  <Crop class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
+                  <span>构图微调</span>
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- 快速预设按钮 -->
-          <div class="flex flex-wrap gap-2 mt-2">
-            <button
-              v-for="preset in coverPresets"
-              :key="preset.name"
-              type="button"
-              @click="form.coverImage = preset.url"
-              class="px-2.5 py-1 rounded-lg bg-white/60 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/60 dark:border-white/10 text-[11px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
-            >
-              {{ preset.name }}
-            </button>
+          <div class="flex items-center space-x-2 pt-1">
+            <span class="text-[11px] text-slate-500 dark:text-slate-400 shrink-0">快捷壁纸：</span>
+            <div class="flex flex-wrap gap-1.5">
+              <button
+                v-for="preset in coverPresets"
+                :key="preset.name"
+                type="button"
+                @click="form.coverImage = preset.url"
+                class="px-2 py-0.5 rounded-lg bg-white/60 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/60 dark:border-white/10 text-[11px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
+                :class="{ 'border-pink-400 dark:border-nebula-cyan text-pink-600 dark:text-nebula-cyan font-medium': form.coverImage === preset.url }"
+              >
+                {{ preset.name }}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -335,6 +397,16 @@
         </div>
       </div>
     </div>
+
+    <!-- 封面图可视化交互式裁切与实机预览模态框 -->
+    <CoverCropperModal
+      v-model:show="showCropperModal"
+      :initial-image="cropperImageSource"
+      :article-title="form.title"
+      :article-summary="form.summary"
+      :tags="selectedTagNames"
+      @crop-success="handleCropSuccess"
+    />
   </div>
 </template>
 
@@ -362,10 +434,13 @@ import {
   List,
   Link as LinkIcon,
   Image as ImageIcon,
-  Table as TableIcon
+  Table as TableIcon,
+  Upload,
+  Crop
 } from 'lucide-vue-next';
 import confetti from 'canvas-confetti';
 import MarkdownViewer from '@/components/MarkdownViewer.vue';
+import CoverCropperModal from '@/components/admin/CoverCropperModal.vue';
 import {
   getPostForEdit,
   createPost,
@@ -455,6 +530,66 @@ const toggleTagSelection = (tagId: number) => {
   } else {
     form.tagIds.push(tagId);
   }
+};
+
+// 封面裁切弹窗与本地上传状态
+const showCropperModal = ref(false);
+const cropperImageSource = ref('');
+const coverFileInputRef = ref<HTMLInputElement | null>(null);
+
+const selectedTagNames = computed(() => {
+  return allTags.value
+    .filter(t => form.tagIds.includes(t.id))
+    .map(t => t.name);
+});
+
+const triggerCoverUpload = () => {
+  coverFileInputRef.value?.click();
+};
+
+const handleCoverFileSelected = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    toast.warning('请选择图片格式文件 (JPG, PNG, WEBP 等)');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    cropperImageSource.value = event.target?.result as string;
+    showCropperModal.value = true;
+  };
+  reader.readAsDataURL(file);
+  target.value = '';
+};
+
+const handleCoverDrop = (e: DragEvent) => {
+  const file = e.dataTransfer?.files?.[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    toast.warning('请拖拽图片格式文件');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    cropperImageSource.value = event.target?.result as string;
+    showCropperModal.value = true;
+  };
+  reader.readAsDataURL(file);
+};
+
+const openCropperWithCurrent = () => {
+  cropperImageSource.value = form.coverImage || '/images/hsr/himeko_express.png';
+  showCropperModal.value = true;
+};
+
+const handleCropSuccess = (newUrl: string) => {
+  form.coverImage = newUrl;
 };
 
 const autoGenerateSlug = () => {

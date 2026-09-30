@@ -11,6 +11,11 @@ spring:
     name: starward-backend
   profiles:
     active: dev
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 25MB
 
 # 全局 Jackson JSON 序列化规范
   jackson:
@@ -31,4 +36,7 @@ springdoc:
 starward:
   auth:
     admin-token: ${STARWARD_ADMIN_TOKEN:starward-secret-token-2026}
+  upload:
+    dir: ${STARWARD_UPLOAD_DIR:${user.dir}/uploads}
+
 

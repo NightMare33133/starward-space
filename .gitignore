@@ -70,9 +70,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# --- [5] 日志与数据库持久化文件 ---
+# --- [5] 日志与数据库持久化文件及本地上传目录 ---
 logs/
 *.log
 *.log.*
 *.sqlite
 *.db
+uploads/
+**/uploads/
