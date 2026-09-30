@@ -587,7 +587,7 @@ const initData = async () => {
       form.summary = detail.summary || '';
       form.contentMd = detail.contentMd || detail.content || '';
       form.coverImage = detail.coverImage || '';
-      form.status = (detail.status || 'PUBLISHED') as 'PUBLISHED' | 'DRAFT';
+      form.status = (detail.status || 'PUBLISHED').toUpperCase() as 'PUBLISHED' | 'DRAFT';
       form.isPinned = detail.isPinned === true || detail.isPinned === 1;
       form.tagIds = detail.tags ? detail.tags.map(t => t.id) : [];
     } catch (err: any) {

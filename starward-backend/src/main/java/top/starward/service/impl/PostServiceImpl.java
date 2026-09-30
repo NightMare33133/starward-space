@@ -38,6 +38,7 @@ public class PostServiceImpl implements PostService {
                     .slug(post.getSlug())
                     .summary(post.getSummary())
                     .coverImage(post.getCoverImage())
+                    .status(post.getStatus())
                     .isPinned(post.getIsPinned())
                     .viewCount(post.getViewCount())
                     .createdAt(post.getCreatedAt())
@@ -49,14 +50,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PostDetailVO getPostDetail(Long id) {
+    public PostDetailVO getPostDetail(Long id, boolean isAdmin) {
         Post post = postMapper.findPostById(id);
-        if (post == null || !"PUBLISHED".equalsIgnoreCase(post.getStatus())) {
+        if (post == null) {
             throw new BusinessException(ResultCode.NOT_FOUND.getCode(), "该星际漫游文章不存在或已被隐藏");
         }
-        // 原子自增浏览量
-        postMapper.incrementViewCount(id);
-        post.setViewCount(post.getViewCount() + 1);
+        boolean isPublished = "PUBLISHED".equalsIgnoreCase(post.getStatus());
+        if (!isPublished && !isAdmin) {
+            throw new BusinessException(ResultCode.NOT_FOUND.getCode(), "该星际漫游文章不存在或已被隐藏");
+        }
+        // 仅当正式发布且非管理员预览时自增浏览量
+        if (isPublished && !isAdmin) {
+            postMapper.incrementViewCount(id);
+            post.setViewCount(post.getViewCount() + 1);
+        }
 
         List<Tag> tags = tagMapper.findTagsByPostId(id);
         return convertToDetailVO(post, tags);
@@ -64,13 +71,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PostDetailVO getPostDetailBySlug(String slug) {
+    public PostDetailVO getPostDetailBySlug(String slug, boolean isAdmin) {
         Post post = postMapper.findPostBySlug(slug);
-        if (post == null || !"PUBLISHED".equalsIgnoreCase(post.getStatus())) {
+        if (post == null) {
             throw new BusinessException(ResultCode.NOT_FOUND.getCode(), "目标文章路径不存在");
         }
-        postMapper.incrementViewCount(post.getId());
-        post.setViewCount(post.getViewCount() + 1);
+        boolean isPublished = "PUBLISHED".equalsIgnoreCase(post.getStatus());
+        if (!isPublished && !isAdmin) {
+            throw new BusinessException(ResultCode.NOT_FOUND.getCode(), "目标文章路径不存在");
+        }
+        if (isPublished && !isAdmin) {
+            postMapper.incrementViewCount(post.getId());
+            post.setViewCount(post.getViewCount() + 1);
+        }
 
         List<Tag> tags = tagMapper.findTagsByPostId(post.getId());
         return convertToDetailVO(post, tags);
@@ -172,6 +185,7 @@ public class PostServiceImpl implements PostService {
                     .slug(post.getSlug())
                     .summary(post.getSummary())
                     .coverImage(post.getCoverImage())
+                    .status(post.getStatus())
                     .isPinned(post.getIsPinned())
                     .viewCount(post.getViewCount())
                     .createdAt(post.getCreatedAt())
@@ -179,6 +193,57 @@ public class PostServiceImpl implements PostService {
                     .build());
         }
         return voList;
+    }
+
+    @Override
+    public PostDetailVO getAdminPostDetail(Long id) {
+        Post post = postMapper.findPostById(id);
+        if (post == null) {
+            throw new BusinessException(ResultCode.NOT_FOUND.getCode(), "目标文章不存在");
+        }
+        List<Tag> tags = tagMapper.findTagsByPostId(id);
+        return convertToDetailVO(post, tags);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public PostDetailVO updatePostStatus(Long id, String status) {
+        Post existing = postMapper.findPostById(id);
+        if (existing == null) {
+            throw new BusinessException(ResultCode.NOT_FOUND.getCode(), "待更新的文章不存在");
+        }
+        if (status == null || (!status.equalsIgnoreCase("PUBLISHED") && !status.equalsIgnoreCase("DRAFT"))) {
+            throw new BusinessException(ResultCode.BAD_REQUEST.getCode(), "非法的文章状态参数");
+        }
+        String targetStatus = status.toUpperCase();
+        Post postToUpdate = Post.builder()
+                .id(id)
+                .status(targetStatus)
+                .build();
+        postMapper.updatePost(postToUpdate);
+
+        existing.setStatus(targetStatus);
+        List<Tag> tags = tagMapper.findTagsByPostId(id);
+        return convertToDetailVO(existing, tags);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public PostDetailVO updatePostPin(Long id, Integer isPinned) {
+        Post existing = postMapper.findPostById(id);
+        if (existing == null) {
+            throw new BusinessException(ResultCode.NOT_FOUND.getCode(), "待更新的文章不存在");
+        }
+        Integer targetPin = (isPinned != null && isPinned != 0) ? 1 : 0;
+        Post postToUpdate = Post.builder()
+                .id(id)
+                .isPinned(targetPin)
+                .build();
+        postMapper.updatePost(postToUpdate);
+
+        existing.setIsPinned(targetPin);
+        List<Tag> tags = tagMapper.findTagsByPostId(id);
+        return convertToDetailVO(existing, tags);
     }
 
     private PostDetailVO convertToDetailVO(Post post, List<Tag> tags) {
@@ -189,6 +254,7 @@ public class PostServiceImpl implements PostService {
                 .summary(post.getSummary())
                 .contentMd(post.getContentMd())
                 .coverImage(post.getCoverImage())
+                .status(post.getStatus())
                 .isPinned(post.getIsPinned())
                 .viewCount(post.getViewCount())
                 .createdAt(post.getCreatedAt())

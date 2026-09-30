@@ -23,6 +23,24 @@
       <router-link to="/posts" class="text-xs text-nebula-cyan underline">返回全部文章</router-link>
     </div>
 
+    <!-- 草稿预览专属提示横幅（仅管理员可见） -->
+    <div
+      v-if="post && (post.status || '').toUpperCase() === 'DRAFT'"
+      class="px-4 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs flex items-center justify-between shadow-sm backdrop-blur-md"
+    >
+      <div class="flex items-center space-x-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="font-semibold">⚡ 当前为草稿预览模式</span>
+        <span class="text-amber-600/80 dark:text-amber-400/80 hidden sm:inline">（仅列车长登录状态可见，尚未对全宇宙公开发布）</span>
+      </div>
+      <router-link
+        :to="`/admin/posts/edit/${post.id}`"
+        class="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 font-medium transition-colors"
+      >
+        进入编辑 ✏️
+      </router-link>
+    </div>
+
     <!-- 文章正文区域 -->
     <article v-else-if="post" class="space-y-8">
       <!-- 头部元信息区 -->

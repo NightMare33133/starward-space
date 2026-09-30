@@ -200,10 +200,10 @@
                 <button
                   @click="toggleStatus(post)"
                   class="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all"
-                  :class="post.status === 'PUBLISHED' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25' : 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'"
-                  :title="post.status === 'PUBLISHED' ? '点击切换为草稿' : '点击切换为发布'"
+                  :class="isPublished(post) ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25' : 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'"
+                  :title="isPublished(post) ? '点击转为私密草稿' : '点击公开发布文章'"
                 >
-                  {{ post.status === 'PUBLISHED' ? '● 已发布' : '○ 草稿箱' }}
+                  {{ isPublished(post) ? '● 已发布' : '○ 草稿箱' }}
                 </button>
               </td>
 
@@ -285,7 +285,7 @@ import {
   ExternalLink,
   Trash2
 } from 'lucide-vue-next';
-import { getAdminPosts, deletePost, updatePost, getPostForEdit } from '@/api/admin';
+import { getAdminPosts, deletePost, updatePostStatus, updatePostPin } from '@/api/admin';
 import type { PostListVO } from '@/types';
 import { useToast } from '@/composables/useToast';
 
@@ -299,12 +299,16 @@ const isPinned = (post: PostListVO): boolean => {
   return post.isPinned === true || post.isPinned === 1;
 };
 
+const isPublished = (post: PostListVO): boolean => {
+  return (post.status || '').toUpperCase() === 'PUBLISHED';
+};
+
 const publishedCount = computed(() => {
-  return posts.value.filter(p => p.status === 'PUBLISHED').length;
+  return posts.value.filter(p => (p.status || '').toUpperCase() === 'PUBLISHED').length;
 });
 
 const draftCount = computed(() => {
-  return posts.value.filter(p => p.status === 'DRAFT').length;
+  return posts.value.filter(p => (p.status || '').toUpperCase() === 'DRAFT').length;
 });
 
 const totalViews = computed(() => {
@@ -314,8 +318,11 @@ const totalViews = computed(() => {
 const filteredPosts = computed(() => {
   return posts.value.filter(post => {
     // 状态过滤
-    if (filterStatus.value !== 'ALL' && post.status !== filterStatus.value) {
-      return false;
+    if (filterStatus.value !== 'ALL') {
+      const currentStatus = (post.status || '').toUpperCase();
+      if (currentStatus !== filterStatus.value) {
+        return false;
+      }
     }
     // 搜索词匹配
     if (searchQuery.value.trim()) {
@@ -346,21 +353,11 @@ const formatDate = (dateStr?: string) => {
   return dateStr.replace('T', ' ').slice(0, 16);
 };
 
-// 快捷切换状态
+// 快捷切换状态 (轻量原子更新)
 const toggleStatus = async (post: PostListVO) => {
+  const newStatus: 'PUBLISHED' | 'DRAFT' = isPublished(post) ? 'DRAFT' : 'PUBLISHED';
   try {
-    const detail = await getPostForEdit(post.id);
-    const newStatus = post.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED';
-    await updatePost(post.id, {
-      title: detail.title,
-      slug: detail.slug,
-      summary: detail.summary,
-      contentMd: detail.contentMd || detail.content || '',
-      coverImage: detail.coverImage,
-      status: newStatus,
-      isPinned: isPinned(post),
-      tagIds: detail.tags ? detail.tags.map(t => t.id) : [],
-    });
+    await updatePostStatus(post.id, newStatus);
     post.status = newStatus;
     toast.success(newStatus === 'PUBLISHED' ? '文章已设为公开上线 🌟' : '文章已转为私密草稿 📝');
   } catch (err: any) {
@@ -368,21 +365,11 @@ const toggleStatus = async (post: PostListVO) => {
   }
 };
 
-// 快捷切换置顶
+// 快捷切换置顶 (轻量原子更新)
 const togglePin = async (post: PostListVO) => {
+  const newPinned = !isPinned(post);
   try {
-    const detail = await getPostForEdit(post.id);
-    const newPinned = !isPinned(post);
-    await updatePost(post.id, {
-      title: detail.title,
-      slug: detail.slug,
-      summary: detail.summary,
-      contentMd: detail.contentMd || detail.content || '',
-      coverImage: detail.coverImage,
-      status: (post.status || 'PUBLISHED') as 'PUBLISHED' | 'DRAFT',
-      isPinned: newPinned,
-      tagIds: detail.tags ? detail.tags.map(t => t.id) : [],
-    });
+    await updatePostPin(post.id, newPinned ? 1 : 0);
     post.isPinned = newPinned ? 1 : 0;
     toast.success(newPinned ? '文章已置顶 📌' : '已取消置顶');
   } catch (err: any) {

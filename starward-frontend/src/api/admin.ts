@@ -34,10 +34,24 @@ export const getAdminPosts = (): Promise<PostListVO[]> => {
 };
 
 /**
- * 获取文章详情（用于编辑回填）
+ * 获取文章详情（用于编辑回填，支持草稿）
  */
 export const getPostForEdit = (id: number): Promise<PostDetailVO> => {
-  return apiClient.get(`/v1/posts/${id}`);
+  return apiClient.get(`/v1/posts/admin/${id}`);
+};
+
+/**
+ * 快速更新文章发布状态
+ */
+export const updatePostStatus = (id: number, status: 'PUBLISHED' | 'DRAFT'): Promise<PostDetailVO> => {
+  return apiClient.patch(`/v1/posts/admin/${id}/status`, { status });
+};
+
+/**
+ * 快速更新文章置顶状态
+ */
+export const updatePostPin = (id: number, isPinned: boolean | number): Promise<PostDetailVO> => {
+  return apiClient.patch(`/v1/posts/admin/${id}/pin`, { isPinned: isPinned ? 1 : 0 });
 };
 
 /**

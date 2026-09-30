@@ -26,6 +26,7 @@ public class PostListVO implements Serializable {
     private String slug;
     private String summary;
     private String coverImage;
+    private String status;
     private Integer isPinned;
     private Integer viewCount;
     private LocalDateTime createdAt;
