@@ -150,108 +150,172 @@
           ></textarea>
         </div>
 
-        <!-- 封面图设置与预设 -->
-        <div class="space-y-2">
+        <!-- 封面图设置与预设 (内外双模封面系统) -->
+        <div class="space-y-3">
           <div class="flex items-center justify-between">
-            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-1.5">
-              <ImageIcon class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
-              <span>文章封面设置 (Cover Image)</span>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1.5">
+              <ImageIcon class="w-4 h-4 text-pink-500 dark:text-nebula-cyan" />
+              <span>内外双模封面系统 (Dual Cover System)</span>
             </label>
-            <div class="flex items-center space-x-2">
-              <span class="text-[10px] text-slate-500 dark:text-slate-400">支持拖拽图片入内 · 16:10 实机裁切取景</span>
-            </div>
+            <span class="text-[11px] text-slate-500 dark:text-slate-400">
+              外部卡片 16:10 聚焦面部 · 内部详情无损全身原画
+            </span>
           </div>
 
-          <!-- 封面操作主控制栏 -->
-          <div
-            class="p-3 rounded-2xl bg-white/70 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 transition-colors"
-            @dragover.prevent
-            @drop.prevent="handleCoverDrop"
-          >
-            <!-- 缩略图视窗（点击亦可直接调起裁切） -->
+          <!-- 双模卡片容器 -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- 卡片 1：外部卡片封面 (16:10 裁切切片) -->
             <div
-              @click="openCropperWithCurrent"
-              class="relative w-full sm:w-28 aspect-[16/10] rounded-xl bg-pink-100 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 overflow-hidden shrink-0 cursor-pointer group shadow-sm"
-              title="点击打开可视化裁切调整"
+              class="p-3.5 rounded-2xl bg-white/70 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 flex flex-col justify-between space-y-3 transition-colors shadow-sm"
+              @dragover.prevent
+              @drop.prevent="handleCoverDrop"
             >
-              <img
-                v-if="form.coverImage"
-                :src="form.coverImage"
-                alt="Preview"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                onerror="this.src='/images/hsr/himeko_express.png'"
-              />
-              <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-medium space-x-1">
-                <Crop class="w-3.5 h-3.5" />
-                <span>裁切调整</span>
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center space-x-1.5">
+                  <Crop class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
+                  <span>① 外部列表卡片封面</span>
+                </span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-pink-100 text-pink-700 dark:bg-nebula-cyan/20 dark:text-nebula-cyan">
+                  16:10 宽屏聚焦
+                </span>
               </div>
+
+              <!-- 缩略图与操作 -->
+              <div class="flex items-center space-x-3">
+                <div
+                  @click="openCropperWithCurrent"
+                  class="relative w-28 aspect-[16/10] rounded-xl bg-pink-100 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 overflow-hidden shrink-0 cursor-pointer group shadow-sm"
+                  title="点击打开可视化裁切调整"
+                >
+                  <img
+                    v-if="form.coverImage"
+                    :src="form.coverImage"
+                    alt="Cover 16:10"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    onerror="this.src='/images/hsr/himeko_express.png'"
+                  />
+                  <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-medium space-x-1">
+                    <Crop class="w-3.5 h-3.5" />
+                    <span>微调取景</span>
+                  </div>
+                </div>
+
+                <div class="flex-1 space-y-2 min-w-0">
+                  <input
+                    v-model="form.coverImage"
+                    type="text"
+                    placeholder="https://... 或 /images/hsr/..."
+                    class="w-full px-3 py-1.5 rounded-xl bg-white/80 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 font-mono focus:outline-none focus:border-amber-500"
+                  />
+                  <div class="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      @click="triggerCoverUpload"
+                      class="px-2.5 py-1 rounded-lg bg-pink-500 hover:bg-pink-600 text-white text-[11px] font-medium shadow-sm transition-colors flex items-center space-x-1"
+                    >
+                      <Upload class="w-3 h-3" />
+                      <span>上传并裁切</span>
+                    </button>
+                    <button
+                      type="button"
+                      @click="openCropperWithCurrent"
+                      :disabled="!form.coverImage"
+                      class="px-2.5 py-1 rounded-lg border border-pink-200/60 dark:border-white/10 hover:bg-pink-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300 text-[11px] transition-colors flex items-center space-x-1 disabled:opacity-40"
+                    >
+                      <Crop class="w-3 h-3 text-pink-500 dark:text-nebula-cyan" />
+                      <span>微调取景</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">
+                用于首页、归档、标签列表卡片，高度整齐且面部居中。
+              </p>
             </div>
 
-            <!-- URL 输入框与功能按钮组 -->
-            <div class="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-              <input
-                v-model="form.coverImage"
-                type="text"
-                placeholder="https://... 或 /images/hsr/himeko_express.png"
-                class="flex-1 px-3.5 py-2 rounded-xl bg-white/80 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
-              />
-
-              <!-- 隐藏的本地文件上传 input -->
-              <input
-                ref="coverFileInputRef"
-                type="file"
-                accept="image/*"
-                class="hidden"
-                @change="handleCoverFileSelected"
-              />
-
-              <input
-                ref="rawCoverFileInputRef"
-                type="file"
-                accept="image/*"
-                class="hidden"
-                @change="handleDirectUploadOriginal"
-              />
-
-              <div class="flex items-center space-x-2 shrink-0">
-                <!-- 直接上传原图 (文章内竖图竖放自适应展示) -->
-                <button
-                  type="button"
-                  @click="triggerRawCoverUpload"
-                  :disabled="uploadingRawCover"
-                  class="px-3 py-2 rounded-xl border border-pink-200/70 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/80 dark:bg-white/5 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors flex items-center space-x-1.5"
-                  title="直接上传无损原始图片（不强制横向切片，文章内将以完整原画竖放展示）"
-                >
-                  <Loader2 v-if="uploadingRawCover" class="w-3.5 h-3.5 animate-spin" />
-                  <ImageIcon v-else class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
-                  <span>直接上传原图</span>
-                </button>
-
-                <!-- 上传本地图片并裁切按钮 -->
-                <button
-                  type="button"
-                  @click="triggerCoverUpload"
-                  class="px-3 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-semibold shadow-md shadow-pink-500/20 transition-all flex items-center space-x-1.5"
-                  title="选择本地任意图片并调起 16:10 构图工坊微调取景区块"
-                >
-                  <Upload class="w-3.5 h-3.5" />
-                  <span>上传并裁切</span>
-                </button>
-
-                <!-- 裁切微调现有图片 -->
-                <button
-                  type="button"
-                  @click="openCropperWithCurrent"
-                  :disabled="!form.coverImage"
-                  class="px-3 py-2 rounded-xl border border-pink-200/70 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/80 dark:bg-white/5 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors flex items-center space-x-1.5 disabled:opacity-40"
-                  title="对当前封面打开 16:10 构图调整"
-                >
-                  <Crop class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
-                  <span>构图微调</span>
-                </button>
+            <!-- 卡片 2：文章详情原图 (原始无损立绘/全景) -->
+            <div
+              class="p-3.5 rounded-2xl bg-white/70 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 flex flex-col justify-between space-y-3 transition-colors shadow-sm"
+            >
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center space-x-1.5">
+                  <Maximize2 class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
+                  <span>② 文章详情内嵌原图</span>
+                </span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                  {{ form.rawCoverImage ? '完整全身原画' : '默认同外部' }}
+                </span>
               </div>
+
+              <!-- 缩略图与操作 -->
+              <div class="flex items-center space-x-3">
+                <div
+                  class="relative w-28 h-[70px] rounded-xl bg-pink-100 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 overflow-hidden shrink-0 flex items-center justify-center shadow-sm"
+                >
+                  <img
+                    v-if="form.rawCoverImage || form.coverImage"
+                    :src="form.rawCoverImage || form.coverImage"
+                    alt="Detail Raw"
+                    class="max-w-full max-h-full object-contain"
+                    onerror="this.src='/images/hsr/himeko_express.png'"
+                  />
+                  <span v-else class="text-[10px] text-slate-400">未设置</span>
+                </div>
+
+                <div class="flex-1 space-y-2 min-w-0">
+                  <input
+                    v-model="form.rawCoverImage"
+                    type="text"
+                    placeholder="留空时自动回退使用外部封面..."
+                    class="w-full px-3 py-1.5 rounded-xl bg-white/80 dark:bg-space-900 border border-pink-200/60 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 font-mono focus:outline-none focus:border-amber-500"
+                  />
+                  <div class="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      @click="triggerRawCoverUpload"
+                      :disabled="uploadingRawCover"
+                      class="px-2.5 py-1 rounded-lg border border-pink-200/60 dark:border-white/10 hover:bg-pink-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300 text-[11px] transition-colors flex items-center space-x-1"
+                    >
+                      <Loader2 v-if="uploadingRawCover" class="w-3 h-3 animate-spin" />
+                      <Upload v-else class="w-3 h-3 text-pink-500 dark:text-nebula-cyan" />
+                      <span>单独上传原图</span>
+                    </button>
+                    <button
+                      v-if="form.rawCoverImage"
+                      type="button"
+                      @click="form.rawCoverImage = ''"
+                      class="px-2 py-1 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-500 text-[11px] transition-colors"
+                      title="清空后将默认使用外部封面"
+                    >
+                      清空
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">
+                文章正文顶部展台呈现，竖图展示垂直全身立绘，不截断人物下身。
+              </p>
             </div>
           </div>
+
+          <!-- 隐藏文件上传 input -->
+          <input
+            ref="coverFileInputRef"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            @change="handleCoverFileSelected"
+          />
+
+          <input
+            ref="rawCoverFileInputRef"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            @change="handleDirectUploadOriginal"
+          />
 
           <!-- 快速预设按钮 -->
           <div class="flex items-center space-x-2 pt-1">
@@ -261,7 +325,7 @@
                 v-for="preset in coverPresets"
                 :key="preset.name"
                 type="button"
-                @click="form.coverImage = preset.url"
+                @click="applyPresetCover(preset.url)"
                 class="px-2 py-0.5 rounded-lg bg-white/60 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/60 dark:border-white/10 text-[11px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
                 :class="{ 'border-pink-400 dark:border-nebula-cyan text-pink-600 dark:text-nebula-cyan font-medium': form.coverImage === preset.url }"
               >
@@ -458,7 +522,8 @@ import {
   Image as ImageIcon,
   Table as TableIcon,
   Upload,
-  Crop
+  Crop,
+  Maximize2
 } from 'lucide-vue-next';
 import confetti from 'canvas-confetti';
 import MarkdownViewer from '@/components/MarkdownViewer.vue';
@@ -496,6 +561,7 @@ const form = reactive<{
   summary: string;
   contentMd: string;
   coverImage: string;
+  rawCoverImage: string;
   status: 'PUBLISHED' | 'DRAFT';
   isPinned: boolean;
   tagIds: number[];
@@ -505,6 +571,7 @@ const form = reactive<{
   summary: '',
   contentMd: '',
   coverImage: '/images/hsr/himeko_express.png',
+  rawCoverImage: '',
   status: 'PUBLISHED',
   isPinned: false,
   tagIds: [],
@@ -597,7 +664,7 @@ const handleCoverFileSelected = (e: Event) => {
   target.value = '';
 };
 
-// 直接上传无损原始大图（文章内自适应竖放/横放，列表卡片自动聚焦头部）
+// 直接上传无损原始大图（用于文章内详情展台展示）
 const handleDirectUploadOriginal = async (e: Event) => {
   const target = e.target as HTMLInputElement;
   const file = target.files?.[0];
@@ -611,8 +678,11 @@ const handleDirectUploadOriginal = async (e: Event) => {
   uploadingRawCover.value = true;
   try {
     const result = await uploadImage(file, file.name);
-    form.coverImage = result.url;
-    toast.success('原始图片上传成功 ✨ 文章内将以自适应竖版/横版原画展现！');
+    form.rawCoverImage = result.url;
+    if (!form.coverImage) {
+      form.coverImage = result.url;
+    }
+    toast.success('原始插画上传成功 ✨ 文章内将以完整无损原画展现！');
   } catch (err: any) {
     console.error('上传原图失败:', err);
     toast.error(err.response?.data?.message || err.message || '上传原图失败');
@@ -642,12 +712,25 @@ const handleCoverDrop = (e: DragEvent) => {
 
 const openCropperWithCurrent = () => {
   currentRawCoverFile.value = null;
-  cropperImageSource.value = form.coverImage || '/images/hsr/himeko_express.png';
+  // 优先采用高分辨率原画进行裁切取景，避免对已切过图的二次失真裁切
+  cropperImageSource.value = form.rawCoverImage || form.coverImage || '/images/hsr/himeko_express.png';
   showCropperModal.value = true;
 };
 
-const handleCropSuccess = (newUrl: string) => {
-  form.coverImage = newUrl;
+const handleCropSuccess = (payload: { coverImage: string; rawCoverImage?: string } | string) => {
+  if (typeof payload === 'string') {
+    form.coverImage = payload;
+  } else {
+    form.coverImage = payload.coverImage;
+    if (payload.rawCoverImage) {
+      form.rawCoverImage = payload.rawCoverImage;
+    }
+  }
+};
+
+const applyPresetCover = (url: string) => {
+  form.coverImage = url;
+  form.rawCoverImage = url;
 };
 
 const autoGenerateSlug = () => {
@@ -751,6 +834,7 @@ const submitForm = async (targetStatus?: 'PUBLISHED' | 'DRAFT') => {
       summary: form.summary.trim() || form.contentMd.slice(0, 120),
       contentMd: form.contentMd,
       coverImage: form.coverImage.trim() || undefined,
+      rawCoverImage: form.rawCoverImage.trim() || undefined,
       status: finalStatus,
       isPinned: form.isPinned ? 1 : 0,
       tagIds: form.tagIds,
@@ -796,6 +880,7 @@ const initData = async () => {
       form.contentMd = detail.contentMd || detail.content || '';
       previewContent.value = form.contentMd;
       form.coverImage = detail.coverImage || '';
+      form.rawCoverImage = detail.rawCoverImage || '';
       form.status = (detail.status || 'PUBLISHED').toUpperCase() as 'PUBLISHED' | 'DRAFT';
       form.isPinned = detail.isPinned === true || detail.isPinned === 1;
       form.tagIds = detail.tags ? detail.tags.map(t => t.id) : [];

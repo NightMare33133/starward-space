@@ -104,6 +104,7 @@ public class PostServiceImpl implements PostService {
                 .summary(request.getSummary())
                 .contentMd(request.getContentMd())
                 .coverImage(request.getCoverImage())
+                .rawCoverImage(request.getRawCoverImage())
                 .status(request.getStatus() != null ? request.getStatus().toUpperCase() : "PUBLISHED")
                 .isPinned(request.getIsPinned() != null ? request.getIsPinned() : 0)
                 .viewCount(0)
@@ -142,6 +143,7 @@ public class PostServiceImpl implements PostService {
                 .summary(request.getSummary())
                 .contentMd(request.getContentMd())
                 .coverImage(request.getCoverImage())
+                .rawCoverImage(request.getRawCoverImage())
                 .status(request.getStatus() != null ? request.getStatus().toUpperCase() : existing.getStatus())
                 .isPinned(request.getIsPinned() != null ? request.getIsPinned() : existing.getIsPinned())
                 .build();
@@ -254,6 +256,7 @@ public class PostServiceImpl implements PostService {
                 .summary(post.getSummary())
                 .contentMd(post.getContentMd())
                 .coverImage(post.getCoverImage())
+                .rawCoverImage(post.getRawCoverImage())
                 .status(post.getStatus())
                 .isPinned(post.getIsPinned())
                 .viewCount(post.getViewCount())

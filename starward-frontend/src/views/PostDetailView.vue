@@ -81,9 +81,15 @@
       <!-- 文章内嵌精选封面插画展台 (智能自适应：横图宽屏，竖图居中垂直原画展台) -->
       <div v-if="postCover" class="space-y-2">
         <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1 font-mono">
-          <span class="flex items-center space-x-1.5">
+          <span class="flex items-center space-x-1.5 flex-wrap">
             <Sparkles class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
             <span>精选文章封面 · {{ isVerticalCover ? '竖版插画完整原画' : '宽屏全景画框' }}</span>
+            <span
+              v-if="post.rawCoverImage"
+              class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 font-mono"
+            >
+              无损原画展台
+            </span>
           </span>
 
           <div class="flex items-center space-x-2">
@@ -92,10 +98,10 @@
               type="button"
               @click="toggleCoverMode"
               class="px-2.5 py-1 rounded-lg glass-card border border-pink-200/60 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 text-[11px] text-slate-600 dark:text-slate-300 transition-colors flex items-center space-x-1 shadow-sm"
-              :title="coverDisplayMode === 'banner' ? '切换为自适应原画完整展示' : '切换为宽屏横条画框'"
+              :title="coverDisplayMode === 'banner' ? '切换为自适应无损原画完整展示' : '切换为宽屏横条画框'"
             >
               <SlidersHorizontal class="w-3 h-3 text-pink-500 dark:text-nebula-cyan" />
-              <span>{{ coverDisplayMode === 'banner' ? '自适应完整原图' : '宽屏全景画框' }}</span>
+              <span>{{ coverDisplayMode === 'banner' ? '自适应完整原图' : '宽屏切片视角' }}</span>
             </button>
 
             <!-- 放大灯箱按钮 -->
@@ -145,7 +151,7 @@
           @click="showLightbox = true"
         >
           <img
-            :src="postCover"
+            :src="displayCoverSrc"
             :alt="post.title"
             @load="handleCoverLoad"
             class="w-full h-full max-h-[460px] object-cover object-[center_20%] group-hover:scale-102 transition-transform duration-700 ease-out"
@@ -262,9 +268,20 @@ const defaultCovers = [
 
 const postCover = computed(() => {
   if (!post.value) return '';
+  // 详情页优先展示未经裁切的无损原画（竖版立绘/全身插画）
+  if (post.value.rawCoverImage) return post.value.rawCoverImage;
   if (post.value.coverImage) return post.value.coverImage;
   const idx = Math.abs(Number(post.value.id) || 0) % defaultCovers.length;
   return defaultCovers[idx];
+});
+
+const displayCoverSrc = computed(() => {
+  if (!post.value) return postCover.value;
+  // 当用户在详情页特意切换为“宽屏画框”模式时，若存在 16:10 裁切卡片封面则直接展现 16:10 封面
+  if (coverDisplayMode.value === 'banner' && post.value.coverImage) {
+    return post.value.coverImage;
+  }
+  return postCover.value;
 });
 
 // 封面展台展示模式与智能比例自适应

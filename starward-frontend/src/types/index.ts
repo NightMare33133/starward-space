@@ -18,6 +18,7 @@ export interface PostListVO {
   slug: string;
   summary: string;
   coverImage?: string;
+  rawCoverImage?: string;
   status?: 'PUBLISHED' | 'DRAFT';
   viewCount: number;
   isPinned: boolean | number;
@@ -35,6 +36,7 @@ export interface PostDetailVO {
   content?: string;
   contentMd?: string;
   coverImage?: string;
+  rawCoverImage?: string;
   status?: 'PUBLISHED' | 'DRAFT';
   viewCount: number;
   isPinned: boolean | number;
@@ -50,6 +52,7 @@ export interface PostCreateRequest {
   summary: string;
   contentMd: string;
   coverImage?: string;
+  rawCoverImage?: string;
   status: 'PUBLISHED' | 'DRAFT';
   isPinned: number | boolean;
   tagIds: number[];
@@ -61,6 +64,7 @@ export interface PostUpdateRequest {
   summary: string;
   contentMd: string;
   coverImage?: string;
+  rawCoverImage?: string;
   status: 'PUBLISHED' | 'DRAFT';
   isPinned: number | boolean;
   tagIds: number[];

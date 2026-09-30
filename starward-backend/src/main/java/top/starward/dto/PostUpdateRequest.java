@@ -32,8 +32,11 @@ public class PostUpdateRequest {
     @NotBlank(message = "Markdown 正文内容不能为空")
     private String contentMd;
 
-    @Schema(description = "文章封面图 URL", example = "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86")
+    @Schema(description = "文章封面图 URL (卡片裁切版)", example = "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86")
     private String coverImage;
+
+    @Schema(description = "文章详情内嵌大图 URL (无损原图版，若为空则默认使用 coverImage)", example = "/api/uploads/cover_raw_xxx.png")
+    private String rawCoverImage;
 
     @Schema(description = "发布状态: DRAFT (草稿) / PUBLISHED (已发布)", example = "PUBLISHED")
     private String status;

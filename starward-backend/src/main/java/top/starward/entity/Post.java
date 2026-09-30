@@ -25,6 +25,7 @@ public class Post implements Serializable {
     private String summary;
     private String contentMd;
     private String coverImage;
+    private String rawCoverImage;
     private String status;      // DRAFT / PUBLISHED
     private Integer isPinned;   // 0: 否, 1: 是
     private Integer viewCount;

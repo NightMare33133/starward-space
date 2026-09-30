@@ -27,6 +27,7 @@ public class PostDetailVO implements Serializable {
     private String summary;
     private String contentMd;
     private String coverImage;
+    private String rawCoverImage;
     private String status;
     private Integer isPinned;
     private Integer viewCount;
