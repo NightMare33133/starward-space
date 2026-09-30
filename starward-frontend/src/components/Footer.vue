@@ -52,14 +52,14 @@
       <!-- 页脚底部：正中居中醒目展示萌备徽章与免责声明，完全避开右下角悬浮音乐播放器 -->
       <div class="pt-6 flex flex-col items-center justify-center space-y-3 text-center">
         <a
-          href="https://icp.gov.moe/?keyword=20263313"
+          href="https://icp.gov.moe/?keyword=20263133"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-300 border bg-pink-50 text-pink-600 border-pink-200 hover:bg-pink-100 hover:border-pink-300 hover:scale-105 dark:bg-pink-500/10 dark:text-pink-300 dark:border-pink-500/25 dark:hover:bg-pink-500/20 dark:hover:border-pink-400/40 shadow-sm"
           title="萌国ICP备案认证"
         >
           <span>🌸</span>
-          <span>萌ICP备20263313号</span>
+          <span>萌ICP备20263133号</span>
         </a>
         <p class="text-[11px] font-mono text-slate-400 dark:text-slate-600">
           All Star Rail visual assets belong to miHoYo / HoYoverse · Non-commercial personal blog
