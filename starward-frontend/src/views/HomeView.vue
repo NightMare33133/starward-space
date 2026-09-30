@@ -287,7 +287,7 @@
           </div>
 
           <!-- 左侧：文案与摄影标签 -->
-          <div class="relative z-10 space-y-2 max-w-[58%] sm:max-w-[62%]">
+          <div class="relative z-10 space-y-2 max-w-[48%] sm:max-w-[50%]">
             <div class="flex items-center space-x-2">
               <span
                 class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider flex items-center space-x-1.5 transition-colors shadow-sm"
@@ -326,14 +326,15 @@
             </div>
           </div>
 
-          <!-- 右侧：拍立得错落微缩相片展示区 (悬停扇形展开动效) -->
-          <div class="relative z-10 w-36 sm:w-44 h-28 sm:h-32 shrink-0 select-none">
+          <!-- 右侧：拍立得错落微缩相片展示区 (悬停向左横向一字错落排开动效) -->
+          <div class="relative z-10 w-44 sm:w-64 md:w-72 h-32 shrink-0 select-none flex items-center justify-end">
             <!-- 拍立得 1 (底层：银河铁道风景) -->
             <div
-              class="absolute right-10 sm:right-12 top-0 w-20 sm:w-24 rounded-xl p-1 sm:p-1.5 pb-2.5 sm:pb-3 shadow-lg -rotate-12 group-hover:-rotate-16 group-hover:-translate-x-3 group-hover:-translate-y-1.5 transition-all duration-500 ease-out border"
+              class="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 w-20 sm:w-23 rounded-xl p-1 sm:p-1.5 pb-2.5 sm:pb-3 shadow-md rotate-6 group-hover:-translate-x-32 sm:group-hover:-translate-x-40 group-hover:rotate-2 group-hover:scale-95 group-hover:shadow-xl hover:!scale-105 hover:!z-40 transition-all duration-500 ease-out border"
               :class="themeStore.isDark
                 ? 'bg-slate-800/95 border-white/10 shadow-black/60'
                 : 'bg-white border-slate-200/80 shadow-slate-300/60'"
+              style="z-index: 10;"
             >
               <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900">
                 <img src="/images/hsr/astral_express_bg.jpg" alt="Express" class="w-full h-full object-cover" />
@@ -345,10 +346,11 @@
 
             <!-- 拍立得 2 (中层：深空流萤) -->
             <div
-              class="absolute right-4 sm:right-5 top-1.5 w-20 sm:w-24 rounded-xl p-1 sm:p-1.5 pb-2.5 sm:pb-3 shadow-xl rotate-6 group-hover:rotate-12 group-hover:translate-x-2 group-hover:-translate-y-2 transition-all duration-500 ease-out border"
+              class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-20 sm:w-23 rounded-xl p-1 sm:p-1.5 pb-2.5 sm:pb-3 shadow-lg -rotate-4 group-hover:-translate-x-16 sm:group-hover:-translate-x-20 group-hover:-rotate-2 group-hover:scale-100 group-hover:shadow-xl hover:!scale-105 hover:!z-40 transition-all duration-500 ease-out border"
               :class="themeStore.isDark
                 ? 'bg-slate-800/95 border-white/10 shadow-black/70'
                 : 'bg-white border-slate-200/80 shadow-slate-300/70'"
+              style="z-index: 20;"
             >
               <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900">
                 <img src="/images/hsr/firefly_night.jpg" alt="Firefly" class="w-full h-full object-cover" />
@@ -360,14 +362,15 @@
 
             <!-- 拍立得 3 (顶层前景：三月七自拍 - 拍立得经典样式配胶带贴纸) -->
             <div
-              class="absolute right-0 top-3 w-22 sm:w-26 rounded-xl p-1.5 sm:p-1.5 pb-3 sm:pb-3.5 shadow-2xl -rotate-2 group-hover:rotate-0 group-hover:scale-105 group-hover:translate-y-1 transition-all duration-500 ease-out border"
+              class="absolute right-0 top-1/2 -translate-y-1/2 w-21 sm:w-24 rounded-xl p-1.5 sm:p-1.5 pb-3 sm:pb-3.5 shadow-2xl rotate-2 group-hover:translate-x-0 group-hover:rotate-0 group-hover:scale-105 group-hover:shadow-2xl hover:!scale-110 hover:!z-40 transition-all duration-500 ease-out border"
               :class="themeStore.isDark
                 ? 'bg-slate-800 border-pink-500/30 shadow-black/80'
                 : 'bg-white border-pink-200 shadow-pink-200/50'"
+              style="z-index: 30;"
             >
               <!-- 拍立得顶部胶带小贴纸装饰 (Cute Washi Tape) -->
               <div
-                class="absolute -top-1.5 left-4 w-7 h-2.5 rounded-xs -rotate-6 backdrop-blur-sm pointer-events-none transition-transform group-hover:rotate-0"
+                class="absolute -top-1.5 left-3.5 w-6 h-2 rounded-xs -rotate-6 backdrop-blur-sm pointer-events-none transition-transform group-hover:rotate-0"
                 :class="themeStore.isDark ? 'bg-pink-400/40' : 'bg-pink-300/70'"
               ></div>
 
