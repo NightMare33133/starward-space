@@ -179,46 +179,53 @@
       </div>
     </article>
 
-    <!-- 高清大图全屏画廊灯箱 (Lightbox) -->
-    <div
-      v-if="showLightbox"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md animate-fade-in"
-      @click="showLightbox = false"
-    >
-      <div class="relative max-w-5xl max-h-[95vh] flex flex-col items-center" @click.stop>
+    <!-- 高清大图全屏画廊灯箱 (Lightbox - 传送至 body 顶层并设置最高 z-[100]，彻底解决导航栏与音乐条层级遮挡) -->
+    <Teleport to="body">
+      <div
+        v-if="showLightbox"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-slate-950/92 backdrop-blur-xl animate-fade-in"
+        @click="showLightbox = false"
+      >
+        <!-- 屏幕右上角常驻独立关闭按钮 -->
         <button
           type="button"
           @click="showLightbox = false"
-          class="absolute -top-12 right-0 p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
-          title="关闭"
+          class="fixed top-5 right-5 sm:top-8 sm:right-8 z-[110] p-2.5 sm:p-3 rounded-full bg-white/15 hover:bg-white/25 text-white/90 hover:text-white backdrop-blur-xl border border-white/20 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer"
+          title="关闭全屏预览 (Esc)"
         >
-          <X class="w-6 h-6" />
+          <X class="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
-        <img
-          :src="postCover"
-          :alt="post?.title"
-          class="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl border border-white/10"
-        />
+        <!-- 图像主体与元信息底栏 -->
+        <div class="relative max-w-6xl max-h-[92vh] flex flex-col items-center select-none" @click.stop>
+          <img
+            :src="postCover"
+            :alt="post?.title"
+            class="max-w-full max-h-[78vh] sm:max-h-[82vh] rounded-2xl object-contain shadow-2xl border border-white/15 cursor-zoom-out"
+            @click="showLightbox = false"
+          />
 
-        <div class="mt-3 flex items-center space-x-4 text-xs font-mono text-white/80">
-          <span>尺寸: {{ naturalW }} × {{ naturalH }} px</span>
-          <a
-            :href="postCover"
-            target="_blank"
-            class="text-pink-300 hover:text-pink-200 underline flex items-center space-x-1"
-          >
-            <ExternalLink class="w-3.5 h-3.5" />
-            <span>新标签页打开原始文件</span>
-          </a>
+          <div class="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-mono text-white/85">
+            <span v-if="naturalW && naturalH" class="px-3 py-1 rounded-full bg-white/10 border border-white/15 backdrop-blur-md">
+              尺寸: {{ naturalW }} × {{ naturalH }} px ({{ isVerticalCover ? '竖版插画' : '横版宽屏' }})
+            </span>
+            <a
+              :href="postCover"
+              target="_blank"
+              class="px-3.5 py-1 rounded-full bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 hover:text-pink-200 border border-pink-400/30 backdrop-blur-md transition-colors flex items-center space-x-1.5"
+            >
+              <ExternalLink class="w-3.5 h-3.5" />
+              <span>新标签页查看原始文件</span>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   ArrowLeft,
@@ -300,6 +307,7 @@ const copyArticleUrl = () => {
 };
 
 onMounted(async () => {
+  window.addEventListener('keydown', handleGlobalKeydown);
   const id = Number(route.params.id);
   if (!id) {
     error.value = '文章 ID 不存在';
@@ -314,4 +322,24 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleGlobalKeydown);
+  document.body.style.overflow = '';
+});
+
+// 监听大图画廊开关：锁定背景滚动与支持 ESC 关闭
+watch(showLightbox, (open) => {
+  if (open) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
+
+const handleGlobalKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && showLightbox.value) {
+    showLightbox.value = false;
+  }
+};
 </script>

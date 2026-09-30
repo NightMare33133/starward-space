@@ -1,9 +1,10 @@
 <template>
-  <div
-    v-if="show"
-    class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-md overflow-y-auto animate-fade-in"
-    @click.self="handleClose"
-  >
+  <Teleport to="body">
+    <div
+      v-if="show"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-fade-in"
+      @click.self="handleClose"
+    >
     <div
       class="w-full max-w-5xl rounded-3xl glass-card border border-pink-200/50 dark:border-white/10 bg-white/95 dark:bg-space-950/95 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
       role="dialog"
@@ -376,6 +377,7 @@
       </div>
     </div>
   </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
