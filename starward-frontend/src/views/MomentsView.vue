@@ -1,24 +1,24 @@
 <template>
   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8">
     <!-- 头部说明区 -->
-    <div class="space-y-3 border-b border-white/10 pb-6">
-      <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center space-x-3">
-        <Sparkles class="w-8 h-8 text-nebula-purple" />
+    <div class="space-y-3 border-b border-pink-200/60 dark:border-white/10 pb-6">
+      <h1 class="text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight flex items-center space-x-3">
+        <Sparkles class="w-8 h-8 text-pink-500 dark:text-nebula-purple" />
         <span>星际碎语 · Moments</span>
       </h1>
-      <p class="text-sm text-slate-400">
+      <p class="text-sm text-slate-600 dark:text-slate-400">
         记录瞬间的灵感、深夜敲代码的碎碎念、以及生活的细碎光芒。
       </p>
     </div>
 
     <!-- 碎语发布面板 (极简毛玻璃卡片) -->
-    <div class="glass-card rounded-2xl p-5 border border-white/10 space-y-4 shadow-xl">
+    <div class="glass-card rounded-2xl p-5 border border-pink-200/60 dark:border-white/10 space-y-4 shadow-xl">
       <!-- 文本输入框 -->
       <textarea
         v-model="newContent"
         rows="3"
         placeholder="这一刻在想什么？发送一条星际电波吧..."
-        class="w-full bg-space-950/60 border border-white/10 rounded-xl p-3.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-nebula-purple/50 transition-colors resize-none leading-relaxed"
+        class="w-full bg-white/70 dark:bg-space-950/60 border border-pink-200/80 dark:border-white/10 rounded-xl p-3.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-pink-500 dark:focus:border-nebula-purple/50 focus:ring-2 focus:ring-pink-300/30 dark:focus:ring-nebula-purple/20 transition-all resize-none leading-relaxed"
       ></textarea>
 
       <!-- 待发送图片缩略图排盘 -->
@@ -26,7 +26,7 @@
         <div
           v-for="(img, idx) in selectedImages"
           :key="idx"
-          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border border-white/20 overflow-hidden relative group shrink-0 shadow-md bg-space-900"
+          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border border-pink-200/80 dark:border-white/20 overflow-hidden relative group shrink-0 shadow-md bg-white/60 dark:bg-space-900"
         >
           <img :src="img" class="w-full h-full object-cover" />
           <button
@@ -44,7 +44,7 @@
           v-if="selectedImages.length < 9"
           type="button"
           @click="triggerFileInput"
-          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-dashed border-white/20 hover:border-nebula-purple/60 text-slate-400 hover:text-white flex flex-col items-center justify-center transition-all bg-white/5 active:scale-95"
+          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-dashed border-pink-300/80 dark:border-white/20 hover:border-pink-500 dark:hover:border-nebula-purple/60 text-slate-400 hover:text-pink-600 dark:hover:text-white flex flex-col items-center justify-center transition-all bg-pink-50/50 dark:bg-white/5 active:scale-95"
           title="继续添加图片"
         >
           <Plus class="w-5 h-5" />
@@ -71,33 +71,33 @@
         leave-from-class="opacity-100 translate-y-0"
         leave-to-class="opacity-0 -translate-y-2"
       >
-        <div v-if="showUrlInput" class="p-3 rounded-xl bg-space-950/80 border border-white/10 space-y-2.5">
+        <div v-if="showUrlInput" class="p-3 rounded-xl bg-pink-50/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 space-y-2.5">
           <div class="flex items-center space-x-2">
             <input
               v-model="imageUrlInput"
               type="text"
               placeholder="输入图片直链 URL (例如 https://...)"
-              class="flex-1 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-nebula-purple font-mono"
+              class="flex-1 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-white/5 border border-pink-200 dark:border-white/10 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-pink-400 dark:focus:border-nebula-purple font-mono"
               @keyup.enter="addImageUrl"
             />
             <button
               type="button"
               @click="addImageUrl"
-              class="px-3.5 py-1.5 rounded-lg bg-nebula-purple/20 hover:bg-nebula-purple/40 border border-nebula-purple/40 text-xs text-purple-200 font-medium transition-colors"
+              class="px-3.5 py-1.5 rounded-lg bg-pink-100 hover:bg-pink-200 dark:bg-nebula-purple/20 dark:hover:bg-nebula-purple/40 border border-pink-300 dark:border-nebula-purple/40 text-xs text-pink-700 dark:text-purple-200 font-medium transition-colors"
             >
               添加
             </button>
           </div>
 
           <!-- 星际快捷预设壁纸/配图点选 -->
-          <div class="flex flex-wrap items-center gap-1.5 pt-0.5 text-xs text-slate-400">
-            <span class="text-[10px] text-slate-500 font-mono">快捷配图:</span>
+          <div class="flex flex-wrap items-center gap-1.5 pt-0.5 text-xs text-slate-600 dark:text-slate-400">
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 font-mono">快捷配图:</span>
             <button
               v-for="preset in presetImages"
               :key="preset.url"
               type="button"
               @click="addPresetImage(preset.url)"
-              class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 hover:text-nebula-cyan border border-white/5 transition-colors text-[11px]"
+              class="px-2.5 py-1 rounded-lg bg-white/80 dark:bg-white/5 hover:bg-pink-100 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 hover:text-pink-600 dark:hover:text-nebula-cyan border border-pink-200/60 dark:border-white/5 transition-colors text-[11px]"
             >
               + {{ preset.label }}
             </button>
@@ -106,16 +106,16 @@
       </transition>
 
       <!-- 底部控制条：心情、配图入口、地点、发射 -->
-      <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-white/5">
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-pink-200/50 dark:border-white/5">
         <div class="flex flex-wrap items-center gap-2.5">
           <!-- 心情 Emoji 快速选择 -->
-          <div class="flex items-center space-x-1 bg-white/5 rounded-lg p-1 border border-white/5">
+          <div class="flex items-center space-x-1 bg-pink-100/60 dark:bg-white/5 rounded-lg p-1 border border-pink-200/50 dark:border-white/5">
             <button
               v-for="emoji in moodOptions"
               :key="emoji"
               @click="selectedMood = emoji"
               class="w-7 h-7 rounded flex items-center justify-center text-sm transition-all"
-              :class="selectedMood === emoji ? 'bg-nebula-purple/30 scale-110 shadow-sm' : 'hover:bg-white/10 opacity-70 hover:opacity-100'"
+              :class="selectedMood === emoji ? 'bg-pink-200 dark:bg-nebula-purple/30 scale-110 shadow-sm' : 'hover:bg-pink-200/50 dark:hover:bg-white/10 opacity-70 hover:opacity-100'"
               title="选择当前心情"
             >
               {{ emoji }}
@@ -128,12 +128,12 @@
               type="button"
               @click="triggerFileInput"
               :disabled="selectedImages.length >= 9"
-              class="flex items-center space-x-1 text-xs text-slate-300 bg-white/5 hover:bg-white/10 px-2.5 py-1.5 rounded-lg border border-white/10 hover:border-nebula-purple/40 transition-all disabled:opacity-40"
+              class="flex items-center space-x-1 text-xs text-slate-700 dark:text-slate-300 bg-pink-100/60 dark:bg-white/5 hover:bg-pink-200/60 dark:hover:bg-white/10 px-2.5 py-1.5 rounded-lg border border-pink-200/60 dark:border-white/10 hover:border-pink-400 dark:hover:border-nebula-purple/40 transition-all disabled:opacity-40"
               title="添加本地图片 (最多9张)"
             >
-              <ImageIcon class="w-3.5 h-3.5 text-nebula-cyan" />
+              <ImageIcon class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
               <span>图片</span>
-              <span v-if="selectedImages.length > 0" class="text-[10px] font-mono text-nebula-cyan font-bold">
+              <span v-if="selectedImages.length > 0" class="text-[10px] font-mono text-pink-600 dark:text-nebula-cyan font-bold">
                 ({{ selectedImages.length }}/9)
               </span>
             </button>
@@ -141,8 +141,8 @@
             <button
               type="button"
               @click="showUrlInput = !showUrlInput"
-              class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-nebula-cyan border border-white/10 transition-colors"
-              :class="{ 'text-nebula-cyan border-nebula-cyan/30': showUrlInput }"
+              class="p-1.5 rounded-lg bg-pink-100/60 dark:bg-white/5 hover:bg-pink-200/60 dark:hover:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-pink-600 dark:hover:text-nebula-cyan border border-pink-200/60 dark:border-white/10 transition-colors"
+              :class="{ 'text-pink-600 border-pink-400 dark:text-nebula-cyan dark:border-nebula-cyan/30': showUrlInput }"
               title="网络外链 / 预设配图"
             >
               <Link2 class="w-3.5 h-3.5" />
@@ -150,12 +150,12 @@
           </div>
 
           <!-- 地点 -->
-          <div class="flex items-center space-x-1 text-xs text-slate-400 bg-white/5 px-2.5 py-1.5 rounded-lg border border-white/5">
-            <MapPin class="w-3.5 h-3.5 text-nebula-pink" />
+          <div class="flex items-center space-x-1 text-xs text-slate-500 dark:text-slate-400 bg-pink-100/60 dark:bg-white/5 px-2.5 py-1.5 rounded-lg border border-pink-200/50 dark:border-white/5">
+            <MapPin class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-pink" />
             <input
               v-model="customLocation"
               type="text"
-              class="bg-transparent border-none outline-none text-xs text-slate-300 w-24 placeholder-slate-500"
+              class="bg-transparent border-none outline-none text-xs text-slate-700 dark:text-slate-300 w-24 placeholder-slate-400 dark:placeholder-slate-500"
               placeholder="地点坐标"
             />
           </div>
@@ -165,41 +165,41 @@
         <button
           @click="handlePublish"
           :disabled="publishing || !newContent.trim()"
-          class="px-5 py-2 rounded-xl bg-gradient-to-r from-nebula-purple to-nebula-pink text-white text-xs font-semibold shadow-lg shadow-nebula-purple/20 hover:shadow-nebula-purple/35 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center space-x-1.5"
+          class="px-5 py-2 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 dark:from-nebula-purple dark:to-nebula-pink text-white text-xs font-semibold shadow-lg shadow-pink-500/20 dark:shadow-nebula-purple/20 hover:shadow-pink-500/35 dark:hover:shadow-nebula-purple/35 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center space-x-1.5"
         >
           <Send class="w-3.5 h-3.5" />
           <span>{{ publishing ? '发射中...' : '发射电波' }}</span>
         </button>
       </div>
 
-      <div v-if="postError" class="text-xs text-rose-400 font-mono">
+      <div v-if="postError" class="text-xs text-rose-500 dark:text-rose-400 font-mono">
         {{ postError }}
       </div>
     </div>
 
     <!-- 加载中 -->
-    <div v-if="loading" class="text-center py-16 text-slate-500 text-sm">
-      <div class="inline-block w-6 h-6 border-2 border-nebula-purple border-t-transparent rounded-full animate-spin mb-2"></div>
+    <div v-if="loading" class="text-center py-16 text-slate-500 dark:text-slate-400 text-sm">
+      <div class="inline-block w-6 h-6 border-2 border-pink-500 dark:border-nebula-purple border-t-transparent rounded-full animate-spin mb-2"></div>
       <p>正在接收历史星际信号...</p>
     </div>
 
     <!-- 碎语时间线列表 -->
-    <div v-else class="space-y-6 relative before:absolute before:inset-0 before:left-5 before:w-0.5 before:bg-white/10">
+    <div v-else class="space-y-6 relative before:absolute before:inset-0 before:left-5 before:w-0.5 before:bg-pink-200/60 dark:before:bg-white/10">
       <div
         v-for="moment in moments"
         :key="moment.id"
         class="relative flex items-start space-x-4 group"
       >
         <!-- 时间线锚点 -->
-        <div class="w-10 h-10 rounded-full glass-card border border-white/20 flex items-center justify-center text-lg shrink-0 shadow-lg group-hover:border-nebula-purple/60 group-hover:scale-110 transition-all z-10 bg-space-950">
+        <div class="w-10 h-10 rounded-full glass-card border border-pink-200/70 dark:border-white/20 flex items-center justify-center text-lg shrink-0 shadow-lg group-hover:border-pink-400 dark:group-hover:border-nebula-purple/60 group-hover:scale-110 transition-all z-10 bg-white/90 dark:bg-space-950">
           {{ moment.moodEmoji || moment.mood || '✨' }}
         </div>
 
         <!-- 碎语卡片内容 -->
-        <div class="flex-1 glass-card rounded-2xl p-5 border border-white/10 space-y-3 group-hover:border-nebula-purple/30 transition-all shadow-md">
-          <div class="flex items-center justify-between text-xs text-slate-500 font-mono">
-            <span v-if="moment.location" class="flex items-center space-x-1 text-slate-400">
-              <MapPin class="w-3 h-3 text-nebula-pink" />
+        <div class="flex-1 glass-card rounded-2xl p-5 border border-pink-200/60 dark:border-white/10 space-y-3 group-hover:border-pink-300 dark:group-hover:border-nebula-purple/30 transition-all shadow-md">
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
+            <span v-if="moment.location" class="flex items-center space-x-1 text-slate-500 dark:text-slate-400">
+              <MapPin class="w-3 h-3 text-pink-500 dark:text-nebula-pink" />
               <span>{{ moment.location }}</span>
             </span>
             <span v-else>星向电台</span>
@@ -207,7 +207,7 @@
           </div>
 
           <!-- 正文 -->
-          <p class="text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
+          <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">
             {{ moment.content }}
           </p>
 
@@ -216,7 +216,7 @@
             <!-- 单图大图展示 -->
             <div
               v-if="getMomentImages(moment).length === 1"
-              class="max-w-md max-h-80 rounded-2xl overflow-hidden border border-white/10 shadow-lg cursor-pointer group/img relative"
+              class="max-w-md max-h-80 rounded-2xl overflow-hidden border border-pink-200/60 dark:border-white/10 shadow-lg cursor-pointer group/img relative"
               @click="openLightbox(getMomentImages(moment), 0)"
             >
               <img
@@ -235,7 +235,7 @@
               <div
                 v-for="(img, imgIdx) in getMomentImages(moment)"
                 :key="imgIdx"
-                class="aspect-square rounded-xl overflow-hidden border border-white/10 shadow cursor-pointer group/img relative bg-space-900"
+                class="aspect-square rounded-xl overflow-hidden border border-pink-200/60 dark:border-white/10 shadow cursor-pointer group/img relative bg-pink-50/50 dark:bg-space-900"
                 @click="openLightbox(getMomentImages(moment), imgIdx)"
               >
                 <img
@@ -255,7 +255,7 @@
               <div
                 v-for="(img, imgIdx) in getMomentImages(moment)"
                 :key="imgIdx"
-                class="aspect-square rounded-xl overflow-hidden border border-white/10 shadow cursor-pointer group/img relative bg-space-900"
+                class="aspect-square rounded-xl overflow-hidden border border-pink-200/60 dark:border-white/10 shadow cursor-pointer group/img relative bg-pink-50/50 dark:bg-space-900"
                 @click="openLightbox(getMomentImages(moment), imgIdx)"
               >
                 <img
