@@ -11,166 +11,203 @@
       </p>
     </div>
 
-    <!-- 碎语发布面板 (极简毛玻璃卡片) -->
-    <div class="glass-card rounded-2xl p-5 border border-pink-200/60 dark:border-white/10 space-y-4 shadow-xl">
-      <!-- 文本输入框 -->
-      <textarea
-        v-model="newContent"
-        rows="3"
-        placeholder="这一刻在想什么？发送一条星际电波吧..."
-        class="w-full bg-white/70 dark:bg-space-950/60 border border-pink-200/80 dark:border-white/10 rounded-xl p-3.5 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-pink-500 dark:focus:border-nebula-purple/50 focus:ring-2 focus:ring-pink-300/30 dark:focus:ring-nebula-purple/20 transition-all resize-none leading-relaxed"
-      ></textarea>
-
-      <!-- 待发送图片缩略图排盘 -->
-      <div v-if="selectedImages.length > 0" class="flex flex-wrap gap-2.5 pt-1">
-        <div
-          v-for="(img, idx) in selectedImages"
-          :key="idx"
-          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border border-pink-200/80 dark:border-white/20 overflow-hidden relative group shrink-0 shadow-md bg-white/60 dark:bg-space-900"
-        >
-          <img :src="img" class="w-full h-full object-cover" />
-          <button
-            type="button"
-            @click="removeImage(idx)"
-            class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-rose-400 hover:text-rose-300 transition-opacity"
-            title="移除此图"
-          >
-            <X class="w-5 h-5" />
-          </button>
+    <!-- 碎语发布面板 (与控制中枢发射台全面对齐) -->
+    <div class="glass-card rounded-2xl p-6 border border-pink-200/60 dark:border-white/10 space-y-4 shadow-xl">
+      <div class="flex items-center justify-between pb-1 border-b border-pink-200/40 dark:border-white/5">
+        <div class="flex items-center space-x-2">
+          <div class="p-2 rounded-xl bg-pink-500/10 text-pink-600 dark:bg-nebula-cyan/10 dark:text-nebula-cyan border border-pink-200/60 dark:border-nebula-cyan/20">
+            <Send class="w-4 h-4" />
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-white">星际碎语速发发射台</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">一键将生活随笔、配图与灵感广播至展示端</p>
+          </div>
         </div>
-
-        <!-- 继续添加图片加号卡片 (未达9张) -->
-        <button
-          v-if="selectedImages.length < 9"
-          type="button"
-          @click="triggerFileInput"
-          class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border-2 border-dashed border-pink-300/80 dark:border-white/20 hover:border-pink-500 dark:hover:border-nebula-purple/60 text-slate-400 hover:text-pink-600 dark:hover:text-white flex flex-col items-center justify-center transition-all bg-pink-50/50 dark:bg-white/5 active:scale-95"
-          title="继续添加图片"
-        >
-          <Plus class="w-5 h-5" />
-          <span class="text-[10px] font-mono mt-0.5">{{ selectedImages.length }}/9</span>
-        </button>
+        <div>
+          <span
+            v-if="isAdmin"
+            class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 flex items-center space-x-1"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>列车长在线</span>
+          </span>
+          <router-link
+            v-else
+            to="/admin/login"
+            class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-pink-100 text-pink-700 dark:bg-white/10 dark:text-slate-300 border border-pink-200 dark:border-white/10 hover:border-pink-400 transition-colors flex items-center space-x-1"
+            title="点击前往控制中枢登录"
+          >
+            <span>🔒 访客模式 · 登录</span>
+          </router-link>
+        </div>
       </div>
 
-      <!-- 隐藏的原生文件输入框 -->
-      <input
-        ref="fileInputRef"
-        type="file"
-        multiple
-        accept="image/*"
-        class="hidden"
-        @change="handleFileSelect"
-      />
-
-      <!-- 网络图片直链与快捷预设折叠栏 -->
-      <transition
-        enter-active-class="transition duration-200 ease-out"
-        enter-from-class="opacity-0 -translate-y-2"
-        enter-to-class="opacity-100 translate-y-0"
-        leave-active-class="transition duration-150 ease-in"
-        leave-from-class="opacity-100 translate-y-0"
-        leave-to-class="opacity-0 -translate-y-2"
-      >
-        <div v-if="showUrlInput" class="p-3 rounded-xl bg-pink-50/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 space-y-2.5">
-          <div class="flex items-center space-x-2">
-            <input
-              v-model="imageUrlInput"
-              type="text"
-              placeholder="输入图片直链 URL (例如 https://...)"
-              class="flex-1 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-white/5 border border-pink-200 dark:border-white/10 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-pink-400 dark:focus:border-nebula-purple font-mono"
-              @keyup.enter="addImageUrl"
-            />
+      <form @submit.prevent="handlePublish" class="space-y-4">
+        <!-- 心情 Emoji 快速点选 -->
+        <div>
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
+            <span>当刻星际心境</span>
+            <span class="text-base">{{ selectedMood }}</span>
+          </label>
+          <div class="flex flex-wrap gap-2">
             <button
+              v-for="item in moodOptions"
+              :key="item.emoji"
               type="button"
-              @click="addImageUrl"
-              class="px-3.5 py-1.5 rounded-lg bg-pink-100 hover:bg-pink-200 dark:bg-nebula-purple/20 dark:hover:bg-nebula-purple/40 border border-pink-300 dark:border-nebula-purple/40 text-xs text-pink-700 dark:text-purple-200 font-medium transition-colors"
+              @click="selectedMood = item.emoji"
+              class="px-2.5 py-1 rounded-xl text-xs border transition-all flex items-center space-x-1"
+              :class="selectedMood === item.emoji ? 'bg-amber-500/20 border-amber-400 text-amber-700 dark:text-white font-bold shadow' : 'bg-white/80 dark:bg-space-950/80 border-pink-200/70 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
             >
-              添加
-            </button>
-          </div>
-
-          <!-- 星际快捷预设壁纸/配图点选 -->
-          <div class="flex flex-wrap items-center gap-1.5 pt-0.5 text-xs text-slate-600 dark:text-slate-400">
-            <span class="text-[10px] text-slate-400 dark:text-slate-500 font-mono">快捷配图:</span>
-            <button
-              v-for="preset in presetImages"
-              :key="preset.url"
-              type="button"
-              @click="addPresetImage(preset.url)"
-              class="px-2.5 py-1 rounded-lg bg-white/80 dark:bg-white/5 hover:bg-pink-100 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 hover:text-pink-600 dark:hover:text-nebula-cyan border border-pink-200/60 dark:border-white/5 transition-colors text-[11px]"
-            >
-              + {{ preset.label }}
+              <span>{{ item.emoji }}</span>
+              <span class="text-[10px]">{{ item.label }}</span>
             </button>
           </div>
         </div>
-      </transition>
 
-      <!-- 底部控制条：心情、配图入口、地点、发射 -->
-      <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-pink-200/50 dark:border-white/5">
-        <div class="flex flex-wrap items-center gap-2.5">
-          <!-- 心情 Emoji 快速选择 -->
-          <div class="flex items-center space-x-1 bg-pink-100/60 dark:bg-white/5 rounded-lg p-1 border border-pink-200/50 dark:border-white/5">
+        <!-- 空间坐标 (Location) -->
+        <div>
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+            空间坐标 (Location)
+          </label>
+          <div class="relative">
+            <MapPin class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+            <input
+              v-model="customLocation"
+              type="text"
+              placeholder="例如：星穹列车 · 观景车厢"
+              class="w-full pl-8 pr-3 py-2 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all font-mono"
+            />
+          </div>
+          <!-- 预设地点 -->
+          <div class="flex flex-wrap gap-1.5 mt-1.5">
             <button
-              v-for="emoji in moodOptions"
-              :key="emoji"
-              @click="selectedMood = emoji"
-              class="w-7 h-7 rounded flex items-center justify-center text-sm transition-all"
-              :class="selectedMood === emoji ? 'bg-pink-200 dark:bg-nebula-purple/30 scale-110 shadow-sm' : 'hover:bg-pink-200/50 dark:hover:bg-white/10 opacity-70 hover:opacity-100'"
-              title="选择当前心情"
+              v-for="loc in presetLocations"
+              :key="loc"
+              type="button"
+              @click="customLocation = loc"
+              class="text-[10px] text-slate-500 hover:text-pink-600 dark:hover:text-nebula-cyan transition-colors"
             >
-              {{ emoji }}
+              #{{ loc }}
             </button>
           </div>
+        </div>
 
-          <!-- 图片添加按钮组 -->
-          <div class="flex items-center space-x-1">
+        <!-- 碎语正文 -->
+        <div>
+          <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+            碎语正文 <span class="text-rose-500">*</span>
+          </label>
+          <textarea
+            v-model="newContent"
+            rows="3"
+            placeholder="分享此时此刻的技术突破、列车航行记录或摸鱼瞬间..."
+            class="w-full px-3.5 py-2.5 rounded-xl bg-white/80 dark:bg-space-950/80 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400/80 transition-all leading-relaxed resize-none font-mono"
+          ></textarea>
+        </div>
+
+        <!-- 待发送图片缩略图排盘 -->
+        <div v-if="selectedImages.length > 0" class="space-y-1.5">
+          <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+            <span>已选配图 ({{ selectedImages.length }}/9)</span>
+            <button type="button" @click="selectedImages = []" class="text-rose-500 hover:underline">清空</button>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <div
+              v-for="(img, idx) in selectedImages"
+              :key="idx"
+              class="w-14 h-14 rounded-lg border border-pink-200/50 dark:border-white/15 overflow-hidden relative group shrink-0 bg-pink-100 dark:bg-space-900 shadow"
+            >
+              <img :src="img" class="w-full h-full object-cover" />
+              <button
+                type="button"
+                @click="removeImage(idx)"
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-rose-400 hover:text-rose-300 transition-opacity"
+                title="删除"
+              >
+                <X class="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 图片操作栏 -->
+        <div class="space-y-2">
+          <!-- 隐藏的原生文件输入框 -->
+          <input
+            ref="fileInputRef"
+            type="file"
+            multiple
+            accept="image/*"
+            class="hidden"
+            @change="handleFileSelect"
+          />
+
+          <div class="flex items-center space-x-2">
             <button
               type="button"
               @click="triggerFileInput"
               :disabled="selectedImages.length >= 9"
-              class="flex items-center space-x-1 text-xs text-slate-700 dark:text-slate-300 bg-pink-100/60 dark:bg-white/5 hover:bg-pink-200/60 dark:hover:bg-white/10 px-2.5 py-1.5 rounded-lg border border-pink-200/60 dark:border-white/10 hover:border-pink-400 dark:hover:border-nebula-purple/40 transition-all disabled:opacity-40"
-              title="添加本地图片 (最多9张)"
+              class="flex-1 py-1.5 px-2.5 rounded-xl bg-white/70 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/70 dark:border-white/10 hover:border-pink-400 dark:hover:border-amber-400/40 text-xs text-slate-700 dark:text-slate-300 flex items-center justify-center space-x-1.5 transition-all disabled:opacity-40"
             >
-              <ImageIcon class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-cyan" />
-              <span>图片</span>
-              <span v-if="selectedImages.length > 0" class="text-[10px] font-mono text-pink-600 dark:text-nebula-cyan font-bold">
-                ({{ selectedImages.length }}/9)
-              </span>
+              <ImageIcon class="w-3.5 h-3.5 text-pink-500 dark:text-amber-400" />
+              <span>本地选图 ({{ selectedImages.length }}/9)</span>
             </button>
 
             <button
               type="button"
               @click="showUrlInput = !showUrlInput"
-              class="p-1.5 rounded-lg bg-pink-100/60 dark:bg-white/5 hover:bg-pink-200/60 dark:hover:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-pink-600 dark:hover:text-nebula-cyan border border-pink-200/60 dark:border-white/10 transition-colors"
-              :class="{ 'text-pink-600 border-pink-400 dark:text-nebula-cyan dark:border-nebula-cyan/30': showUrlInput }"
-              title="网络外链 / 预设配图"
+              class="p-2 rounded-xl bg-white/70 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/70 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:text-pink-600 dark:hover:text-amber-400 transition-colors"
+              :class="{ 'text-pink-600 border-pink-400 dark:text-amber-400 dark:border-amber-400/40': showUrlInput }"
+              title="外链与星轨预设"
             >
               <Link2 class="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <!-- 地点 -->
-          <div class="flex items-center space-x-1 text-xs text-slate-500 dark:text-slate-400 bg-pink-100/60 dark:bg-white/5 px-2.5 py-1.5 rounded-lg border border-pink-200/50 dark:border-white/5">
-            <MapPin class="w-3.5 h-3.5 text-pink-500 dark:text-nebula-pink" />
-            <input
-              v-model="customLocation"
-              type="text"
-              class="bg-transparent border-none outline-none text-xs text-slate-700 dark:text-slate-300 w-24 placeholder-slate-400 dark:placeholder-slate-500"
-              placeholder="地点坐标"
-            />
+          <!-- 外链与预设输入框 -->
+          <div v-if="showUrlInput" class="p-2.5 rounded-xl bg-pink-100/70 dark:bg-space-950 border border-pink-200/70 dark:border-white/10 space-y-2">
+            <div class="flex items-center space-x-1.5">
+              <input
+                v-model="imageUrlInput"
+                type="text"
+                placeholder="图片 URL (https://...)"
+                class="flex-1 px-2.5 py-1 rounded-lg bg-white/80 dark:bg-white/5 border border-pink-200/70 dark:border-white/10 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-pink-500 font-mono"
+                @keyup.enter="addImageUrl"
+              />
+              <button
+                type="button"
+                @click="addImageUrl"
+                class="px-2.5 py-1 rounded-lg bg-pink-500/20 text-pink-700 dark:text-amber-300 text-xs font-semibold hover:bg-pink-500/30"
+              >
+                添加
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-1 text-[10px]">
+              <span class="text-slate-500 font-mono">预设:</span>
+              <button
+                v-for="p in presetImages"
+                :key="p.url"
+                type="button"
+                @click="addPresetImage(p.url)"
+                class="px-2 py-0.5 rounded bg-white/80 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-pink-600 dark:hover:text-amber-300 transition-colors"
+              >
+                + {{ p.label }}
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- 发射按钮 -->
+        <!-- 提交发射按钮 -->
         <button
-          @click="handlePublish"
+          type="submit"
           :disabled="publishing || !newContent.trim()"
-          class="px-5 py-2 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 dark:from-nebula-purple dark:to-nebula-pink text-white text-xs font-semibold shadow-lg shadow-pink-500/20 dark:shadow-nebula-purple/20 hover:shadow-pink-500/35 dark:hover:shadow-nebula-purple/35 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center space-x-1.5"
+          class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 dark:from-amber-400 dark:via-rose-500 dark:to-nebula-cyan text-white text-xs font-bold shadow-lg shadow-pink-500/25 dark:shadow-amber-500/25 hover:opacity-95 active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center justify-center space-x-1.5"
         >
-          <Send class="w-3.5 h-3.5" />
-          <span>{{ publishing ? '发射中...' : '发射电波' }}</span>
+          <Loader2 v-if="publishing" class="w-4 h-4 animate-spin" />
+          <Sparkles v-else class="w-4 h-4" />
+          <span>{{ publishing ? '发射中...' : '发射星际碎语 🚀' }}</span>
         </button>
-      </div>
+      </form>
 
       <div v-if="postError" class="text-xs text-rose-500 dark:text-rose-400 font-mono">
         {{ postError }}
@@ -339,17 +376,20 @@ import {
   Sparkles,
   MapPin,
   Send,
+  Loader2,
   Image as ImageIcon,
   Link2,
   X,
-  Plus,
   ChevronLeft,
   ChevronRight
 } from 'lucide-vue-next';
 import confetti from 'canvas-confetti';
 import { getMoments, createMoment } from '@/api/moments';
 import type { Moment } from '@/types';
+import { useToast } from '@/composables/useToast';
 
+const toast = useToast();
+const isAdmin = ref(!!localStorage.getItem('starward_admin_token'));
 const moments = ref<Moment[]>([]);
 const loading = ref(true);
 const publishing = ref(false);
@@ -358,7 +398,24 @@ const postError = ref('');
 const newContent = ref('');
 const selectedMood = ref('🚀');
 const customLocation = ref('星穹列车 · 观景车厢');
-const moodOptions = ['🚀', '🌟', '☕️', '🪐', '💻', '🌸'];
+const moodOptions = [
+  { emoji: '🚀', label: '启航' },
+  { emoji: '☕', label: '摸鱼' },
+  { emoji: '🌌', label: '漫游' },
+  { emoji: '🎮', label: '星铁' },
+  { emoji: '💡', label: '灵感' },
+  { emoji: '🐾', label: '帕姆' },
+  { emoji: '✨', label: '闪耀' },
+  { emoji: '💤', label: '休眠' },
+];
+
+const presetLocations = [
+  '星穹列车 · 观景车厢',
+  '黑塔空间站 · 主控舱段',
+  '香港城市大学（东莞）',
+  '复旦大学 · 张江校区',
+  '数字星海 · 赛博自留地',
+];
 
 // 配图相关响应式变量
 const selectedImages = ref<string[]>([]);
@@ -525,6 +582,12 @@ const loadMoments = async () => {
 
 const handlePublish = async () => {
   if (!newContent.value.trim()) return;
+
+  if (!isAdmin.value) {
+    toast.warning('当前为访客模式，仅列车长登录后可向全宇宙发射广播 🔑');
+    return;
+  }
+
   publishing.value = true;
   postError.value = '';
 
@@ -541,8 +604,10 @@ const handlePublish = async () => {
       particleCount: 50,
       spread: 60,
       origin: { y: 0.8 },
-      colors: ['#38bdf8', '#a855f7', '#ec4899']
+      colors: ['#38bdf8', '#f59e0b', '#ec4899', '#10b981']
     });
+
+    toast.success('星际碎语发射成功 ✨');
 
     newContent.value = '';
     selectedImages.value = [];
@@ -551,7 +616,9 @@ const handlePublish = async () => {
 
     await loadMoments();
   } catch (err: any) {
-    postError.value = err.response?.data?.message || err.message || '发布失败';
+    const msg = err.response?.data?.message || err.message || '发布失败';
+    postError.value = msg;
+    toast.error(msg);
   } finally {
     publishing.value = false;
   }
