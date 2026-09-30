@@ -15,13 +15,13 @@
           <Disc3 class="w-3.5 h-3.5 animate-spin-slow" />
           <span>星穹列车 · 极客留声机</span>
         </div>
-        <h1 class="text-3xl font-extrabold tracking-tight text-white flex items-center space-x-3">
+        <h1 class="text-3xl font-extrabold tracking-tight text-slate-800 dark:text-white flex items-center space-x-3">
           <span>星穹音乐厅</span>
-          <span class="text-xs font-mono text-slate-400 font-normal px-2.5 py-1 rounded-lg bg-white/5 border border-white/5">
+          <span class="text-xs font-mono text-slate-500 dark:text-slate-400 font-normal px-2.5 py-1 rounded-lg bg-pink-100/60 dark:bg-white/5 border border-pink-200/60 dark:border-white/5">
             Phonograph
           </span>
         </h1>
-        <p class="text-xs text-slate-400 font-mono">
+        <p class="text-xs text-slate-600 dark:text-slate-400 font-mono">
           愿此行，终抵群星 · 正版原声带高品质沉浸漫游
         </p>
       </div>

@@ -119,12 +119,8 @@
 }
 
 /* 浅色落樱模式文字与边框深度适配 (针对非独立背景图片卡片) */
-html:not(.dark) .glass-card:not([class*="bg-cover"]):not([class*="bg-gradient-"]) .text-white,
-html:not(.dark) .glass-island .text-white,
-html:not(.dark) h1.text-white,
-html:not(.dark) h2.text-white,
-html:not(.dark) h3.text-white,
-html:not(.dark) h4.text-white {
+html:not(.dark) .glass-card:not([class*="bg-cover"]):not([class*="bg-gradient-"]) .text-white:not(.keep-white),
+html:not(.dark) .glass-island .text-white:not(.keep-white) {
   color: #0f172a;
 }
 

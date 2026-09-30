@@ -50,12 +50,12 @@
 
             <div class="flex-1 min-w-0">
               <div class="flex items-center space-x-2">
-                <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-wide truncate">NightMare33133</h2>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white tracking-wide truncate">NightMare33133</h2>
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-nebula-cyan/10 text-nebula-cyan border border-nebula-cyan/20">
                   开拓者
                 </span>
               </div>
-              <p class="text-xs text-slate-300 mt-1.5 leading-relaxed line-clamp-2">
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed line-clamp-2">
                 在代码、系统与星海间穿梭的普通人。记录每一次思考与探索，愿此行终抵群星。
               </p>
             </div>
@@ -66,7 +66,7 @@
             <!-- 核心数据指标 -->
             <div class="flex items-center space-x-6 text-center">
               <div>
-                <div class="text-lg font-bold font-mono text-white">{{ posts.length }}</div>
+                <div class="text-lg font-bold font-mono text-slate-800 dark:text-white">{{ posts.length }}</div>
                 <div class="text-[10px] text-slate-400">文章</div>
               </div>
               <div>
@@ -139,8 +139,8 @@
             </div>
 
             <div class="flex-1 min-w-0">
-              <h3 class="text-sm font-bold text-white truncate">{{ musicStore.currentSong.title }}</h3>
-              <p class="text-xs text-slate-400 truncate">{{ musicStore.currentSong.artist }}</p>
+              <h3 class="text-sm font-bold text-slate-800 dark:text-white truncate">{{ musicStore.currentSong.title }}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ musicStore.currentSong.artist }}</p>
               
               <!-- 律动音波 -->
               <div class="flex items-end space-x-1 h-3 mt-1.5">
@@ -197,7 +197,7 @@
       <div class="flex items-center space-x-3 truncate">
         <span class="text-nebula-cyan animate-pulse font-bold">✦</span>
         <span class="text-slate-400">漫游电台：</span>
-        <span class="text-white font-medium tracking-wide">
+        <span class="text-slate-800 dark:text-white font-medium tracking-wide">
           「愿此行，终抵群星」—— 星穹列车广播已接入 · 前往下一个未知的星系探索 🚀
         </span>
       </div>
@@ -242,13 +242,13 @@
           </div>
 
           <h3
-            class="text-xl font-bold text-white transition-colors leading-tight"
+            class="text-xl font-bold !text-white keep-white transition-colors leading-tight drop-shadow-md"
             :class="themeStore.isDark ? 'group-hover:text-nebula-cyan' : 'group-hover:text-pink-300'"
           >
             {{ posts.length > 0 ? posts[0].title : '你好，星向空间 (Hello Starward Space)' }}
           </h3>
 
-          <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+          <p class="text-xs text-slate-200 line-clamp-2 leading-relaxed drop-shadow">
             {{ posts.length > 0 ? posts[0].summary : '并不是为了向世界证明什么，而是在嘈杂的信息洪流与内卷浪潮里，亲手为自己搭建一个有温度、有审美的赛博自留地。' }}
           </p>
 
@@ -257,7 +257,7 @@
             <span
               v-for="t in (posts.length > 0 ? posts[0].tags : [])"
               :key="t.id"
-              class="px-2 py-0.5 rounded text-[10px] bg-white/10 text-slate-200 backdrop-blur-sm"
+              class="px-2 py-0.5 rounded text-[10px] bg-white/20 text-white backdrop-blur-sm shadow-sm"
             >
               # {{ t.name }}
             </span>
@@ -278,16 +278,16 @@
             alt="Photography Gallery"
             class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-space-950 via-space-950/50 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-space-950 via-space-950/60 to-transparent"></div>
 
           <div class="relative z-10 space-y-1">
             <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-nebula-pink/20 text-nebula-pink border border-nebula-pink/30 uppercase">
               VISUAL ODYSSEY · 摄影视界
             </span>
-            <h4 class="text-base font-bold text-white group-hover:text-nebula-pink transition-colors">
+            <h4 class="text-base font-bold !text-white keep-white group-hover:text-nebula-pink transition-colors drop-shadow-md">
               列车组日常与现实光影漫游
             </h4>
-            <p class="text-xs text-slate-300">代码之外，用镜头捕获光影流转与温柔角落 ➔</p>
+            <p class="text-xs text-slate-200 drop-shadow">代码之外，用镜头捕获光影流转与温柔角落 ➔</p>
           </div>
         </div>
 

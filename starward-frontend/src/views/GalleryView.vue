@@ -1,12 +1,12 @@
 <template>
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
     <!-- 头部介绍区 -->
-    <div class="space-y-3 border-b border-white/10 pb-6">
-      <h1 class="text-3xl font-extrabold text-white tracking-tight flex items-center space-x-3">
+    <div class="space-y-3 border-b border-pink-200/50 dark:border-white/10 pb-6">
+      <h1 class="text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight flex items-center space-x-3">
         <Camera class="w-8 h-8 text-nebula-pink" />
         <span>摄影与视界 · Visual Odyssey</span>
       </h1>
-      <p class="text-sm text-slate-400">
+      <p class="text-sm text-slate-600 dark:text-slate-400">
         代码之外，用镜头与原画捕获星轨流转与现实世界的温柔角落。
       </p>
     </div>
