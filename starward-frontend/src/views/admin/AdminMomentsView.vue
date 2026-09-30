@@ -2,21 +2,21 @@
   <div class="space-y-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
       <!-- 左侧：发射台卡片 -->
-      <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-4 shadow-xl">
+      <div class="glass-card p-6 rounded-2xl border border-pink-200/50 dark:border-white/10 space-y-4 shadow-xl">
         <div class="flex items-center space-x-2">
-          <div class="p-2 rounded-xl bg-nebula-cyan/10 text-nebula-cyan border border-nebula-cyan/20">
+          <div class="p-2 rounded-xl bg-pink-500/10 text-pink-600 dark:bg-nebula-cyan/10 dark:text-nebula-cyan border border-pink-200/60 dark:border-nebula-cyan/20">
             <Send class="w-4 h-4" />
           </div>
           <div>
-            <h3 class="text-sm font-bold text-white">星际碎语速发发射台</h3>
-            <p class="text-[11px] text-slate-400">一键将生活随笔、配图与灵感广播至展示端</p>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-white">星际碎语速发发射台</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">一键将生活随笔、配图与灵感广播至展示端</p>
           </div>
         </div>
 
         <form @submit.prevent="handlePublish" class="space-y-4">
           <!-- 心情 Emoji 快速点选 -->
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
               <span>当刻星际心境</span>
               <span class="text-base">{{ selectedEmoji }}</span>
             </label>
@@ -117,17 +117,17 @@
                 type="button"
                 @click="triggerFileInput"
                 :disabled="selectedImages.length >= 9"
-                class="flex-1 py-1.5 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/40 text-xs text-slate-300 flex items-center justify-center space-x-1.5 transition-all disabled:opacity-40"
+                class="flex-1 py-1.5 px-2.5 rounded-xl bg-white/70 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/70 dark:border-white/10 hover:border-pink-400 dark:hover:border-amber-400/40 text-xs text-slate-700 dark:text-slate-300 flex items-center justify-center space-x-1.5 transition-all disabled:opacity-40"
               >
-                <ImageIcon class="w-3.5 h-3.5 text-amber-400" />
+                <ImageIcon class="w-3.5 h-3.5 text-pink-500 dark:text-amber-400" />
                 <span>本地选图 ({{ selectedImages.length }}/9)</span>
               </button>
 
               <button
                 type="button"
                 @click="showUrlInput = !showUrlInput"
-                class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-amber-400 transition-colors"
-                :class="{ 'text-amber-400 border-amber-400/40': showUrlInput }"
+                class="p-2 rounded-xl bg-white/70 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/70 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:text-pink-600 dark:hover:text-amber-400 transition-colors"
+                :class="{ 'text-pink-600 border-pink-400 dark:text-amber-400 dark:border-amber-400/40': showUrlInput }"
                 title="外链与星轨预设"
               >
                 <Link2 class="w-3.5 h-3.5" />
@@ -233,7 +233,7 @@
               <!-- 单图 -->
               <div
                 v-if="getMomentImages(item).length === 1"
-                class="max-w-xs max-h-48 rounded-xl overflow-hidden border border-white/10 cursor-pointer group/img"
+                class="max-w-xs max-h-48 rounded-xl overflow-hidden border border-pink-200/50 dark:border-white/10 cursor-pointer group/img"
                 @click="openLightbox(getMomentImages(item), 0)"
               >
                 <img :src="getMomentImages(item)[0]" class="w-full h-full object-cover group-hover/img:scale-105 transition-transform" />
@@ -248,7 +248,7 @@
                 <div
                   v-for="(img, imgIdx) in getMomentImages(item)"
                   :key="imgIdx"
-                  class="aspect-square rounded-lg overflow-hidden border border-white/10 cursor-pointer group/img bg-space-900"
+                  class="aspect-square rounded-lg overflow-hidden border border-pink-200/50 dark:border-white/10 cursor-pointer group/img bg-pink-100 dark:bg-space-900"
                   @click="openLightbox(getMomentImages(item), imgIdx)"
                 >
                   <img :src="img" class="w-full h-full object-cover group-hover/img:scale-110 transition-transform" />

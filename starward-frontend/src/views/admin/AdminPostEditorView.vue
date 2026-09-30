@@ -1,22 +1,22 @@
 <template>
   <div class="space-y-4">
     <!-- 顶部操作栏 -->
-    <div class="glass-card p-4 rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-4">
+    <div class="glass-card p-4 rounded-2xl border border-pink-200/50 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center space-x-3">
         <router-link
           to="/admin/posts"
-          class="p-2 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-slate-300 transition-colors flex items-center space-x-1"
+          class="p-2 rounded-xl border border-pink-200/60 dark:border-white/10 hover:border-pink-300 dark:hover:border-white/20 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center space-x-1"
         >
           <ArrowLeft class="w-4 h-4" />
           <span class="text-xs">返回列表</span>
         </router-link>
 
         <div>
-          <h2 class="text-base font-bold text-white flex items-center space-x-2">
+          <h2 class="text-base font-bold text-slate-800 dark:text-white flex items-center space-x-2">
             <span>{{ isEditMode ? '编辑星际文章' : '撰写新星际文章' }}</span>
-            <span v-if="isEditMode" class="text-xs font-mono text-amber-400">#{{ postId }}</span>
+            <span v-if="isEditMode" class="text-xs font-mono text-amber-500 dark:text-amber-400">#{{ postId }}</span>
           </h2>
-          <p class="text-[11px] text-slate-400 font-mono">
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
             支持实时 Markdown、Mermaid 架构图与代码高亮
           </p>
         </div>
@@ -84,16 +84,16 @@
     </div>
 
     <!-- 文章元数据设置抽屉/折叠卡片 -->
-    <div class="glass-card p-5 rounded-2xl border border-white/10 space-y-4">
+    <div class="glass-card p-5 rounded-2xl border border-pink-200/50 dark:border-white/10 space-y-4">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-semibold text-slate-300 flex items-center space-x-1.5">
-          <Settings class="w-4 h-4 text-amber-400" />
+        <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center space-x-1.5">
+          <Settings class="w-4 h-4 text-amber-500 dark:text-amber-400" />
           <span>文章基础元数据 (Metadata)</span>
         </span>
         <button
           type="button"
           @click="metaExpanded = !metaExpanded"
-          class="text-xs text-slate-400 hover:text-amber-400 transition-colors flex items-center space-x-1"
+          class="text-xs text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center space-x-1"
         >
           <span>{{ metaExpanded ? '收起设置' : '展开设置' }}</span>
           <ChevronDown class="w-3.5 h-3.5 transition-transform" :class="{ 'rotate-180': metaExpanded }" />
@@ -181,7 +181,7 @@
               :key="preset.name"
               type="button"
               @click="form.coverImage = preset.url"
-              class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-slate-300 transition-colors"
+              class="px-2.5 py-1 rounded-lg bg-white/60 dark:bg-white/5 hover:bg-pink-100/60 dark:hover:bg-white/10 border border-pink-200/60 dark:border-white/10 text-[11px] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               {{ preset.name }}
             </button>
@@ -253,25 +253,25 @@
     </div>
 
     <!-- Markdown 工具栏 -->
-    <div class="glass-card px-4 py-2 rounded-xl border border-white/10 flex flex-wrap items-center gap-1.5 text-xs">
+    <div class="glass-card px-4 py-2 rounded-xl border border-pink-200/50 dark:border-white/10 flex flex-wrap items-center gap-1.5 text-xs">
       <button
         v-for="tool in markdownTools"
         :key="tool.title"
         type="button"
         @click="insertMarkdown(tool.prefix, tool.suffix, tool.defaultText)"
-        class="p-1.5 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
+        class="p-1.5 rounded-lg hover:bg-pink-100/70 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
         :title="tool.title"
       >
         <component :is="tool.icon" class="w-4 h-4" />
       </button>
 
-      <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
+      <span class="w-[1px] h-4 bg-pink-200/60 dark:bg-white/10 mx-1"></span>
 
       <!-- 模板快捷插入 -->
       <button
         type="button"
         @click="insertMermaidTemplate"
-        class="px-2 py-1 rounded-lg bg-nebula-cyan/10 hover:bg-nebula-cyan/20 text-nebula-cyan border border-nebula-cyan/30 text-[11px] font-mono transition-colors"
+        class="px-2 py-1 rounded-lg bg-nebula-cyan/10 hover:bg-nebula-cyan/20 text-sky-600 dark:text-nebula-cyan border border-sky-400/30 dark:border-nebula-cyan/30 text-[11px] font-mono transition-colors"
         title="插入 Mermaid 流程架构图模板"
       >
         + Mermaid 架构图
@@ -280,13 +280,13 @@
       <button
         type="button"
         @click="insertAlertTemplate"
-        class="px-2 py-1 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[11px] font-mono transition-colors"
+        class="px-2 py-1 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-600 dark:text-amber-300 border border-amber-400/30 text-[11px] font-mono transition-colors"
         title="插入 GitHub 风格星轨提示框"
       >
         + 提示引用框
       </button>
 
-      <div class="ml-auto text-[11px] text-slate-500 font-mono hidden md:flex items-center space-x-3">
+      <div class="ml-auto text-[11px] text-slate-500 dark:text-slate-400 font-mono hidden md:flex items-center space-x-3">
         <span>字数: {{ form.contentMd.length }}</span>
         <span>快捷键: Cmd+S / Ctrl+S 保存</span>
       </div>
@@ -300,11 +300,11 @@
       <!-- 左栏：源码编辑器 -->
       <div
         v-show="viewMode === 'split' || viewMode === 'editor'"
-        class="glass-card rounded-2xl border border-white/10 overflow-hidden flex flex-col h-[650px]"
+        class="glass-card rounded-2xl border border-pink-200/50 dark:border-white/10 overflow-hidden flex flex-col h-[650px] shadow-lg"
       >
-        <div class="px-4 py-2 bg-white/5 border-b border-white/5 flex items-center justify-between text-xs text-slate-400 font-mono">
+        <div class="px-4 py-2 bg-pink-500/5 dark:bg-white/5 border-b border-pink-200/40 dark:border-white/5 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 font-mono">
           <span class="flex items-center space-x-1.5">
-            <Code class="w-3.5 h-3.5 text-amber-400" />
+            <Code class="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
             <span>Markdown 源码编辑器</span>
           </span>
           <span class="text-[10px] text-slate-500">支持 Tab 缩进</span>
@@ -312,7 +312,7 @@
         <textarea
           ref="textareaRef"
           v-model="form.contentMd"
-          class="flex-1 w-full p-4 bg-[#080b12] text-slate-200 text-sm font-mono leading-relaxed resize-none focus:outline-none selection:bg-amber-400/30 selection:text-white"
+          class="flex-1 w-full p-4 bg-white/80 dark:bg-[#080b12] text-slate-800 dark:text-slate-200 text-sm font-mono leading-relaxed resize-none focus:outline-none selection:bg-amber-400/30 selection:text-slate-900 dark:selection:text-white placeholder-slate-400 dark:placeholder-slate-600 transition-colors"
           placeholder="在此尽情挥洒星际灵感... 愿此行，终抵群星 ✦"
           @keydown="handleKeydown"
         ></textarea>
