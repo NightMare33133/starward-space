@@ -41,10 +41,10 @@
       </router-link>
     </div>
 
-    <!-- 文章正文区域 -->
-    <article v-else-if="post" class="space-y-8">
+    <!-- 文章一体化阅读卡片 (Unified Magazine Reading Card) -->
+    <article v-else-if="post" class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl border border-pink-200/50 dark:border-white/10 space-y-6 sm:space-y-8">
       <!-- 头部元信息区 -->
-      <header class="space-y-4 border-b border-pink-200/50 dark:border-white/10 pb-8">
+      <header class="space-y-4 border-b border-pink-200/40 dark:border-white/10 pb-6">
         <!-- 标签集合 -->
         <div class="flex items-center gap-2 flex-wrap">
           <span
@@ -62,7 +62,7 @@
         </h1>
 
         <!-- 发布信息、阅读量、字数估算 -->
-        <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400 font-mono pt-2">
+        <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400 font-mono pt-1">
           <span class="flex items-center space-x-1.5">
             <Calendar class="w-4 h-4 text-slate-400 dark:text-slate-500" />
             <span>{{ formatDate(postDate) }}</span>
@@ -78,23 +78,26 @@
         </div>
       </header>
 
-      <!-- 文章宽幅封面展台 (Hero Cover Banner) -->
-      <div v-if="postCover" class="w-full aspect-[21/9] sm:aspect-[24/9] max-h-80 rounded-3xl overflow-hidden shadow-xl border border-pink-200/50 dark:border-white/10 relative group">
+      <!-- 文章内嵌精选封面插画展台 (融合一体化设计，参考 Rainzt / CuteLeaf) -->
+      <div
+        v-if="postCover"
+        class="w-full rounded-2xl overflow-hidden shadow-lg border border-pink-200/40 dark:border-white/10 max-h-[420px] bg-slate-900/10 dark:bg-space-950/60 relative group"
+      >
         <img
           :src="postCover"
           :alt="post.title"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          class="w-full h-full max-h-[420px] object-cover object-[center_20%] group-hover:scale-102 transition-transform duration-700 ease-out"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-40"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent opacity-20"></div>
       </div>
 
       <!-- Markdown 沉浸式阅读器 -->
-      <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl border border-pink-200/50 dark:border-white/10">
+      <div class="pt-2">
         <MarkdownViewer :content="postContent" />
       </div>
 
       <!-- 文末声明与分享 -->
-      <div class="glass-card rounded-2xl p-6 border border-pink-200/50 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div class="pt-6 border-t border-pink-200/40 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
         <div class="space-y-1 text-center sm:text-left">
           <p class="text-slate-700 dark:text-slate-300 font-medium">版权与许可</p>
           <p>本文由 NightMare33133 原创，采用 CC BY-NC-SA 4.0 国际许可协议。</p>
@@ -129,13 +132,11 @@ const postContent = computed(() => post.value?.content || post.value?.contentMd 
 const postDate = computed(() => post.value?.publishedAt || post.value?.createdAt || '');
 
 const defaultCovers = [
-  '/images/hsr/himeko_express.png',
-  '/images/hsr/march7th_selfie.png',
-  '/images/hsr/danheng.png',
-  '/images/hsr/welt.png',
-  '/images/hsr/firefly_night.jpg',
-  '/images/hsr/feiying_sakura.png',
-  '/images/hsr/astral_express_bg.jpg'
+  '/images/hsr/feiying_sakura.png',    // 绯英·落樱晨曦 (16:9 横版插画)
+  '/images/hsr/firefly_night.jpg',     // 流萤·深空之夜 (16:9 横版插画)
+  '/images/hsr/astral_express_bg.jpg', // 星穹列车·站台 (16:9 银河风景)
+  'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80',
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
 ];
 
 const postCover = computed(() => {
