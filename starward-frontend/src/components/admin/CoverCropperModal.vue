@@ -435,8 +435,7 @@ import {
   ArrowRight,
   Upload,
   Loader2,
-  Sparkles,
-  Maximize2
+  Sparkles
 } from 'lucide-vue-next';
 import { uploadImage } from '@/api/admin';
 import { useToast } from '@/composables/useToast';
