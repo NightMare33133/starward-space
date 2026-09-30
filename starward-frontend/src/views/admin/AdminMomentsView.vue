@@ -359,10 +359,10 @@ const imageUrlInput = ref('');
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const presetImages = [
-  { label: '三月七自拍', url: '/images/hsr/march7th_selfie.png' },
-  { label: '姬子与列车', url: '/images/hsr/himeko_express.png' },
-  { label: '帕姆列车长', url: '/images/pompom.png' },
-  { label: '丹恒', url: '/images/hsr/danheng.png' },
+  { label: '三月七自拍', url: '/images/hsr/march7th_selfie.webp' },
+  { label: '姬子与列车', url: '/images/hsr/himeko_express.webp' },
+  { label: '帕姆列车长', url: '/images/pompom.webp' },
+  { label: '丹恒', url: '/images/hsr/danheng.webp' },
 ];
 
 // 大图 Lightbox

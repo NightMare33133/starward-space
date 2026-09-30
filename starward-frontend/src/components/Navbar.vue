@@ -6,7 +6,7 @@
         <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 via-nebula-pink to-nebula-cyan p-[1.5px] shadow-lg shadow-amber-500/25 group-hover:scale-110 active:scale-95 transition-transform overflow-hidden shrink-0 cursor-pointer">
           <div class="w-full h-full rounded-[14px] overflow-hidden bg-space-950">
             <img
-              src="/images/pompom.png"
+              src="/images/pompom.webp"
               alt="Pom-Pom"
               class="w-full h-full object-cover group-hover:rotate-6 transition-transform duration-300"
             />

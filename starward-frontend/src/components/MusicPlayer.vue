@@ -41,7 +41,7 @@
               :class="{ 'animate-spin-slow': musicStore.isPlaying }"
               :style="{ animationPlayState: musicStore.isPlaying ? 'running' : 'paused' }"
             >
-              <img :src="musicStore.currentSong.cover" :alt="musicStore.currentSong.title" class="w-full h-full object-cover" />
+              <img :src="musicStore.currentSong.cover" :alt="musicStore.currentSong.title" decoding="async" class="w-full h-full object-cover" />
             </div>
             <!-- 黑胶唱片中心圆孔 -->
             <div class="absolute inset-0 m-auto w-4 h-4 rounded-full bg-space-950 border border-white/30 flex items-center justify-center">
@@ -140,7 +140,7 @@
         :class="{ 'animate-spin-slow': musicStore.isPlaying }"
         :style="{ animationPlayState: musicStore.isPlaying ? 'running' : 'paused' }"
       >
-        <img :src="musicStore.currentSong.cover" :alt="musicStore.currentSong.title" class="w-full h-full object-cover" />
+        <img :src="musicStore.currentSong.cover" :alt="musicStore.currentSong.title" decoding="async" class="w-full h-full object-cover" />
       </div>
 
       <!-- 歌曲信息 -->

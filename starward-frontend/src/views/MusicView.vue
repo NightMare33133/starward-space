@@ -71,6 +71,7 @@
                 <img
                   :src="musicStore.currentSong.cover"
                   :alt="musicStore.currentSong.title"
+                  decoding="async"
                   class="w-full h-full object-cover"
                 />
                 <!-- 中心金属轴孔 -->
@@ -286,7 +287,7 @@
 
                 <!-- 封面图 -->
                 <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shrink-0 relative">
-                  <img :src="song.cover" :alt="song.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                  <img :src="song.cover" :alt="song.title" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                   <div
                     v-if="musicStore.currentIndex === idx"
                     class="absolute inset-0 bg-space-950/40 flex items-center justify-center text-amber-400"

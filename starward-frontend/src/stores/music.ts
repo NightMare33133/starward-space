@@ -20,7 +20,7 @@ export const useMusicStore = defineStore('music', () => {
       id: '1',
       title: 'Take the Journey (踏上旅途)',
       artist: 'Anthony Lynch · HOYO-MiX',
-      cover: '/images/hsr/himeko_express.png',
+      cover: '/images/hsr/himeko_express.webp',
       url: '/audio/take_the_journey.mp3',
       theme: '星穹列车 · 启航曲',
       lyrics: `[00:00.00]Take the Journey (踏上旅途) - Anthony Lynch / HOYO-MiX
@@ -44,7 +44,7 @@ export const useMusicStore = defineStore('music', () => {
       id: '2',
       title: '野火 Wildfire (造物引擎)',
       artist: 'Jonathan Steingard · HOYO-MiX',
-      cover: '/images/hsr/danheng.png',
+      cover: '/images/hsr/danheng.webp',
       url: '/audio/wildfire.mp3',
       theme: '雅利洛-VI · 可可利亚决战战歌',
       lyrics: `[00:00.00]野火 Wildfire - Jonathan Steingard / HOYO-MiX
@@ -95,7 +95,7 @@ export const useMusicStore = defineStore('music', () => {
       id: '3',
       title: '使一颗心免于哀伤',
       artist: '知更鸟 · Chevy · HOYO-MiX',
-      cover: '/images/hsr/march7th_selfie.png',
+      cover: '/images/hsr/march7th_selfie.webp',
       url: '/audio/robin_heart.mp3',
       theme: '匹诺康尼 · 知更鸟之歌',
       lyrics: `[00:00.00]使一颗心免于哀伤 (If I Can Stop One Heart From Breaking) - 知更鸟 (Chevy) / HOYO-MiX
@@ -138,7 +138,7 @@ export const useMusicStore = defineStore('music', () => {
       id: '4',
       title: '不眠之夜 WHITE NIGHT',
       artist: '张杰 · HOYO-MiX',
-      cover: '/images/pompom.png',
+      cover: '/images/pompom.webp',
       url: '/audio/white_night.mp3',
       theme: '匹诺康尼 · 盛会之星主题歌',
       lyrics: `[00:00.00]不眠之夜 WHITE NIGHT - 张杰 / HOYO-MiX
@@ -175,7 +175,7 @@ export const useMusicStore = defineStore('music', () => {
       id: '5',
       title: '太空漫步 Space Walk',
       artist: 'HOYO-MiX',
-      cover: '/images/hsr/welt.png',
+      cover: '/images/hsr/welt.webp',
       url: '/audio/space_walk.mp3',
       theme: '黑塔空间站 · 纯享氛围原声',
       lyrics: `[00:00.00]太空漫步 Space Walk - HOYO-MiX

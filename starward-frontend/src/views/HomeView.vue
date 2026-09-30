@@ -37,7 +37,7 @@
               <div class="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl p-[2px] bg-gradient-to-tr from-nebula-cyan via-nebula-purple to-nebula-pink shadow-xl group-hover:scale-105 transition-transform">
                 <div class="w-full h-full rounded-[14px] overflow-hidden bg-space-900">
                   <img
-                    src="/images/avatar.png"
+                    src="/images/avatar.webp"
                     alt="NightMare33133"
                     class="w-full h-full object-cover"
                   />
@@ -131,7 +131,7 @@
                 :class="{ 'animate-spin-slow': musicStore.isPlaying }"
                 :style="{ animationPlayState: musicStore.isPlaying ? 'running' : 'paused' }"
               >
-                <img :src="musicStore.currentSong.cover" :alt="musicStore.currentSong.title" class="w-full h-full object-cover" />
+                <img :src="musicStore.currentSong.cover" :alt="musicStore.currentSong.title" loading="lazy" decoding="async" class="w-full h-full object-cover" />
               </div>
               <div class="absolute inset-0 m-auto w-4 h-4 rounded-full bg-space-950 border border-white/30 flex items-center justify-center">
                 <div class="w-1.5 h-1.5 rounded-full bg-white/70"></div>
@@ -219,6 +219,7 @@
         <img
           :src="featuredPostCover"
           :alt="posts.length > 0 ? posts[0].title : (themeStore.isDark ? 'Firefly' : 'Fei Ying')"
+          decoding="async"
           class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700"
         />
         <!-- 暗调渐变蒙版保证文字极致可读 -->
@@ -337,7 +338,7 @@
               style="z-index: 10;"
             >
               <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900">
-                <img src="/images/hsr/astral_express_bg.jpg" alt="Express" class="w-full h-full object-cover" />
+                <img src="/images/hsr/astral_express_bg.webp" alt="Express" loading="lazy" decoding="async" class="w-full h-full object-cover" />
               </div>
               <p class="text-[8px] font-mono text-center text-slate-400 dark:text-slate-400 pt-1 truncate">
                 01 · 铁道之夜
@@ -353,7 +354,7 @@
               style="z-index: 20;"
             >
               <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900">
-                <img src="/images/hsr/firefly_night.jpg" alt="Firefly" class="w-full h-full object-cover" />
+                <img src="/images/hsr/firefly_night.webp" alt="Firefly" loading="lazy" decoding="async" class="w-full h-full object-cover" />
               </div>
               <p class="text-[8px] font-mono text-center text-slate-400 dark:text-slate-400 pt-1 truncate">
                 02 · 极光深空
@@ -376,8 +377,10 @@
 
               <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-900 relative">
                 <img
-                  src="/images/hsr/march7th_selfie.png"
+                  src="/images/hsr/march7th_selfie.webp"
                   alt="March 7th Selfie"
+                  loading="lazy"
+                  decoding="async"
                   class="w-full h-full object-cover object-[center_35%]"
                 />
                 <span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/60 text-[7px] font-mono text-white/90">
@@ -529,7 +532,7 @@ const featuredPostCover = computed(() => {
   if (posts.value.length > 0 && posts.value[0].coverImage) {
     return posts.value[0].coverImage;
   }
-  return themeStore.isDark ? '/images/hsr/firefly_night.jpg' : '/images/hsr/feiying_sakura.png';
+  return themeStore.isDark ? '/images/hsr/firefly_night.webp' : '/images/hsr/feiying_sakura.webp';
 });
 
 // 实时时钟

@@ -45,6 +45,7 @@
             :src="photo.url"
             :alt="photo.title"
             loading="lazy"
+            decoding="async"
             class="w-full h-auto block object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-space-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -177,7 +178,7 @@ const photos = ref<Photo[]>([
     location: '星穹列车 · 观景车厢',
     date: 'Official Art',
     category: '星穹列车组',
-    url: '/images/hsr/himeko_express.png',
+    url: '/images/hsr/himeko_express.webp',
     params: 'miHoYo / HoYoverse · 官方原画',
     rarity: 5
   },
@@ -187,7 +188,7 @@ const photos = ref<Photo[]>([
     location: '星穹列车 · 客房',
     date: 'Official Art',
     category: '星穹列车组',
-    url: '/images/hsr/march7th_selfie.png',
+    url: '/images/hsr/march7th_selfie.webp',
     params: 'miHoYo / HoYoverse · 官方原画',
     rarity: 4
   },
@@ -197,7 +198,7 @@ const photos = ref<Photo[]>([
     location: '星穹列车 · 智库档案室',
     date: 'Official Art',
     category: '星穹列车组',
-    url: '/images/hsr/danheng.png',
+    url: '/images/hsr/danheng.webp',
     params: 'miHoYo / HoYoverse · 官方原画',
     rarity: 4
   },
@@ -207,7 +208,7 @@ const photos = ref<Photo[]>([
     location: '星穹列车 · 车长室',
     date: 'Official Art',
     category: '星穹列车组',
-    url: '/images/hsr/welt.png',
+    url: '/images/hsr/welt.webp',
     params: 'miHoYo / HoYoverse · 官方原画',
     rarity: 5
   },

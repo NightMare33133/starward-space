@@ -786,7 +786,7 @@ watch(
     if (val) {
       selectedRawFile.value = props.rawFile || null;
       imageLoaded.value = false;
-      imageSrc.value = props.initialImage || '/images/hsr/himeko_express.png';
+      imageSrc.value = props.initialImage || '/images/hsr/himeko_express.webp';
       nextTick(() => {
         // 重置拖拽状态
         zoom.value = 1;

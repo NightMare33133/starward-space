@@ -134,6 +134,7 @@
             <img
               :src="postCover"
               :alt="post.title"
+              decoding="async"
               @load="handleCoverLoad"
               class="w-full h-auto max-h-[720px] object-contain mx-auto block group-hover:scale-101 transition-transform duration-500"
             />
@@ -153,6 +154,7 @@
           <img
             :src="displayCoverSrc"
             :alt="post.title"
+            decoding="async"
             @load="handleCoverLoad"
             class="w-full h-full max-h-[460px] object-cover object-[center_20%] group-hover:scale-102 transition-transform duration-700 ease-out"
           />
@@ -207,6 +209,7 @@
           <img
             :src="postCover"
             :alt="post?.title"
+            decoding="async"
             class="max-w-full max-h-[78vh] sm:max-h-[82vh] rounded-2xl object-contain shadow-2xl border border-white/15 cursor-zoom-out"
             @click="showLightbox = false"
           />
@@ -259,9 +262,9 @@ const postContent = computed(() => post.value?.content || post.value?.contentMd 
 const postDate = computed(() => post.value?.publishedAt || post.value?.createdAt || '');
 
 const defaultCovers = [
-  '/images/hsr/feiying_sakura.png',    // 绯英·落樱晨曦 (16:9 横版插画)
-  '/images/hsr/firefly_night.jpg',     // 流萤·深空之夜 (16:9 横版插画)
-  '/images/hsr/astral_express_bg.jpg', // 星穹列车·站台 (16:9 银河风景)
+  '/images/hsr/feiying_sakura.webp',    // 绯英·落樱晨曦 (16:9 横版插画)
+  '/images/hsr/firefly_night.webp',     // 流萤·深空之夜 (16:9 横版插画)
+  '/images/hsr/astral_express_bg.webp', // 星穹列车·站台 (16:9 银河风景)
   'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80',
 ];

@@ -4,7 +4,7 @@
     <div
       class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105"
       :style="{
-        backgroundImage: `url('/images/hsr/firefly_night.jpg')`,
+        backgroundImage: `url('/images/hsr/firefly_night.webp')`,
         filter: 'brightness(0.38) saturate(1.15)'
       }"
     ></div>

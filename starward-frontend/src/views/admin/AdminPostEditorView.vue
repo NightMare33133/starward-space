@@ -192,7 +192,7 @@
                     :src="form.coverImage"
                     alt="Cover 16:10"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    onerror="this.src='/images/hsr/himeko_express.png'"
+                    onerror="this.src='/images/hsr/himeko_express.webp'"
                   />
                   <div class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-medium space-x-1">
                     <Crop class="w-3.5 h-3.5" />
@@ -258,7 +258,7 @@
                     :src="form.rawCoverImage || form.coverImage"
                     alt="Detail Raw"
                     class="max-w-full max-h-full object-contain"
-                    onerror="this.src='/images/hsr/himeko_express.png'"
+                    onerror="this.src='/images/hsr/himeko_express.webp'"
                   />
                   <span v-else class="text-[10px] text-slate-400">未设置</span>
                 </div>
@@ -570,7 +570,7 @@ const form = reactive<{
   slug: '',
   summary: '',
   contentMd: '',
-  coverImage: '/images/hsr/himeko_express.png',
+  coverImage: '/images/hsr/himeko_express.webp',
   rawCoverImage: '',
   status: 'PUBLISHED',
   isPinned: false,
@@ -588,13 +588,13 @@ watch(() => form.contentMd, (val) => {
 });
 
 const coverPresets = [
-  { name: '姬子·星穹列车', url: '/images/hsr/himeko_express.png' },
-  { name: '三月七·自拍手记', url: '/images/hsr/march7th_selfie.png' },
-  { name: '丹恒·击云长枪', url: '/images/hsr/danheng.png' },
-  { name: '瓦尔特·以世界之名', url: '/images/hsr/welt.png' },
-  { name: '流萤·深空之夜', url: '/images/hsr/firefly_night.jpg' },
-  { name: '绯英·落樱晨曦', url: '/images/hsr/feiying_sakura.png' },
-  { name: '星穹列车·站台', url: '/images/hsr/astral_express_bg.jpg' },
+  { name: '姬子·星穹列车', url: '/images/hsr/himeko_express.webp' },
+  { name: '三月七·自拍手记', url: '/images/hsr/march7th_selfie.webp' },
+  { name: '丹恒·击云长枪', url: '/images/hsr/danheng.webp' },
+  { name: '瓦尔特·以世界之名', url: '/images/hsr/welt.webp' },
+  { name: '流萤·深空之夜', url: '/images/hsr/firefly_night.webp' },
+  { name: '绯英·落樱晨曦', url: '/images/hsr/feiying_sakura.webp' },
+  { name: '星穹列车·站台', url: '/images/hsr/astral_express_bg.webp' },
   { name: '璀璨深空星云', url: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80' },
   { name: '赛博霓虹星轨', url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80' },
 ];
@@ -713,7 +713,7 @@ const handleCoverDrop = (e: DragEvent) => {
 const openCropperWithCurrent = () => {
   currentRawCoverFile.value = null;
   // 优先采用高分辨率原画进行裁切取景，避免对已切过图的二次失真裁切
-  cropperImageSource.value = form.rawCoverImage || form.coverImage || '/images/hsr/himeko_express.png';
+  cropperImageSource.value = form.rawCoverImage || form.coverImage || '/images/hsr/himeko_express.webp';
   showCropperModal.value = true;
 };
 

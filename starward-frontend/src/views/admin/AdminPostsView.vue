@@ -154,7 +154,7 @@
                       :src="post.coverImage"
                       :alt="post.title"
                       class="w-full h-full object-cover"
-                      onerror="this.src='/images/hsr/himeko_express.png'"
+                      onerror="this.src='/images/hsr/himeko_express.webp'"
                     />
                     <div v-else class="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-600">
                       <BookOpen class="w-4 h-4" />

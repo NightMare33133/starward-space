@@ -8,7 +8,7 @@
           <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 via-nebula-pink to-nebula-cyan p-[1.5px] shadow-lg shadow-amber-500/20 shrink-0">
             <div class="w-full h-full rounded-[10px] overflow-hidden bg-pink-100 dark:bg-space-950">
               <img
-                src="/images/pompom.png"
+                src="/images/pompom.webp"
                 alt="Pom-Pom"
                 class="w-full h-full object-cover"
               />

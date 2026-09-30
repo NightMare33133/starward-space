@@ -134,6 +134,7 @@
               :src="getPostCover(post)"
               :alt="post.title"
               loading="lazy"
+              decoding="async"
               @error="handleImageError(post.id)"
               class="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700 ease-out"
             />
@@ -213,6 +214,7 @@
               :src="getPostCover(post)"
               :alt="post.title"
               loading="lazy"
+              decoding="async"
               @error="handleImageError(post.id)"
               class="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700 ease-out"
             />
@@ -346,6 +348,7 @@
                 :src="getPostCover(post)"
                 :alt="post.title"
                 loading="lazy"
+                decoding="async"
                 @error="handleImageError(post.id)"
                 class="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-500"
               />
@@ -388,9 +391,9 @@ const failedImages = ref<Record<number, boolean>>({});
 
 // 优先采用高分辨率横向壁纸插画，杜绝竖版人物截断问题
 const defaultCovers = [
-  '/images/hsr/feiying_sakura.png',    // 绯英·落樱晨曦 (16:9 横版插画)
-  '/images/hsr/firefly_night.jpg',     // 流萤·深空之夜 (16:9 横版插画)
-  '/images/hsr/astral_express_bg.jpg', // 星穹列车·站台 (16:9 银河风景)
+  '/images/hsr/feiying_sakura.webp',    // 绯英·落樱晨曦 (16:9 横版插画)
+  '/images/hsr/firefly_night.webp',     // 流萤·深空之夜 (16:9 横版插画)
+  '/images/hsr/astral_express_bg.webp', // 星穹列车·站台 (16:9 银河风景)
   'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80', // 璀璨星空
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80', // 赛博霓虹
   'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80', // 量子星系

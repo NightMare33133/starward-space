@@ -34,7 +34,7 @@
             <div class="relative w-20 h-20 mb-3 rounded-2xl bg-gradient-to-tr from-amber-400 via-nebula-pink to-nebula-cyan p-[2px] shadow-xl shadow-amber-500/30">
               <div class="w-full h-full rounded-[14px] overflow-hidden bg-space-950 flex items-center justify-center">
                 <img
-                  src="/images/pompom.png"
+                  src="/images/pompom.webp"
                   alt="Pom-Pom Conductor"
                   class="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                 />

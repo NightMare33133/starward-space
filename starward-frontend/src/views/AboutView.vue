@@ -7,7 +7,7 @@
         <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden p-[2px] bg-gradient-to-tr from-pink-500 via-rose-400 to-nebula-cyan dark:from-nebula-cyan dark:to-nebula-purple shadow-xl shrink-0">
           <div class="w-full h-full rounded-[14px] overflow-hidden bg-pink-100 dark:bg-space-900">
             <img
-              src="/images/avatar.png"
+              src="/images/avatar.webp"
               alt="NightMare33133"
               class="w-full h-full object-cover"
             />

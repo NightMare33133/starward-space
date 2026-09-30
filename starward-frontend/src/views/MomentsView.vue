@@ -261,6 +261,7 @@
                 alt="Moment photo"
                 class="w-full h-full object-cover transition-transform duration-300 group-hover/img:scale-105"
                 loading="lazy"
+                decoding="async"
               />
             </div>
 
@@ -280,6 +281,7 @@
                   alt="Moment photo"
                   class="w-full h-full object-cover transition-transform duration-300 group-hover/img:scale-110"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
@@ -300,6 +302,7 @@
                   alt="Moment photo"
                   class="w-full h-full object-cover transition-transform duration-300 group-hover/img:scale-110"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
@@ -424,11 +427,11 @@ const imageUrlInput = ref('');
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const presetImages = [
-  { label: '三月七自拍', url: '/images/hsr/march7th_selfie.png' },
-  { label: '姬子与列车', url: '/images/hsr/himeko_express.png' },
-  { label: '丹恒', url: '/images/hsr/danheng.png' },
-  { label: '瓦尔特', url: '/images/hsr/welt.png' },
-  { label: '帕姆列车长', url: '/images/pompom.png' },
+  { label: '三月七自拍', url: '/images/hsr/march7th_selfie.webp' },
+  { label: '姬子与列车', url: '/images/hsr/himeko_express.webp' },
+  { label: '丹恒', url: '/images/hsr/danheng.webp' },
+  { label: '瓦尔特', url: '/images/hsr/welt.webp' },
+  { label: '帕姆列车长', url: '/images/pompom.webp' },
 ];
 
 // 大图全屏查看 Lightbox
