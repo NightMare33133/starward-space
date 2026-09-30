@@ -423,10 +423,15 @@ watch(() => form.contentMd, (val) => {
 });
 
 const coverPresets = [
-  { name: '姬子与星穹列车', url: '/images/hsr/himeko_express.png' },
+  { name: '姬子·星穹列车', url: '/images/hsr/himeko_express.png' },
+  { name: '三月七·自拍手记', url: '/images/hsr/march7th_selfie.png' },
+  { name: '丹恒·击云长枪', url: '/images/hsr/danheng.png' },
+  { name: '瓦尔特·以世界之名', url: '/images/hsr/welt.png' },
+  { name: '流萤·深空之夜', url: '/images/hsr/firefly_night.jpg' },
+  { name: '绯英·落樱晨曦', url: '/images/hsr/feiying_sakura.png' },
+  { name: '星穹列车·站台', url: '/images/hsr/astral_express_bg.jpg' },
   { name: '璀璨深空星云', url: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80' },
   { name: '赛博霓虹星轨', url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80' },
-  { name: '量子星系脉冲', url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80' },
 ];
 
 const markdownTools = [

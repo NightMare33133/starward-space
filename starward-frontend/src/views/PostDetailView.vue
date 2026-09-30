@@ -78,6 +78,16 @@
         </div>
       </header>
 
+      <!-- 文章宽幅封面展台 (Hero Cover Banner) -->
+      <div v-if="postCover" class="w-full aspect-[21/9] sm:aspect-[24/9] max-h-80 rounded-3xl overflow-hidden shadow-xl border border-pink-200/50 dark:border-white/10 relative group">
+        <img
+          :src="postCover"
+          :alt="post.title"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-40"></div>
+      </div>
+
       <!-- Markdown 沉浸式阅读器 -->
       <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl border border-pink-200/50 dark:border-white/10">
         <MarkdownViewer :content="postContent" />
@@ -117,6 +127,23 @@ const copied = ref(false);
 
 const postContent = computed(() => post.value?.content || post.value?.contentMd || '');
 const postDate = computed(() => post.value?.publishedAt || post.value?.createdAt || '');
+
+const defaultCovers = [
+  '/images/hsr/himeko_express.png',
+  '/images/hsr/march7th_selfie.png',
+  '/images/hsr/danheng.png',
+  '/images/hsr/welt.png',
+  '/images/hsr/firefly_night.jpg',
+  '/images/hsr/feiying_sakura.png',
+  '/images/hsr/astral_express_bg.jpg'
+];
+
+const postCover = computed(() => {
+  if (!post.value) return '';
+  if (post.value.coverImage) return post.value.coverImage;
+  const idx = Math.abs(Number(post.value.id) || 0) % defaultCovers.length;
+  return defaultCovers[idx];
+});
 
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '';

@@ -215,10 +215,10 @@
         :class="themeStore.isDark ? 'border-white/10 hover:border-nebula-cyan/40 hover:shadow-nebula-cyan/20' : 'border-pink-200/50 hover:border-pink-400/50 hover:shadow-pink-300/30'"
         @click="posts.length > 0 && $router.push(`/posts/${posts[0].id}`)"
       >
-        <!-- 背景大图：夜间流萤 vs 日间绯英 -->
+        <!-- 背景大图：文章封面或夜间流萤 vs 日间绯英 -->
         <img
-          :src="themeStore.isDark ? '/images/hsr/firefly_night.jpg' : '/images/hsr/feiying_sakura.png'"
-          :alt="themeStore.isDark ? 'Firefly' : 'Fei Ying'"
+          :src="featuredPostCover"
+          :alt="posts.length > 0 ? posts[0].title : (themeStore.isDark ? 'Firefly' : 'Fei Ying')"
           class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700"
         />
         <!-- 暗调渐变蒙版保证文字极致可读 -->
@@ -424,6 +424,13 @@ const posts = ref<PostListVO[]>([]);
 const moments = ref<Moment[]>([]);
 const searchKeyword = ref('');
 const progressTrackRef = ref<HTMLElement | null>(null);
+
+const featuredPostCover = computed(() => {
+  if (posts.value.length > 0 && posts.value[0].coverImage) {
+    return posts.value[0].coverImage;
+  }
+  return themeStore.isDark ? '/images/hsr/firefly_night.jpg' : '/images/hsr/feiying_sakura.png';
+});
 
 // 实时时钟
 const currentTimeStr = ref('');
