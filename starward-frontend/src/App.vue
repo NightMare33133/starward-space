@@ -3,6 +3,13 @@
     <!-- 全局星际轻提示组件 (Toast) -->
     <ToastContainer />
 
+    <!-- 瞬态环境微光呼吸 (纯 CSS 硬件透明度，0 帧率负担) -->
+    <div
+      v-if="themeStore.showAmbientFlash"
+      class="fixed inset-0 pointer-events-none z-50 animate-ambient-flash"
+      :class="themeStore.isDark ? 'bg-gradient-to-tr from-sky-400/20 via-indigo-950/30 to-transparent' : 'bg-gradient-to-tr from-amber-300/25 via-rose-300/20 to-transparent'"
+    ></div>
+
     <!-- 动态双模沉浸式背景：深空流萤 (夜) vs 落樱晨曦 (昼) -->
     <transition
       enter-active-class="transition-opacity duration-700 ease-in-out"

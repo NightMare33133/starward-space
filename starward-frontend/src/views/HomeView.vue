@@ -429,17 +429,31 @@
 
           <!-- 模式核心动态光球 (夜间深空微芒 vs 日间落樱花瓣) -->
           <div class="relative z-10 flex justify-center pt-1">
-            <div
-              v-if="themeStore.isDark"
-              class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-900 via-slate-900 to-sky-950 p-[2px] shadow-lg shadow-sky-500/20 group-hover:shadow-sky-400/40 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-sky-400/30"
-            >
-              <span class="text-2xl animate-pulse">✨</span>
-            </div>
-            <div
-              v-else
-              class="w-14 h-14 rounded-full bg-gradient-to-br from-rose-200 via-pink-100 to-amber-100 p-[2px] shadow-lg shadow-pink-400/25 group-hover:shadow-pink-400/50 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-pink-300/60"
-            >
-              <span class="text-2xl animate-bounce">🌸</span>
+            <div class="relative flex items-center justify-center">
+              <!-- 瞬态高能光环冲击波 -->
+              <span
+                v-if="themeStore.burstCount > 0"
+                :key="'card-shockwave-' + themeStore.burstCount"
+                class="absolute w-14 h-14 rounded-full pointer-events-none animate-theme-shockwave border-2"
+                :class="themeStore.isDark ? 'border-sky-400 shadow-[0_0_16px_rgba(56,189,248,0.7)]' : 'border-pink-400 shadow-[0_0_16px_rgba(244,114,182,0.7)]'"
+              ></span>
+
+              <transition name="theme-icon" mode="out-in">
+                <div
+                  v-if="themeStore.isDark"
+                  key="dark-orb"
+                  class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-900 via-slate-900 to-sky-950 p-[2px] shadow-lg shadow-sky-500/20 group-hover:shadow-sky-400/40 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-sky-400/30"
+                >
+                  <span class="text-2xl animate-pulse">✨</span>
+                </div>
+                <div
+                  v-else
+                  key="light-orb"
+                  class="w-14 h-14 rounded-full bg-gradient-to-br from-rose-200 via-pink-100 to-amber-100 p-[2px] shadow-lg shadow-pink-400/25 group-hover:shadow-pink-400/50 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-pink-300/60"
+                >
+                  <span class="text-2xl animate-bounce">🌸</span>
+                </div>
+              </transition>
             </div>
           </div>
 

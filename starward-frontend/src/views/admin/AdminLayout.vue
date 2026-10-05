@@ -44,11 +44,21 @@
           <!-- 日夜双模切换胶囊 (落樱绯英 vs 深空流萤) -->
           <button
             @click="themeStore.toggleTheme"
-            class="p-2 rounded-xl border border-pink-200/60 dark:border-white/10 hover:border-amber-400/50 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-amber-500 transition-all flex items-center justify-center shadow-sm"
+            class="relative w-8 h-8 rounded-xl border border-pink-200/60 dark:border-white/10 hover:border-amber-400/50 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-amber-500 transition-all flex items-center justify-center shadow-sm active:scale-90"
             :title="themeStore.isDark ? '切换至日间模式 (绯英 · 落樱)' : '切换至夜间模式 (流萤 · 深空)'"
           >
-            <Sun v-if="themeStore.isDark" class="w-4 h-4 text-amber-300 rotate-0 transition-transform duration-500" />
-            <Moon v-else class="w-4 h-4 text-indigo-600 -rotate-12 transition-transform duration-500" />
+            <!-- 瞬态高能光环冲击波 -->
+            <span
+              v-if="themeStore.burstCount > 0"
+              :key="'admin-shockwave-' + themeStore.burstCount"
+              class="absolute inset-0 rounded-xl pointer-events-none animate-theme-shockwave border"
+              :class="themeStore.isDark ? 'border-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]' : 'border-pink-500 shadow-[0_0_8px_rgba(244,114,182,0.6)]'"
+            ></span>
+
+            <transition name="theme-icon" mode="out-in">
+              <Sun v-if="themeStore.isDark" key="sun" class="w-4 h-4 text-amber-300 rotate-0 transition-transform duration-300" />
+              <Moon v-else key="moon" class="w-4 h-4 text-indigo-600 -rotate-12 transition-transform duration-300" />
+            </transition>
           </button>
 
           <!-- 音乐岛触发器 -->

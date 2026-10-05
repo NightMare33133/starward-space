@@ -42,12 +42,35 @@
         <!-- 日夜沉浸式主题切换按钮 -->
         <button
           @click="themeStore.toggleTheme"
-          class="p-2 rounded-xl transition-all relative group overflow-hidden"
+          class="relative w-9 h-9 rounded-xl transition-all duration-300 flex items-center justify-center group active:scale-90"
           :class="themeStore.isDark ? 'text-amber-300 hover:text-amber-200 hover:bg-white/10' : 'text-pink-600 hover:text-pink-700 hover:bg-pink-100/60'"
           :title="themeStore.isDark ? '切换至日间模式 · 落樱晨曦' : '切换至夜间模式 · 深空流萤'"
         >
-          <Sun v-if="themeStore.isDark" class="w-5 h-5 transition-transform duration-500 group-hover:rotate-45" />
-          <Moon v-else class="w-5 h-5 transition-transform duration-500 group-hover:-rotate-12" />
+          <!-- 瞬态高能光环冲击波 (仅在切换那一下爆发) -->
+          <span
+            v-if="themeStore.burstCount > 0"
+            :key="'shockwave-' + themeStore.burstCount"
+            class="absolute inset-0 rounded-xl pointer-events-none animate-theme-shockwave border-2"
+            :class="themeStore.isDark ? 'border-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.6)]' : 'border-pink-500 shadow-[0_0_12px_rgba(244,114,182,0.6)]'"
+          ></span>
+
+          <!-- 瞬态星光射线绽放 (Starburst Spark) -->
+          <span
+            v-if="themeStore.burstCount > 0"
+            :key="'spark-' + themeStore.burstCount"
+            class="absolute w-10 h-10 pointer-events-none animate-theme-spark flex items-center justify-center"
+          >
+            <span
+              class="w-1.5 h-1.5 rounded-full"
+              :class="themeStore.isDark ? 'bg-amber-300 shadow-[0_0_8px_#fde047]' : 'bg-pink-400 shadow-[0_0_8px_#f472b6]'"
+            ></span>
+          </span>
+
+          <!-- 图标 3D 弹簧弹性翻转 -->
+          <transition name="theme-icon" mode="out-in">
+            <Sun v-if="themeStore.isDark" key="sun" class="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
+            <Moon v-else key="moon" class="w-5 h-5 group-hover:-rotate-12 transition-transform duration-300" />
+          </transition>
         </button>
 
         <!-- 音乐播放状态指示小图标 -->
