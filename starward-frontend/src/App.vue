@@ -5,8 +5,8 @@
 
     <!-- 动态双模沉浸式背景：深空流萤 (夜) vs 落樱晨曦 (昼) -->
     <transition
-      enter-active-class="transition-opacity duration-700 ease-in-out"
-      leave-active-class="transition-opacity duration-700 ease-in-out"
+      :enter-active-class="themeStore.isTransitioning ? '' : 'transition-opacity duration-700 ease-in-out'"
+      :leave-active-class="themeStore.isTransitioning ? '' : 'transition-opacity duration-700 ease-in-out'"
     >
       <StarBackground v-if="themeStore.isDark" key="star-bg" />
       <SakuraBackground v-else key="sakura-bg" />

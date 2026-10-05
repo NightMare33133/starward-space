@@ -416,7 +416,7 @@
 
         <!-- 卡片 4 (特色便当盒主题切换大卡：夜间深空流萤 vs 日间落樱晨曦) -->
         <div
-          @click="themeStore.toggleTheme"
+          @click="themeStore.toggleTheme($event)"
           class="glass-card rounded-3xl p-5 border cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 space-y-3 flex flex-col justify-between text-center relative overflow-hidden group select-none"
           :class="themeStore.isDark ? 'border-white/10 hover:border-nebula-cyan/40 hover:shadow-nebula-cyan/15' : 'border-pink-200/50 hover:border-pink-400/50 shadow-pink-500/10'"
           title="点击切换全站主题风格"
@@ -429,18 +429,22 @@
 
           <!-- 模式核心动态光球 (夜间深空微芒 vs 日间落樱花瓣) -->
           <div class="relative z-10 flex justify-center pt-1">
-            <div
-              v-if="themeStore.isDark"
-              class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-900 via-slate-900 to-sky-950 p-[2px] shadow-lg shadow-sky-500/20 group-hover:shadow-sky-400/40 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-sky-400/30"
-            >
-              <span class="text-2xl animate-pulse">✨</span>
-            </div>
-            <div
-              v-else
-              class="w-14 h-14 rounded-full bg-gradient-to-br from-rose-200 via-pink-100 to-amber-100 p-[2px] shadow-lg shadow-pink-400/25 group-hover:shadow-pink-400/50 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-pink-300/60"
-            >
-              <span class="text-2xl animate-bounce">🌸</span>
-            </div>
+            <transition name="icon-spin" mode="out-in">
+              <div
+                v-if="themeStore.isDark"
+                key="dark-orb"
+                class="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-900 via-slate-900 to-sky-950 p-[2px] shadow-lg shadow-sky-500/20 group-hover:shadow-sky-400/40 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-sky-400/30"
+              >
+                <span class="text-2xl animate-pulse">✨</span>
+              </div>
+              <div
+                v-else
+                key="light-orb"
+                class="w-14 h-14 rounded-full bg-gradient-to-br from-rose-200 via-pink-100 to-amber-100 p-[2px] shadow-lg shadow-pink-400/25 group-hover:shadow-pink-400/50 group-hover:scale-110 transition-all duration-500 flex items-center justify-center border border-pink-300/60"
+              >
+                <span class="text-2xl animate-bounce">🌸</span>
+              </div>
+            </transition>
           </div>
 
           <!-- 模式标题与二次元叙事副标 -->
