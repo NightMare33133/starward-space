@@ -41,15 +41,13 @@
       <div class="flex items-center space-x-2">
         <!-- 日夜沉浸式主题切换按钮 -->
         <button
-          @click="themeStore.toggleTheme($event)"
-          class="p-2 rounded-xl transition-all relative group overflow-hidden flex items-center justify-center w-9 h-9"
+          @click="themeStore.toggleTheme"
+          class="p-2 rounded-xl transition-all relative group overflow-hidden"
           :class="themeStore.isDark ? 'text-amber-300 hover:text-amber-200 hover:bg-white/10' : 'text-pink-600 hover:text-pink-700 hover:bg-pink-100/60'"
           :title="themeStore.isDark ? '切换至日间模式 · 落樱晨曦' : '切换至夜间模式 · 深空流萤'"
         >
-          <transition name="icon-spin" mode="out-in">
-            <Sun v-if="themeStore.isDark" key="sun" class="w-5 h-5 transition-transform duration-500 group-hover:rotate-45" />
-            <Moon v-else key="moon" class="w-5 h-5 transition-transform duration-500 group-hover:-rotate-12" />
-          </transition>
+          <Sun v-if="themeStore.isDark" class="w-5 h-5 transition-transform duration-500 group-hover:rotate-45" />
+          <Moon v-else class="w-5 h-5 transition-transform duration-500 group-hover:-rotate-12" />
         </button>
 
         <!-- 音乐播放状态指示小图标 -->

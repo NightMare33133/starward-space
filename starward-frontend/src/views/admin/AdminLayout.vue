@@ -43,14 +43,12 @@
         <div class="flex items-center space-x-2">
           <!-- 日夜双模切换胶囊 (落樱绯英 vs 深空流萤) -->
           <button
-            @click="themeStore.toggleTheme($event)"
-            class="p-2 w-8 h-8 rounded-xl border border-pink-200/60 dark:border-white/10 hover:border-amber-400/50 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-amber-500 transition-all flex items-center justify-center shadow-sm overflow-hidden"
+            @click="themeStore.toggleTheme"
+            class="p-2 rounded-xl border border-pink-200/60 dark:border-white/10 hover:border-amber-400/50 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-amber-500 transition-all flex items-center justify-center shadow-sm"
             :title="themeStore.isDark ? '切换至日间模式 (绯英 · 落樱)' : '切换至夜间模式 (流萤 · 深空)'"
           >
-            <transition name="icon-spin" mode="out-in">
-              <Sun v-if="themeStore.isDark" key="sun" class="w-4 h-4 text-amber-300 rotate-0 transition-transform duration-500" />
-              <Moon v-else key="moon" class="w-4 h-4 text-indigo-600 -rotate-12 transition-transform duration-500" />
-            </transition>
+            <Sun v-if="themeStore.isDark" class="w-4 h-4 text-amber-300 rotate-0 transition-transform duration-500" />
+            <Moon v-else class="w-4 h-4 text-indigo-600 -rotate-12 transition-transform duration-500" />
           </button>
 
           <!-- 音乐岛触发器 -->
