@@ -3,7 +3,7 @@
     <!-- 顶部标题与个人主页卡片 -->
     <div class="glass-card p-6 sm:p-8 rounded-3xl border border-pink-200/50 dark:border-white/10 relative overflow-hidden shadow-xl">
       <!-- 背景光晕弥散 -->
-      <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-gradient-to-br from-pink-400/20 via-sky-400/15 to-transparent blur-3xl pointer-events-none"></div>
+      <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-gradient-to-br from-[#00aeec]/20 via-pink-400/15 to-transparent blur-3xl pointer-events-none"></div>
 
       <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <!-- 左侧：图标与标题 -->
@@ -18,14 +18,14 @@
           <div class="space-y-1">
             <div class="flex items-center space-x-2.5 flex-wrap">
               <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
-                星穹放映厅
+                哔哩哔哩 · 追番放映厅
               </h1>
               <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-[#00aeec]/15 text-[#00aeec] border border-[#00aeec]/30">
-                Bilibili 追番与追剧档案
+                Bilibili Anime & Drama
               </span>
             </div>
             <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              记录二次元漫游足迹、经典动画、剧场版与灵感宇宙。
+              记录我的 B 站追番漫游足迹、经典动画、剧场版与灵感宇宙。
             </p>
           </div>
         </div>
@@ -41,7 +41,7 @@
             title="访问我的哔哩哔哩个人空间"
           >
             <ExternalLink class="w-3.5 h-3.5" />
-            <span>B站空间 (UID: 28083538)</span>
+            <span>B站主页 (UID: 28083538)</span>
           </a>
 
           <!-- 同步按钮 -->
@@ -64,8 +64,8 @@
             <Film class="w-4 h-4" />
           </div>
           <div>
-            <p class="text-[11px] text-slate-400">总收录追番</p>
-            <p class="text-lg font-bold text-slate-800 dark:text-white font-mono">{{ summary?.totalCount || bangumis.length }} <span class="text-xs font-normal text-slate-400">部</span></p>
+            <p class="text-[11px] text-slate-400">总追番追剧</p>
+            <p class="text-lg font-bold text-slate-800 dark:text-white font-mono">{{ summary?.totalCount || bilibiliItems.length }} <span class="text-xs font-normal text-slate-400">部</span></p>
           </div>
         </div>
 
@@ -116,7 +116,7 @@
               : 'glass-card border border-pink-200/60 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
           >
             <span>全部</span>
-            <span class="text-[10px] opacity-80 font-mono">({{ summary?.totalCount || bangumis.length }})</span>
+            <span class="text-[10px] opacity-80 font-mono">({{ summary?.totalCount || bilibiliItems.length }})</span>
           </button>
 
           <button
@@ -169,11 +169,11 @@
     <!-- 加载中状态 -->
     <div v-if="loading" class="py-20 flex flex-col items-center justify-center space-y-3">
       <Loader2 class="w-8 h-8 animate-spin text-[#00aeec]" />
-      <span class="text-xs text-slate-500 font-mono">正在从星向数据引擎加载追番列表...</span>
+      <span class="text-xs text-slate-500 font-mono">正在从星向数据引擎加载 B 站追番...</span>
     </div>
 
     <!-- 空数据状态 -->
-    <div v-else-if="filteredBangumis.length === 0" class="py-24 text-center space-y-3">
+    <div v-else-if="filteredItems.length === 0" class="py-24 text-center space-y-3">
       <Tv class="w-12 h-12 mx-auto text-slate-400/60 dark:text-slate-600" />
       <p class="text-sm font-medium text-slate-600 dark:text-slate-400">
         {{ searchKeyword ? '没有找到符合关键词的番剧' : '暂无相关追番记录' }}
@@ -190,7 +190,7 @@
     <!-- 番剧海报网格 (Poster Grid) -->
     <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
       <a
-        v-for="item in filteredBangumis"
+        v-for="item in filteredItems"
         :key="item.id"
         :href="item.url"
         target="_blank"
@@ -273,13 +273,13 @@ import {
   X,
   Loader2
 } from 'lucide-vue-next';
-import { getBangumiList, getBangumiSummary, syncBangumi } from '@/api/bangumi';
-import type { Bangumi, BangumiSummary } from '@/types';
+import { getBilibiliList, getBilibiliSummary, syncBilibili } from '@/api/bilibili';
+import type { BilibiliBangumi, BilibiliSummary } from '@/types';
 import { useToast } from '@/composables/useToast';
 
 const toast = useToast();
-const bangumis = ref<Bangumi[]>([]);
-const summary = ref<BangumiSummary | null>(null);
+const bilibiliItems = ref<BilibiliBangumi[]>([]);
+const summary = ref<BilibiliSummary | null>(null);
 const loading = ref(false);
 const syncing = ref(false);
 
@@ -313,14 +313,14 @@ const getTypeBadgeColor = (typeName: string) => {
 const fetchList = async () => {
   loading.value = true;
   try {
-    const list = await getBangumiList({
+    const list = await getBilibiliList({
       type: selectedType.value === 'ALL' ? undefined : selectedType.value,
       keyword: searchKeyword.value.trim() || undefined,
       sort: sortOrder.value
     });
-    bangumis.value = list || [];
+    bilibiliItems.value = list || [];
   } catch (err: any) {
-    console.error('获取追番数据失败:', err);
+    console.error('获取哔哩哔哩追番数据失败:', err);
     toast.error('获取追番数据失败，请检查网络');
   } finally {
     loading.value = false;
@@ -329,15 +329,15 @@ const fetchList = async () => {
 
 const fetchSummary = async () => {
   try {
-    const s = await getBangumiSummary();
+    const s = await getBilibiliSummary();
     summary.value = s;
   } catch (err: any) {
     console.error('获取追番统计失败:', err);
   }
 };
 
-const filteredBangumis = computed(() => {
-  return bangumis.value.filter(item => {
+const filteredItems = computed(() => {
+  return bilibiliItems.value.filter(item => {
     if (selectedType.value !== 'ALL' && item.seasonTypeName !== selectedType.value) {
       return false;
     }
@@ -355,7 +355,7 @@ const handleSync = async () => {
   syncing.value = true;
   try {
     toast.info('正在从哔哩哔哩同步追番数据，请稍候...');
-    await syncBangumi('28083538');
+    await syncBilibili('28083538');
     toast.success('B 站追番数据同步成功 🎬');
     await Promise.all([fetchSummary(), fetchList()]);
   } catch (err: any) {

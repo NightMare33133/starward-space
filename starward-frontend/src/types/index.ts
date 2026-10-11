@@ -116,7 +116,7 @@ export interface Photo {
   rarity?: number; // 4 or 5 for light cones
 }
 
-export interface Bangumi {
+export interface BilibiliBangumi {
   id: number;
   mediaId: number;
   seasonId: number;
@@ -140,10 +140,13 @@ export interface Bangumi {
   createdAt?: string;
 }
 
-export interface BangumiSummary {
+export interface BilibiliSummary {
   totalCount: number;
   avgScore: number;
   typeStats: Array<{ name: string; count: number }>;
   lastUpdated: string;
 }
+
+export type Bangumi = BilibiliBangumi;
+export type BangumiSummary = BilibiliSummary;
 

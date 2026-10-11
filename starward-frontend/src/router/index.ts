@@ -6,7 +6,7 @@ import MomentsView from '@/views/MomentsView.vue';
 import GalleryView from '@/views/GalleryView.vue';
 import AboutView from '@/views/AboutView.vue';
 import MusicView from '@/views/MusicView.vue';
-import BangumiView from '@/views/BangumiView.vue';
+import BilibiliView from '@/views/BilibiliView.vue';
 
 import AdminLoginView from '@/views/admin/AdminLoginView.vue';
 import AdminLayout from '@/views/admin/AdminLayout.vue';
@@ -61,10 +61,14 @@ const router = createRouter({
       meta: { title: '星穹音乐厅 · Starward Space' }
     },
     {
+      path: '/bilibili',
+      name: 'bilibili',
+      component: BilibiliView,
+      meta: { title: '哔哩哔哩放映厅 · Starward Space' }
+    },
+    {
       path: '/bangumi',
-      name: 'bangumi',
-      component: BangumiView,
-      meta: { title: '星穹放映厅 · Starward Space' }
+      redirect: '/bilibili'
     },
     {
       path: '/admin/login',

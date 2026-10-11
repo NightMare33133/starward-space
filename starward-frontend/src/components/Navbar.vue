@@ -164,7 +164,7 @@ const handleLogoClick = (e: MouseEvent) => {
 const navItems = [
   { title: '首页', path: '/', icon: Home },
   { title: '文章', path: '/posts', icon: BookOpen },
-  { title: '放映厅', path: '/bangumi', icon: Clapperboard },
+  { title: '放映厅', path: '/bilibili', icon: Clapperboard },
   { title: '星穹音乐', path: '/music', icon: Disc3 },
   { title: '星际碎语', path: '/moments', icon: MessageSquare },
   { title: '摄影视界', path: '/gallery', icon: Camera },
