@@ -147,6 +147,46 @@ export interface BilibiliSummary {
   lastUpdated: string;
 }
 
-export type Bangumi = BilibiliBangumi;
-export type BangumiSummary = BilibiliSummary;
+export interface BangumiProfile {
+  id: number;
+  username: string;
+  nickname: string;
+  sign: string;
+  avatar: string;
+  url: string;
+}
+
+export interface BangumiCollectionItem {
+  id: number;
+  subjectId: number;
+  subjectType: number;
+  subjectTypeName: string;
+  name: string;
+  nameCn: string;
+  coverUrl: string;
+  score: number;
+  rankNum: number;
+  eps: number;
+  collectionType: number;
+  collectionTypeName: string;
+  userRate: number;
+  userComment?: string;
+  airDate?: string;
+  tags?: string;
+  shortSummary?: string;
+  collectionUpdatedAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface BangumiSummary {
+  totalCount: number;
+  avgScore: number;
+  avgUserRate: number;
+  commentCount: number;
+  typeStats: Array<{ name: string; count: number; typeId?: number }>;
+  collectionTypeStats: Array<{ name: string; count: number; typeId?: number }>;
+  profile: BangumiProfile;
+  lastUpdated: string;
+}
 

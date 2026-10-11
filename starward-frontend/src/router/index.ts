@@ -7,6 +7,7 @@ import GalleryView from '@/views/GalleryView.vue';
 import AboutView from '@/views/AboutView.vue';
 import MusicView from '@/views/MusicView.vue';
 import BilibiliView from '@/views/BilibiliView.vue';
+import BangumiView from '@/views/BangumiView.vue';
 
 import AdminLoginView from '@/views/admin/AdminLoginView.vue';
 import AdminLayout from '@/views/admin/AdminLayout.vue';
@@ -68,7 +69,9 @@ const router = createRouter({
     },
     {
       path: '/bangumi',
-      redirect: '/bilibili'
+      name: 'bangumi',
+      component: BangumiView,
+      meta: { title: 'Bangumi 番组计划 · Starward Space' }
     },
     {
       path: '/admin/login',

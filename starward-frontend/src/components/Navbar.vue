@@ -23,18 +23,58 @@
 
       <!-- 桌面端导航链接 -->
       <nav class="hidden md:flex items-center space-x-1 glass-card px-4 py-1.5 rounded-full border border-pink-200/40 dark:border-white/10">
-        <router-link
-          v-for="item in navItems"
-          :key="item.path"
-          :to="item.path"
-          class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200"
-          :class="$route.path === item.path ? 'text-pink-600 bg-pink-100/70 dark:text-white dark:bg-white/10 shadow-sm font-semibold' : 'text-slate-600 hover:text-pink-600 hover:bg-pink-50/60 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-white/5'"
-        >
-          <div class="flex items-center space-x-1.5">
-            <component :is="item.icon" class="w-4 h-4" />
-            <span>{{ item.title }}</span>
+        <template v-for="item in navItems" :key="item.title">
+          <!-- 普通路由链接 -->
+          <router-link
+            v-if="!item.children"
+            :to="item.path!"
+            class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200"
+            :class="$route.path === item.path ? 'text-pink-600 bg-pink-100/70 dark:text-white dark:bg-white/10 shadow-sm font-semibold' : 'text-slate-600 hover:text-pink-600 hover:bg-pink-50/60 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-white/5'"
+          >
+            <div class="flex items-center space-x-1.5">
+              <component :is="item.icon" class="w-4 h-4" />
+              <span>{{ item.title }}</span>
+            </div>
+          </router-link>
+
+          <!-- 具有二级菜单的下拉项（如：追番观影） -->
+          <div
+            v-else
+            class="relative group"
+          >
+            <button
+              class="px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center space-x-1.5 cursor-pointer"
+              :class="isSubRouteActive(item) ? 'text-pink-600 bg-pink-100/70 dark:text-white dark:bg-white/10 shadow-sm font-semibold' : 'text-slate-600 hover:text-pink-600 hover:bg-pink-50/60 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-white/5'"
+            >
+              <component :is="item.icon" class="w-4 h-4" />
+              <span>{{ item.title }}</span>
+              <ChevronDown class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180 opacity-70" />
+            </button>
+
+            <!-- 下拉浮动层 -->
+            <div
+              class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50 min-w-[210px]"
+            >
+              <div class="glass-card rounded-2xl p-2 shadow-2xl border border-pink-200/50 dark:border-white/10 bg-white/95 dark:bg-space-950/95 backdrop-blur-2xl flex flex-col space-y-1">
+                <router-link
+                  v-for="sub in item.children"
+                  :key="sub.path"
+                  :to="sub.path"
+                  class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs transition-all"
+                  :class="$route.path === sub.path ? 'text-pink-600 bg-pink-100/80 dark:text-nebula-cyan dark:bg-white/10 font-bold' : 'text-slate-700 hover:text-pink-600 hover:bg-pink-50/70 dark:text-slate-300 dark:hover:bg-white/5'"
+                >
+                  <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" :class="$route.path === sub.path ? 'bg-pink-500/10 dark:bg-nebula-cyan/10 text-pink-600 dark:text-nebula-cyan' : 'bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400'">
+                    <component :is="sub.icon" class="w-4 h-4" />
+                  </div>
+                  <div class="flex flex-col text-left">
+                    <span class="font-medium text-xs">{{ sub.title }}</span>
+                    <span class="text-[10px] text-slate-400 dark:text-slate-500">{{ sub.desc }}</span>
+                  </div>
+                </router-link>
+              </div>
+            </div>
           </div>
-        </router-link>
+        </template>
       </nav>
 
       <!-- 右侧操作区：主题切换、音乐岛触发器、GitHub 仓库 -->
@@ -108,19 +148,45 @@
     <!-- 移动端抽屉菜单 -->
     <div
       v-if="mobileMenuOpen"
-      class="md:hidden fixed inset-x-0 top-[65px] bg-white/95 dark:bg-space-950/95 backdrop-blur-2xl border-b border-pink-200/50 dark:border-white/10 p-5 space-y-3 z-50 shadow-xl"
+      class="md:hidden fixed inset-x-0 top-[65px] bg-white/95 dark:bg-space-950/95 backdrop-blur-2xl border-b border-pink-200/50 dark:border-white/10 p-5 space-y-2 z-50 shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto"
     >
-      <router-link
-        v-for="item in navItems"
-        :key="item.path"
-        :to="item.path"
-        @click="mobileMenuOpen = false"
-        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-white/5 transition-all"
-        :class="{ 'bg-pink-100/80 text-pink-600 dark:bg-white/10 dark:text-nebula-cyan font-bold': $route.path === item.path }"
-      >
-        <component :is="item.icon" class="w-5 h-5 text-pink-600 dark:text-nebula-cyan" />
-        <span>{{ item.title }}</span>
-      </router-link>
+      <template v-for="item in navItems" :key="item.title">
+        <!-- 普通单级项 -->
+        <router-link
+          v-if="!item.children"
+          :to="item.path!"
+          @click="mobileMenuOpen = false"
+          class="flex items-center space-x-3 px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-white/5 transition-all text-sm"
+          :class="{ 'bg-pink-100/80 text-pink-600 dark:bg-white/10 dark:text-nebula-cyan font-bold': $route.path === item.path }"
+        >
+          <component :is="item.icon" class="w-5 h-5 text-pink-600 dark:text-nebula-cyan" />
+          <span>{{ item.title }}</span>
+        </router-link>
+
+        <!-- 二级分组项（追番观影） -->
+        <div v-else class="rounded-xl bg-pink-50/40 dark:bg-white/[0.02] p-2 space-y-1">
+          <div class="flex items-center space-x-2.5 px-3 py-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <component :is="item.icon" class="w-4 h-4 text-pink-500 dark:text-nebula-cyan" />
+            <span>{{ item.title }}</span>
+          </div>
+          <div class="pl-3 space-y-1">
+            <router-link
+              v-for="sub in item.children"
+              :key="sub.path"
+              :to="sub.path"
+              @click="mobileMenuOpen = false"
+              class="flex items-center justify-between px-3 py-2 rounded-lg text-xs transition-all"
+              :class="$route.path === sub.path ? 'bg-pink-100/80 text-pink-600 dark:bg-white/10 dark:text-nebula-cyan font-bold' : 'text-slate-600 hover:bg-pink-50 dark:text-slate-300 dark:hover:bg-white/5'"
+            >
+              <div class="flex items-center space-x-2">
+                <component :is="sub.icon" class="w-4 h-4 text-pink-500 dark:text-nebula-cyan" />
+                <span>{{ sub.title }}</span>
+              </div>
+              <span class="text-[10px] text-slate-400 dark:text-slate-500">{{ sub.desc }}</span>
+            </router-link>
+          </div>
+        </div>
+      </template>
     </div>
 
     <!-- 星轨列车长彩蛋暗门弹窗 -->
@@ -130,11 +196,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import { Home, BookOpen, MessageSquare, Camera, User, Github, Music, Menu, X, Disc3, Sun, Moon, Clapperboard } from 'lucide-vue-next';
+import { useRoute } from 'vue-router';
+import {
+  Home, BookOpen, MessageSquare, Camera, User, Github, Music,
+  Menu, X, Disc3, Sun, Moon, Clapperboard, Tv, Sparkles, ChevronDown
+} from 'lucide-vue-next';
 import { useMusicStore } from '@/stores/music';
 import { useThemeStore } from '@/stores/theme';
 import ConductorModal from '@/components/ConductorModal.vue';
 
+const route = useRoute();
 const musicStore = useMusicStore();
 const themeStore = useThemeStore();
 const isScrolled = ref(false);
@@ -161,10 +232,25 @@ const handleLogoClick = (e: MouseEvent) => {
   }, 1000);
 };
 
+const isSubRouteActive = (item: any) => {
+  if (item.path) return route.path === item.path;
+  if (item.children) {
+    return item.children.some((c: any) => route.path === c.path);
+  }
+  return false;
+};
+
 const navItems = [
   { title: '首页', path: '/', icon: Home },
   { title: '文章', path: '/posts', icon: BookOpen },
-  { title: '放映厅', path: '/bilibili', icon: Clapperboard },
+  {
+    title: '追番观影',
+    icon: Clapperboard,
+    children: [
+      { title: 'B 站放映厅', path: '/bilibili', desc: '哔哩哔哩个人追番与追剧', icon: Tv },
+      { title: 'Bangumi 番组', path: '/bangumi', desc: 'bgm.tv 动画与游戏评分标记', icon: Sparkles }
+    ]
+  },
   { title: '星穹音乐', path: '/music', icon: Disc3 },
   { title: '星际碎语', path: '/moments', icon: MessageSquare },
   { title: '摄影视界', path: '/gallery', icon: Camera },
