@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.starward.entity.Bangumi;
-import top.starward.mapper.BangumiMapper;
-import top.starward.service.BangumiService;
-import top.starward.vo.BangumiSummaryVO;
+import top.starward.entity.BilibiliBangumi;
+import top.starward.mapper.BilibiliMapper;
+import top.starward.service.BilibiliService;
+import top.starward.vo.BilibiliSummaryVO;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -25,14 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 🎬 追番追剧业务实现
+ * 📺 哔哩哔哩追番追剧业务实现
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BangumiServiceImpl implements BangumiService {
+public class BilibiliServiceImpl implements BilibiliService {
 
-    private final BangumiMapper bangumiMapper;
+    private final BilibiliMapper bilibiliMapper;
     private final ObjectMapper objectMapper;
 
     private static final String DEFAULT_VMID = "28083538";
@@ -41,23 +41,23 @@ public class BangumiServiceImpl implements BangumiService {
             .build();
 
     @Override
-    public List<Bangumi> getBangumiList(String seasonTypeName, String keyword, String sort) {
-        return bangumiMapper.selectBangumis(seasonTypeName, keyword, sort);
+    public List<BilibiliBangumi> getBangumiList(String seasonTypeName, String keyword, String sort) {
+        return bilibiliMapper.selectBangumis(seasonTypeName, keyword, sort);
     }
 
     @Override
-    public BangumiSummaryVO getSummary() {
-        Long total = bangumiMapper.countAll();
-        Double avg = bangumiMapper.calculateAverageScore();
-        List<Map<String, Object>> stats = bangumiMapper.countByTypeStats();
-        LocalDateTime lastUpdated = bangumiMapper.findLastUpdatedTime();
+    public BilibiliSummaryVO getSummary() {
+        Long total = bilibiliMapper.countAll();
+        Double avg = bilibiliMapper.calculateAverageScore();
+        List<Map<String, Object>> stats = bilibiliMapper.countByTypeStats();
+        LocalDateTime lastUpdated = bilibiliMapper.findLastUpdatedTime();
 
         String lastUpdatedStr = "-";
         if (lastUpdated != null) {
             lastUpdatedStr = lastUpdated.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm"));
         }
 
-        return BangumiSummaryVO.builder()
+        return BilibiliSummaryVO.builder()
                 .totalCount(total != null ? total : 0L)
                 .avgScore(avg != null ? BigDecimal.valueOf(avg) : BigDecimal.ZERO)
                 .typeStats(stats != null ? stats : List.of())
@@ -121,9 +121,9 @@ public class BangumiServiceImpl implements BangumiService {
                 }
 
                 for (JsonNode item : listNode) {
-                    Bangumi b = parseBangumiItem(item, typeCode);
+                    BilibiliBangumi b = parseBangumiItem(item, typeCode);
                     if (b != null) {
-                        bangumiMapper.upsert(b);
+                        bilibiliMapper.upsert(b);
                         count++;
                     }
                 }
@@ -132,7 +132,7 @@ public class BangumiServiceImpl implements BangumiService {
                     break;
                 }
                 page++;
-                Thread.sleep(300); // 礼貌限速
+                Thread.sleep(300);
             } catch (Exception e) {
                 log.error("同步第 {} 页失败: {}", page, e.getMessage(), e);
                 break;
@@ -141,7 +141,7 @@ public class BangumiServiceImpl implements BangumiService {
         return count;
     }
 
-    private Bangumi parseBangumiItem(JsonNode item, int typeCode) {
+    private BilibiliBangumi parseBangumiItem(JsonNode item, int typeCode) {
         long seasonId = item.path("season_id").asLong(0);
         if (seasonId == 0) return null;
 
@@ -178,7 +178,7 @@ public class BangumiServiceImpl implements BangumiService {
         long viewCount = item.path("stat").path("view").asLong(0);
         long followCount = item.path("stat").path("follow").asLong(0);
 
-        return Bangumi.builder()
+        return BilibiliBangumi.builder()
                 .mediaId(mediaId)
                 .seasonId(seasonId)
                 .title(title)

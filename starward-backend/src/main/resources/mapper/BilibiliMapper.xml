@@ -2,13 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.starward.mapper.BangumiMapper">
+<mapper namespace="top.starward.mapper.BilibiliMapper">
 
-    <select id="selectBangumis" resultType="top.starward.entity.Bangumi">
+    <select id="selectBangumis" resultType="top.starward.entity.BilibiliBangumi">
         SELECT id, media_id, season_id, title, type, season_type_name, cover, square_cover, horizontal_cover,
                total_count, is_finish, index_show, score, evaluate, url, badge, areas, view_count, follow_count,
                updated_at, created_at
-        FROM bangumis
+        FROM bilibili_bangumi
         <where>
             <if test="seasonTypeName != null and seasonTypeName != '' and seasonTypeName != 'ALL'">
                 AND season_type_name = #{seasonTypeName}
@@ -34,7 +34,7 @@
     </select>
 
     <insert id="upsert">
-        INSERT INTO bangumis
+        INSERT INTO bilibili_bangumi
         (media_id, season_id, title, type, season_type_name, cover, square_cover, horizontal_cover,
          total_count, is_finish, index_show, score, evaluate, url, badge, areas, view_count, follow_count, updated_at, created_at)
         VALUES
@@ -62,23 +62,23 @@
 
     <select id="countByTypeStats" resultType="java.util.HashMap">
         SELECT season_type_name AS name, COUNT(*) AS count
-        FROM bangumis
+        FROM bilibili_bangumi
         GROUP BY season_type_name
         ORDER BY count DESC
     </select>
 
     <select id="calculateAverageScore" resultType="java.lang.Double">
         SELECT ROUND(AVG(score), 1)
-        FROM bangumis
+        FROM bilibili_bangumi
         WHERE score > 0
     </select>
 
     <select id="countAll" resultType="java.lang.Long">
-        SELECT COUNT(*) FROM bangumis
+        SELECT COUNT(*) FROM bilibili_bangumi
     </select>
 
     <select id="findLastUpdatedTime" resultType="java.time.LocalDateTime">
-        SELECT MAX(updated_at) FROM bangumis
+        SELECT MAX(updated_at) FROM bilibili_bangumi
     </select>
 
 </mapper>

@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 🎬 追番追剧统计数据 VO
+ * 📺 哔哩哔哩追番追剧统计看板 VO
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BangumiSummaryVO {
+public class BilibiliSummaryVO {
 
     private Long totalCount;
     private BigDecimal avgScore;

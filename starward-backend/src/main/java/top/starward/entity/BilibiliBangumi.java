@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * 🎬 追番追剧实体
+ * 📺 哔哩哔哩追番追剧实体
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bangumi {
+public class BilibiliBangumi {
 
     private Long id;
     private Long mediaId;
