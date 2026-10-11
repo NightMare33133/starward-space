@@ -115,3 +115,35 @@ export interface Photo {
   params?: string; // e.g. "Sony A7M4 · 35mm f/1.4"
   rarity?: number; // 4 or 5 for light cones
 }
+
+export interface Bangumi {
+  id: number;
+  mediaId: number;
+  seasonId: number;
+  title: string;
+  type: number;
+  seasonTypeName: string;
+  cover: string;
+  squareCover?: string;
+  horizontalCover?: string;
+  totalCount: number;
+  isFinish: number;
+  indexShow: string;
+  score: number;
+  evaluate?: string;
+  url: string;
+  badge?: string;
+  areas?: string;
+  viewCount?: number;
+  followCount?: number;
+  updatedAt?: string;
+  createdAt?: string;
+}
+
+export interface BangumiSummary {
+  totalCount: number;
+  avgScore: number;
+  typeStats: Array<{ name: string; count: number }>;
+  lastUpdated: string;
+}
+

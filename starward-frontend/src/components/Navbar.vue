@@ -130,7 +130,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import { Home, BookOpen, MessageSquare, Camera, User, Github, Music, Menu, X, Disc3, Sun, Moon } from 'lucide-vue-next';
+import { Home, BookOpen, MessageSquare, Camera, User, Github, Music, Menu, X, Disc3, Sun, Moon, Clapperboard } from 'lucide-vue-next';
 import { useMusicStore } from '@/stores/music';
 import { useThemeStore } from '@/stores/theme';
 import ConductorModal from '@/components/ConductorModal.vue';
@@ -164,6 +164,7 @@ const handleLogoClick = (e: MouseEvent) => {
 const navItems = [
   { title: '首页', path: '/', icon: Home },
   { title: '文章', path: '/posts', icon: BookOpen },
+  { title: '放映厅', path: '/bangumi', icon: Clapperboard },
   { title: '星穹音乐', path: '/music', icon: Disc3 },
   { title: '星际碎语', path: '/moments', icon: MessageSquare },
   { title: '摄影视界', path: '/gallery', icon: Camera },
