@@ -107,7 +107,7 @@
     </header>
 
     <!-- 子页面内容视图 -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 pb-28 md:pb-8">
       <router-view v-slot="{ Component }">
         <transition
           enter-active-class="transition duration-200 ease-out"
