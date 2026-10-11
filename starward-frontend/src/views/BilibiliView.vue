@@ -30,9 +30,8 @@
           </div>
         </div>
 
-        <!-- 右侧：B站主页跳转与一键同步 -->
+        <!-- 右侧：直达 B 站个人主页 -->
         <div class="flex items-center space-x-3 self-start md:self-auto shrink-0">
-          <!-- 直达 B 站个人主页 -->
           <a
             href="https://space.bilibili.com/28083538"
             target="_blank"
@@ -43,17 +42,6 @@
             <ExternalLink class="w-3.5 h-3.5" />
             <span>B站主页 (UID: 28083538)</span>
           </a>
-
-          <!-- 同步按钮 -->
-          <button
-            @click="handleSync"
-            :disabled="syncing"
-            class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#00aeec] to-pink-500 hover:opacity-95 text-white text-xs font-bold transition-all flex items-center space-x-1.5 shadow-md shadow-[#00aeec]/20 disabled:opacity-60"
-            title="从哔哩哔哩同步最新追番"
-          >
-            <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': syncing }" />
-            <span>{{ syncing ? '同步中...' : '同步追番' }}</span>
-          </button>
         </div>
       </div>
 
@@ -268,12 +256,11 @@ import {
   Tv,
   Clock,
   ExternalLink,
-  RefreshCw,
   Search,
   X,
   Loader2
 } from 'lucide-vue-next';
-import { getBilibiliList, getBilibiliSummary, syncBilibili } from '@/api/bilibili';
+import { getBilibiliList, getBilibiliSummary } from '@/api/bilibili';
 import type { BilibiliBangumi, BilibiliSummary } from '@/types';
 import { useToast } from '@/composables/useToast';
 
@@ -281,7 +268,6 @@ const toast = useToast();
 const bilibiliItems = ref<BilibiliBangumi[]>([]);
 const summary = ref<BilibiliSummary | null>(null);
 const loading = ref(false);
-const syncing = ref(false);
 
 const selectedType = ref('ALL');
 const searchKeyword = ref('');
@@ -350,20 +336,6 @@ const filteredItems = computed(() => {
     return true;
   });
 });
-
-const handleSync = async () => {
-  syncing.value = true;
-  try {
-    toast.info('正在从哔哩哔哩同步追番数据，请稍候...');
-    await syncBilibili('28083538');
-    toast.success('B 站追番数据同步成功 🎬');
-    await Promise.all([fetchSummary(), fetchList()]);
-  } catch (err: any) {
-    toast.error(err.response?.data?.message || err.message || '同步失败');
-  } finally {
-    syncing.value = false;
-  }
-};
 
 onMounted(() => {
   fetchSummary();

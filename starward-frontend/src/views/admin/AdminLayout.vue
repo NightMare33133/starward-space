@@ -132,6 +132,7 @@ import {
   PenTool,
   Tag as TagIcon,
   MessageSquare,
+  Clapperboard,
   ExternalLink,
   LogOut,
   Music,
@@ -151,6 +152,7 @@ const navTabs = [
   { title: '新建文章', path: '/admin/posts/new', icon: PenTool },
   { title: '标签管理', path: '/admin/tags', icon: TagIcon },
   { title: '星际碎语', path: '/admin/moments', icon: MessageSquare },
+  { title: '追番同步', path: '/admin/media', icon: Clapperboard },
 ];
 
 const isActiveTab = (path: string) => {

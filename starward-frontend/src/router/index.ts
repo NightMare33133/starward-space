@@ -15,6 +15,7 @@ import AdminPostsView from '@/views/admin/AdminPostsView.vue';
 import AdminPostEditorView from '@/views/admin/AdminPostEditorView.vue';
 import AdminTagsView from '@/views/admin/AdminTagsView.vue';
 import AdminMomentsView from '@/views/admin/AdminMomentsView.vue';
+import AdminMediaSyncView from '@/views/admin/AdminMediaSyncView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -117,6 +118,12 @@ const router = createRouter({
           name: 'admin-moments',
           component: AdminMomentsView,
           meta: { title: '星际碎语速发 · 星轨控制中枢', requiresAuth: true }
+        },
+        {
+          path: 'media',
+          name: 'admin-media-sync',
+          component: AdminMediaSyncView,
+          meta: { title: '追番同步 · 星轨控制中枢', requiresAuth: true }
         },
       ]
     },

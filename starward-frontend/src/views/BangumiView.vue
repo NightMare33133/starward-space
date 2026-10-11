@@ -85,17 +85,6 @@
             <div class="text-xl sm:text-2xl font-black text-cyan-600 dark:text-cyan-400">{{ summary.commentCount || 0 }}</div>
             <div class="text-[11px] text-slate-500 dark:text-slate-400">走心评语</div>
           </div>
-
-          <!-- 同步按钮 -->
-          <button
-            @click="handleSync"
-            :disabled="syncing"
-            class="px-4 py-3 rounded-2xl bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-medium text-xs flex flex-col items-center justify-center gap-1 shadow-lg shadow-pink-500/25 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-            title="从 Bangumi.tv 同步最新标记"
-          >
-            <RefreshCw class="w-4 h-4" :class="{ 'animate-spin': syncing }" />
-            <span>{{ syncing ? '同步中...' : '同步更新' }}</span>
-          </button>
         </div>
       </div>
     </div>
@@ -403,10 +392,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import {
-  Star, Trophy, Quote, Search, Filter, RefreshCw,
+  Star, Trophy, Quote, Search, Filter,
   ExternalLink, Sparkles, ChevronDown, X, Clapperboard, Calendar, MessageSquare
 } from 'lucide-vue-next';
-import { getBangumiCollections, getBangumiSummary, syncBangumi } from '@/api/bangumi';
+import { getBangumiCollections, getBangumiSummary } from '@/api/bangumi';
 import type { BangumiCollectionItem, BangumiSummary, BangumiProfile } from '@/types';
 
 const collections = ref<BangumiCollectionItem[]>([]);
@@ -425,7 +414,6 @@ const profile = ref<Partial<BangumiProfile>>({
 });
 
 const loading = ref(true);
-const syncing = ref(false);
 const keyword = ref('');
 const selectedSubjectType = ref<number>(0); // 0 为全部
 const selectedCollectionType = ref<number>(0); // 0 为全部
@@ -529,21 +517,6 @@ import { watch } from 'vue';
 watch(sortRule, () => {
   handleSortChange();
 });
-
-const handleSync = async () => {
-  if (syncing.value) return;
-  syncing.value = true;
-  try {
-    await syncBangumi();
-    await loadData();
-    alert('🎉 Bangumi 收藏与评分数据同步成功！');
-  } catch (error) {
-    console.error('同步失败:', error);
-    alert('同步失败，请检查网络或后端日志');
-  } finally {
-    syncing.value = false;
-  }
-};
 
 const resetFilters = () => {
   selectedSubjectType.value = 0;
