@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.starward.mapper.BangumiMapper">
+
+    <select id="selectBangumis" resultType="top.starward.entity.Bangumi">
+        SELECT id, media_id, season_id, title, type, season_type_name, cover, square_cover, horizontal_cover,
+               total_count, is_finish, index_show, score, evaluate, url, badge, areas, view_count, follow_count,
+               updated_at, created_at
+        FROM bangumis
+        <where>
+            <if test="seasonTypeName != null and seasonTypeName != '' and seasonTypeName != 'ALL'">
+                AND season_type_name = #{seasonTypeName}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (title LIKE CONCAT('%', #{keyword}, '%') OR evaluate LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        <choose>
+            <when test="sort == 'score_desc'">
+                ORDER BY score DESC, follow_count DESC
+            </when>
+            <when test="sort == 'count_desc'">
+                ORDER BY total_count DESC, score DESC
+            </when>
+            <when test="sort == 'updated_desc'">
+                ORDER BY updated_at DESC
+            </when>
+            <otherwise>
+                ORDER BY score DESC, follow_count DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="upsert">
+        INSERT INTO bangumis
+        (media_id, season_id, title, type, season_type_name, cover, square_cover, horizontal_cover,
+         total_count, is_finish, index_show, score, evaluate, url, badge, areas, view_count, follow_count, updated_at, created_at)
+        VALUES
+        (#{mediaId}, #{seasonId}, #{title}, #{type}, #{seasonTypeName}, #{cover}, #{squareCover}, #{horizontalCover},
+         #{totalCount}, #{isFinish}, #{indexShow}, #{score}, #{evaluate}, #{url}, #{badge}, #{areas}, #{viewCount}, #{followCount}, NOW(), NOW())
+        ON DUPLICATE KEY UPDATE
+            title = VALUES(title),
+            type = VALUES(type),
+            season_type_name = VALUES(season_type_name),
+            cover = VALUES(cover),
+            square_cover = VALUES(square_cover),
+            horizontal_cover = VALUES(horizontal_cover),
+            total_count = VALUES(total_count),
+            is_finish = VALUES(is_finish),
+            index_show = VALUES(index_show),
+            score = VALUES(score),
+            evaluate = VALUES(evaluate),
+            url = VALUES(url),
+            badge = VALUES(badge),
+            areas = VALUES(areas),
+            view_count = VALUES(view_count),
+            follow_count = VALUES(follow_count),
+            updated_at = NOW()
+    </insert>
+
+    <select id="countByTypeStats" resultType="java.util.HashMap">
+        SELECT season_type_name AS name, COUNT(*) AS count
+        FROM bangumis
+        GROUP BY season_type_name
+        ORDER BY count DESC
+    </select>
+
+    <select id="calculateAverageScore" resultType="java.lang.Double">
+        SELECT ROUND(AVG(score), 1)
+        FROM bangumis
+        WHERE score > 0
+    </select>
+
+    <select id="countAll" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM bangumis
+    </select>
+
+    <select id="findLastUpdatedTime" resultType="java.time.LocalDateTime">
+        SELECT MAX(updated_at) FROM bangumis
+    </select>
+
+</mapper>
