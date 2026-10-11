@@ -276,121 +276,133 @@
       </div>
     </div>
 
-    <!-- 条目详情弹窗 Modal -->
-    <div
-      v-if="activeModalItem"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-md animate-fade-in"
-      @click.self="activeModalItem = null"
-    >
-      <div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl glass-card bg-white dark:bg-space-950 border border-pink-200 dark:border-white/10 p-6 sm:p-8 shadow-2xl space-y-6">
-        <!-- 关闭按钮 -->
-        <button
-          @click="activeModalItem = null"
-          class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white bg-slate-100 dark:bg-white/5 transition-all"
+    <!-- 条目详情弹窗 Modal (使用 Teleport 穿透至 body，彻底打破 main 容器的层叠限制，杜绝导航栏和音乐播放器遮挡) -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="activeModalItem"
+          class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md"
+          @click.self="activeModalItem = null"
         >
-          <X class="w-5 h-5" />
-        </button>
-
-        <!-- 头部信息 -->
-        <div class="flex flex-col sm:flex-row gap-5 items-center sm:items-start text-center sm:text-left">
-          <div class="w-28 sm:w-36 aspect-[3/4] rounded-2xl overflow-hidden shadow-xl shrink-0 bg-slate-900">
-            <img
-              :src="activeModalItem.coverUrl"
-              :alt="activeModalItem.nameCn || activeModalItem.name"
-              referrerpolicy="no-referrer"
-              class="w-full h-full object-cover"
-            />
-          </div>
-
-          <div class="flex-1 space-y-2.5">
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500 text-white">
-                {{ activeModalItem.subjectTypeName }}
-              </span>
-              <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                {{ activeModalItem.collectionTypeName }}
-              </span>
-              <span v-if="activeModalItem.rankNum" class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-slate-900">
-                Rank #{{ activeModalItem.rankNum }}
-              </span>
-            </div>
-
-            <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100">
-              {{ activeModalItem.nameCn || activeModalItem.name }}
-            </h2>
-            <p v-if="activeModalItem.name !== activeModalItem.nameCn" class="text-xs text-slate-400 font-mono">
-              {{ activeModalItem.name }}
-            </p>
-
-            <!-- 评分展示 -->
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1">
-              <div class="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold text-sm">
-                <Star class="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span>我的评分: {{ activeModalItem.userRate ? activeModalItem.userRate + ' / 10' : '未评' }}</span>
-              </div>
-              <div class="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 text-xs font-semibold">
-                <span>Bangumi 全站: ★ {{ activeModalItem.score || '暂无' }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 用户的短评与吐槽 (详情展示) -->
-        <div v-if="activeModalItem.userComment" class="p-4 rounded-2xl bg-pink-50/80 dark:bg-white/[0.03] border border-pink-200/60 dark:border-white/10 space-y-2">
-          <div class="flex items-center space-x-2 text-xs font-bold text-pink-600 dark:text-pink-400">
-            <MessageSquare class="w-4 h-4" />
-            <span>站长主观评语 / 吐槽：</span>
-          </div>
-          <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap font-sans">
-            {{ activeModalItem.userComment }}
-          </p>
-        </div>
-
-        <!-- 简介 -->
-        <div v-if="activeModalItem.shortSummary" class="space-y-1.5">
-          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">作品简介</h4>
-          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-wrap">
-            {{ activeModalItem.shortSummary }}
-          </p>
-        </div>
-
-        <!-- 标签 Tags -->
-        <div v-if="activeModalItem.tags" class="space-y-1.5">
-          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">条目标签</h4>
-          <div class="flex flex-wrap gap-1.5">
-            <span
-              v-for="tag in activeModalItem.tags.split(',')"
-              :key="tag"
-              class="px-2 py-0.5 rounded-lg text-[11px] bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300"
+          <div class="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl glass-card bg-white dark:bg-space-950 border border-pink-200 dark:border-white/10 p-6 sm:p-8 shadow-2xl space-y-6">
+            <!-- 关闭按钮 -->
+            <button
+              @click="activeModalItem = null"
+              class="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 transition-all z-10 cursor-pointer"
+              title="关闭详情 (Esc)"
             >
-              #{{ tag.trim() }}
-            </span>
-          </div>
-        </div>
+              <X class="w-5 h-5" />
+            </button>
 
-        <!-- 弹窗底部操作 -->
-        <div class="pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between">
-          <div class="text-[11px] text-slate-400">
-            放送/发行时间: {{ activeModalItem.airDate || '-' }}
-            <span v-if="activeModalItem.eps"> • 共 {{ activeModalItem.eps }} 话</span>
+            <!-- 头部信息 -->
+            <div class="flex flex-col sm:flex-row gap-5 items-center sm:items-start text-center sm:text-left">
+              <div class="w-28 sm:w-36 aspect-[3/4] rounded-2xl overflow-hidden shadow-xl shrink-0 bg-slate-900">
+                <img
+                  :src="activeModalItem.coverUrl"
+                  :alt="activeModalItem.nameCn || activeModalItem.name"
+                  referrerpolicy="no-referrer"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <div class="flex-1 space-y-2.5">
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-500 text-white">
+                    {{ activeModalItem.subjectTypeName }}
+                  </span>
+                  <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    {{ activeModalItem.collectionTypeName }}
+                  </span>
+                  <span v-if="activeModalItem.rankNum" class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-400 text-slate-900">
+                    Rank #{{ activeModalItem.rankNum }}
+                  </span>
+                </div>
+
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100">
+                  {{ activeModalItem.nameCn || activeModalItem.name }}
+                </h2>
+                <p v-if="activeModalItem.name !== activeModalItem.nameCn" class="text-xs text-slate-400 font-mono">
+                  {{ activeModalItem.name }}
+                </p>
+
+                <!-- 评分展示 -->
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1">
+                  <div class="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold text-sm">
+                    <Star class="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <span>我的评分: {{ activeModalItem.userRate ? activeModalItem.userRate + ' / 10' : '未评' }}</span>
+                  </div>
+                  <div class="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 text-xs font-semibold">
+                    <span>Bangumi 全站: ★ {{ activeModalItem.score || '暂无' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用户的短评与吐槽 (详情展示) -->
+            <div v-if="activeModalItem.userComment" class="p-4 rounded-2xl bg-pink-50/80 dark:bg-white/[0.03] border border-pink-200/60 dark:border-white/10 space-y-2">
+              <div class="flex items-center space-x-2 text-xs font-bold text-pink-600 dark:text-pink-400">
+                <MessageSquare class="w-4 h-4" />
+                <span>站长主观评语 / 吐槽：</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap font-sans">
+                {{ activeModalItem.userComment }}
+              </p>
+            </div>
+
+            <!-- 简介 -->
+            <div v-if="activeModalItem.shortSummary" class="space-y-1.5">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">作品简介</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-wrap">
+                {{ activeModalItem.shortSummary }}
+              </p>
+            </div>
+
+            <!-- 标签 Tags -->
+            <div v-if="activeModalItem.tags" class="space-y-1.5">
+              <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">条目标签</h4>
+              <div class="flex flex-wrap gap-1.5">
+                <span
+                  v-for="tag in activeModalItem.tags.split(',')"
+                  :key="tag"
+                  class="px-2 py-0.5 rounded-lg text-[11px] bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300"
+                >
+                  #{{ tag.trim() }}
+                </span>
+              </div>
+            </div>
+
+            <!-- 弹窗底部操作 -->
+            <div class="pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between">
+              <div class="text-[11px] text-slate-400">
+                放送/发行时间: {{ activeModalItem.airDate || '-' }}
+                <span v-if="activeModalItem.eps"> • 共 {{ activeModalItem.eps }} 话</span>
+              </div>
+              <a
+                :href="`https://bgm.tv/subject/${activeModalItem.subjectId}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-pink-500 hover:bg-pink-600 text-white transition-colors"
+              >
+                <span>在 Bangumi 打开</span>
+                <ExternalLink class="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
-          <a
-            :href="`https://bgm.tv/subject/${activeModalItem.subjectId}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-pink-500 hover:bg-pink-600 text-white transition-colors"
-          >
-            <span>在 Bangumi 打开</span>
-            <ExternalLink class="w-3.5 h-3.5" />
-          </a>
         </div>
-      </div>
-    </div>
+      </transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import {
   Star, Trophy, Quote, Search, Filter,
   ExternalLink, Sparkles, ChevronDown, X, Clapperboard, Calendar, MessageSquare
@@ -513,10 +525,24 @@ const handleSortChange = async () => {
 };
 
 // 监听排序变化
-import { watch } from 'vue';
 watch(sortRule, () => {
   handleSortChange();
 });
+
+// 监听弹窗打开状态：锁定底页滚动
+watch(activeModalItem, (val) => {
+  if (val) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
+
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && activeModalItem.value) {
+    activeModalItem.value = null;
+  }
+};
 
 const resetFilters = () => {
   selectedSubjectType.value = 0;
@@ -535,5 +561,11 @@ const onImageError = (e: Event) => {
 
 onMounted(() => {
   loadData();
+  window.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+  document.body.style.overflow = '';
+  window.removeEventListener('keydown', handleKeyDown);
 });
 </script>
