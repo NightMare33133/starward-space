@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.starward.mapper.BangumiMapper">
+
+    <resultMap id="BangumiCollectionMap" type="top.starward.entity.BangumiCollection">
+        <id property="id" column="id"/>
+        <result property="subjectId" column="subject_id"/>
+        <result property="subjectType" column="subject_type"/>
+        <result property="subjectTypeName" column="subject_type_name"/>
+        <result property="name" column="name"/>
+        <result property="nameCn" column="name_cn"/>
+        <result property="coverUrl" column="cover_url"/>
+        <result property="score" column="score"/>
+        <result property="rankNum" column="rank_num"/>
+        <result property="eps" column="eps"/>
+        <result property="collectionType" column="collection_type"/>
+        <result property="collectionTypeName" column="collection_type_name"/>
+        <result property="userRate" column="user_rate"/>
+        <result property="userComment" column="user_comment"/>
+        <result property="airDate" column="air_date"/>
+        <result property="tags" column="tags"/>
+        <result property="shortSummary" column="short_summary"/>
+        <result property="collectionUpdatedAt" column="collection_updated_at"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="selectCollections" resultMap="BangumiCollectionMap">
+        SELECT * FROM bangumi_collection
+        <where>
+            <if test="subjectType != null and subjectType > 0">
+                AND subject_type = #{subjectType}
+            </if>
+            <if test="collectionType != null and collectionType > 0">
+                AND collection_type = #{collectionType}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    name LIKE CONCAT('%', #{keyword}, '%')
+                    OR name_cn LIKE CONCAT('%', #{keyword}, '%')
+                    OR tags LIKE CONCAT('%', #{keyword}, '%')
+                    OR user_comment LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+        <choose>
+            <when test="sort == 'user_rate_desc'">
+                ORDER BY user_rate DESC, score DESC, id DESC
+            </when>
+            <when test="sort == 'score_desc'">
+                ORDER BY score DESC, CASE WHEN rank_num = 0 THEN 999999 ELSE rank_num END ASC, id DESC
+            </when>
+            <when test="sort == 'rank_asc'">
+                ORDER BY CASE WHEN rank_num = 0 THEN 999999 ELSE rank_num END ASC, score DESC
+            </when>
+            <when test="sort == 'air_date_desc'">
+                ORDER BY air_date DESC, id DESC
+            </when>
+            <otherwise>
+                ORDER BY collection_updated_at DESC, id DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="upsert" parameterType="top.starward.entity.BangumiCollection">
+        INSERT INTO bangumi_collection (
+            subject_id, subject_type, subject_type_name, name, name_cn, cover_url,
+            score, rank_num, eps, collection_type, collection_type_name,
+            user_rate, user_comment, air_date, tags, short_summary, collection_updated_at
+        ) VALUES (
+            #{subjectId}, #{subjectType}, #{subjectTypeName}, #{name}, #{nameCn}, #{coverUrl},
+            #{score}, #{rankNum}, #{eps}, #{collectionType}, #{collectionTypeName},
+            #{userRate}, #{userComment}, #{airDate}, #{tags}, #{shortSummary}, #{collectionUpdatedAt}
+        )
+        ON DUPLICATE KEY UPDATE
+            subject_type = VALUES(subject_type),
+            subject_type_name = VALUES(subject_type_name),
+            name = VALUES(name),
+            name_cn = VALUES(name_cn),
+            cover_url = VALUES(cover_url),
+            score = VALUES(score),
+            rank_num = VALUES(rank_num),
+            eps = VALUES(eps),
+            collection_type = VALUES(collection_type),
+            collection_type_name = VALUES(collection_type_name),
+            user_rate = VALUES(user_rate),
+            user_comment = VALUES(user_comment),
+            air_date = VALUES(air_date),
+            tags = VALUES(tags),
+            short_summary = VALUES(short_summary),
+            collection_updated_at = VALUES(collection_updated_at)
+    </insert>
+
+    <select id="countByTypeStats" resultType="map">
+        SELECT 
+            subject_type_name AS name,
+            subject_type AS typeId,
+            COUNT(*) AS count
+        FROM bangumi_collection
+        GROUP BY subject_type, subject_type_name
+        ORDER BY count DESC
+    </select>
+
+    <select id="countByCollectionTypeStats" resultType="map">
+        SELECT 
+            collection_type_name AS name,
+            collection_type AS typeId,
+            COUNT(*) AS count
+        FROM bangumi_collection
+        GROUP BY collection_type, collection_type_name
+        ORDER BY count DESC
+    </select>
+
+    <select id="calculateAverageScore" resultType="java.lang.Double">
+        SELECT COALESCE(AVG(score), 0.0) FROM bangumi_collection WHERE score > 0
+    </select>
+
+    <select id="calculateAverageUserRate" resultType="java.lang.Double">
+        SELECT COALESCE(AVG(user_rate), 0.0) FROM bangumi_collection WHERE user_rate > 0
+    </select>
+
+    <select id="countWithComment" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM bangumi_collection WHERE user_comment IS NOT NULL AND user_comment != ''
+    </select>
+
+    <select id="countAll" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM bangumi_collection
+    </select>
+
+    <select id="findLastUpdatedTime" resultType="java.time.LocalDateTime">
+        SELECT MAX(updated_at) FROM bangumi_collection
+    </select>
+
+</mapper>
