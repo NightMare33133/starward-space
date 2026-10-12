@@ -6,12 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.core.io.ClassPathResource;
 import top.starward.entity.BilibiliBangumi;
 import top.starward.mapper.BilibiliMapper;
 import top.starward.service.BilibiliService;
+import top.starward.vo.BilibiliProfileVO;
 import top.starward.vo.BilibiliSummaryVO;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -59,9 +63,33 @@ public class BilibiliServiceImpl implements BilibiliService {
 
         return BilibiliSummaryVO.builder()
                 .totalCount(total != null ? total : 0L)
-                .avgScore(avg != null ? BigDecimal.valueOf(avg) : BigDecimal.ZERO)
+                .avgScore(avg != null ? BigDecimal.valueOf(avg).setScale(1, RoundingMode.HALF_UP) : BigDecimal.ZERO)
                 .typeStats(stats != null ? stats : List.of())
+                .profile(loadProfile())
                 .lastUpdated(lastUpdatedStr)
+                .build();
+    }
+
+    private BilibiliProfileVO loadProfile() {
+        try {
+            ClassPathResource resource = new ClassPathResource("bilibili_profile.json");
+            if (resource.exists()) {
+                try (InputStream is = resource.getInputStream()) {
+                    return objectMapper.readValue(is, BilibiliProfileVO.class);
+                }
+            }
+        } catch (Exception e) {
+            log.warn("读取 bilibili_profile.json 失败，使用内置默认资料: {}", e.getMessage());
+        }
+
+        return BilibiliProfileVO.builder()
+                .mid("28083538")
+                .name("NightMare丶明眸")
+                .face("https://i1.hdslb.com/bfs/face/4dbbf4b615e2d9e087e71122879c6ac7c8e7f54b.jpg")
+                .sign("关住嘉然，炖炖解馋")
+                .level(6)
+                .pendantImage("https://i1.hdslb.com/bfs/garb/item/b21ce36354640764c3abb774d7b807f3ee264aa5.png")
+                .url("https://space.bilibili.com/28083538")
                 .build();
     }
 

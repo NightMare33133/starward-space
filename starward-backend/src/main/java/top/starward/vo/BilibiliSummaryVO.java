@@ -21,5 +21,6 @@ public class BilibiliSummaryVO {
     private Long totalCount;
     private BigDecimal avgScore;
     private List<Map<String, Object>> typeStats;
+    private BilibiliProfileVO profile;
     private String lastUpdated;
 }
