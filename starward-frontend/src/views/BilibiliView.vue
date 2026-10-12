@@ -6,26 +6,56 @@
       <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-gradient-to-br from-[#00aeec]/20 via-pink-400/15 to-transparent blur-3xl pointer-events-none"></div>
 
       <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <!-- 左侧：图标与标题 -->
-        <div class="flex items-start sm:items-center space-x-4">
-          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#00aeec]/10 dark:bg-[#00aeec]/20 border border-[#00aeec]/30 flex items-center justify-center shrink-0 shadow-lg shadow-[#00aeec]/15">
-            <!-- 哔哩哔哩经典小电视 SVG -->
-            <svg class="w-8 h-8 sm:w-9 sm:h-9 text-[#00aeec]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.813 4.653h.854c1.51 0 2.733 1.224 2.733 2.734v9.98c0 1.51-1.223 2.734-2.733 2.734H5.333c-1.51 0-2.733-1.224-2.733-2.734V7.387c0-1.51 1.223-2.734 2.733-2.734h.854L4.85 3.315a.75.75 0 0 1 1.06-1.06l2.12 2.12h7.94l2.12-2.12a.75.75 0 1 1 1.06 1.06l-1.337 1.338zM5.333 6.153a1.233 1.233 0 0 0-1.233 1.234v9.98c0 .681.552 1.234 1.233 1.234h13.334c.68 0 1.233-.553 1.233-1.234V7.387c0-.681-.552-1.234-1.233-1.234H5.333zm3.167 4.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zm7 0a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
-            </svg>
+        <!-- 左侧：B站头像、挂件、等级与昵称个性签名 -->
+        <div class="flex items-center space-x-4">
+          <!-- 头像与嘉然头像框 -->
+          <div class="relative group shrink-0">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl p-0.5 bg-gradient-to-tr from-[#00aeec] via-pink-400 to-amber-300 shadow-lg shadow-[#00aeec]/20">
+              <img
+                :src="profile.face"
+                :alt="profile.name"
+                referrerpolicy="no-referrer"
+                class="w-full h-full object-cover rounded-[14px]"
+              />
+            </div>
+
+            <!-- B站嘉然头像框挂件 (嘉然今天吃什么) -->
+            <img
+              v-if="profile.pendantImage"
+              :src="profile.pendantImage"
+              alt="Pendant"
+              referrerpolicy="no-referrer"
+              class="absolute -inset-2.5 w-[calc(100%+20px)] h-[calc(100%+20px)] pointer-events-none scale-110 object-contain z-10"
+            />
+
+            <!-- B站 LV6 专属硬核用户角标 -->
+            <span class="absolute -bottom-1 -right-1 px-1.5 py-0.2 rounded-md text-[9px] font-black bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-md z-20 border border-white/40">
+              LV{{ profile.level || 6 }}
+            </span>
           </div>
 
-          <div class="space-y-1">
-            <div class="flex items-center space-x-2.5 flex-wrap">
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">
-                哔哩哔哩 · 追番放映厅
+          <!-- 文本区 -->
+          <div class="space-y-1.5">
+            <div class="flex items-center space-x-2 flex-wrap">
+              <h1 class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white tracking-tight">
+                {{ profile.name || 'NightMare丶明眸' }}
               </h1>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-[#00aeec]/15 text-[#00aeec] border border-[#00aeec]/30">
-                Bilibili Anime & Drama
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-[#00aeec]/15 text-[#00aeec] border border-[#00aeec]/30">
+                追番放映厅 · Bilibili
+              </span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full font-mono bg-pink-100/70 dark:bg-pink-900/30 text-pink-600 dark:text-pink-300 font-semibold border border-pink-200/50 dark:border-pink-800/40">
+                UID: {{ profile.mid || '28083538' }}
               </span>
             </div>
-            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              记录我的 B 站追番漫游足迹、经典动画、剧场版与灵感宇宙。
+
+            <!-- 个性签名 -->
+            <div class="flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 italic">
+              <Quote class="w-3.5 h-3.5 text-[#00aeec] shrink-0" />
+              <span>{{ profile.sign || '关住嘉然，炖炖解馋' }}</span>
+            </div>
+
+            <p class="text-[11px] text-slate-400 dark:text-slate-500 hidden sm:block">
+              记录我的 B 站追番漫游足迹、经典动画、剧场版与灵感宇宙 ✦
             </p>
           </div>
         </div>
@@ -33,14 +63,14 @@
         <!-- 右侧：直达 B 站个人主页 -->
         <div class="flex items-center space-x-3 self-start md:self-auto shrink-0">
           <a
-            href="https://space.bilibili.com/28083538"
+            :href="profile.url || 'https://space.bilibili.com/28083538'"
             target="_blank"
             rel="noopener noreferrer"
-            class="px-3.5 py-2 rounded-xl glass-card border border-pink-200/60 dark:border-white/10 hover:border-[#00aeec]/50 text-xs font-medium text-slate-700 dark:text-slate-200 hover:text-[#00aeec] dark:hover:text-[#00aeec] transition-all flex items-center space-x-1.5 shadow-sm"
+            class="px-3.5 py-2 rounded-xl glass-card border border-pink-200/60 dark:border-white/10 hover:border-[#00aeec]/50 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-[#00aeec] dark:hover:text-[#00aeec] transition-all flex items-center space-x-1.5 shadow-sm"
             title="访问我的哔哩哔哩个人空间"
           >
             <ExternalLink class="w-3.5 h-3.5" />
-            <span>B站主页 (UID: 28083538)</span>
+            <span>进入 B 站个人空间</span>
           </a>
         </div>
       </div>
@@ -258,16 +288,29 @@ import {
   ExternalLink,
   Search,
   X,
-  Loader2
+  Loader2,
+  Quote
 } from 'lucide-vue-next';
 import { getBilibiliList, getBilibiliSummary } from '@/api/bilibili';
-import type { BilibiliBangumi, BilibiliSummary } from '@/types';
+import type { BilibiliBangumi, BilibiliSummary, BilibiliProfile } from '@/types';
 import { useToast } from '@/composables/useToast';
 
 const toast = useToast();
 const bilibiliItems = ref<BilibiliBangumi[]>([]);
 const summary = ref<BilibiliSummary | null>(null);
 const loading = ref(false);
+
+const profile = computed<BilibiliProfile>(() => {
+  return summary.value?.profile || {
+    mid: '28083538',
+    name: 'NightMare丶明眸',
+    face: 'https://i1.hdslb.com/bfs/face/4dbbf4b615e2d9e087e71122879c6ac7c8e7f54b.jpg',
+    sign: '关住嘉然，炖炖解馋',
+    level: 6,
+    pendantImage: 'https://i1.hdslb.com/bfs/garb/item/b21ce36354640764c3abb774d7b807f3ee264aa5.png',
+    url: 'https://space.bilibili.com/28083538'
+  };
+});
 
 const selectedType = ref('ALL');
 const searchKeyword = ref('');

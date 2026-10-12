@@ -140,10 +140,21 @@ export interface BilibiliBangumi {
   createdAt?: string;
 }
 
+export interface BilibiliProfile {
+  mid: string;
+  name: string;
+  face: string;
+  sign: string;
+  level: number;
+  pendantImage?: string;
+  url: string;
+}
+
 export interface BilibiliSummary {
   totalCount: number;
   avgScore: number;
   typeStats: Array<{ name: string; count: number }>;
+  profile?: BilibiliProfile;
   lastUpdated: string;
 }
 
