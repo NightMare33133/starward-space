@@ -7,26 +7,31 @@
 
       <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <!-- 左侧：B站头像、挂件、等级与昵称个性签名 -->
-        <div class="flex items-center space-x-4">
-          <!-- 头像与嘉然头像框 -->
-          <div class="relative group shrink-0">
-            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-0.5 bg-gradient-to-tr from-[#00aeec] via-pink-400 to-amber-300 shadow-lg shadow-[#00aeec]/20 overflow-hidden">
+        <div class="flex items-center space-x-5 sm:space-x-6">
+          <!-- 头像与嘉然头像框 (B站原生 176.5% 尺寸规范) -->
+          <div class="relative group shrink-0 w-16 h-16 sm:w-20 sm:h-20">
+            <!-- 头像本体 -->
+            <div class="w-full h-full rounded-full overflow-hidden shadow-lg shadow-[#00aeec]/15 bg-slate-100 dark:bg-slate-800">
               <img
                 :src="profile.face"
                 :alt="profile.name"
                 referrerpolicy="no-referrer"
-                class="w-full h-full object-cover rounded-full"
+                class="w-full h-full object-cover"
               />
             </div>
 
-            <!-- B站嘉然头像框挂件 (嘉然今天吃什么) -->
-            <img
+            <!-- B站官方规格挂件 (420x420, 内径238px => 176.5%, 偏移 -38.25%) -->
+            <div
               v-if="profile.pendantImage"
-              :src="profile.pendantImage"
-              alt="Pendant"
-              referrerpolicy="no-referrer"
-              class="absolute -inset-2.5 w-[calc(100%+20px)] h-[calc(100%+20px)] pointer-events-none scale-110 object-contain z-10"
-            />
+              class="absolute w-[176.5%] h-[176.5%] -top-[38.25%] -left-[38.25%] pointer-events-none select-none z-10"
+            >
+              <img
+                :src="profile.pendantImage"
+                alt="Pendant"
+                referrerpolicy="no-referrer"
+                class="w-full h-full object-contain"
+              />
+            </div>
 
             <!-- B站 LV6 专属硬核用户角标 -->
             <span class="absolute bottom-0 right-0 px-1.5 py-0.5 rounded-md text-[9px] font-black bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-md z-20 border border-white/40">
