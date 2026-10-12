@@ -10,12 +10,12 @@
         <div class="flex items-center space-x-4">
           <!-- 头像与嘉然头像框 -->
           <div class="relative group shrink-0">
-            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl p-0.5 bg-gradient-to-tr from-[#00aeec] via-pink-400 to-amber-300 shadow-lg shadow-[#00aeec]/20">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-0.5 bg-gradient-to-tr from-[#00aeec] via-pink-400 to-amber-300 shadow-lg shadow-[#00aeec]/20 overflow-hidden">
               <img
                 :src="profile.face"
                 :alt="profile.name"
                 referrerpolicy="no-referrer"
-                class="w-full h-full object-cover rounded-[14px]"
+                class="w-full h-full object-cover rounded-full"
               />
             </div>
 
@@ -29,7 +29,7 @@
             />
 
             <!-- B站 LV6 专属硬核用户角标 -->
-            <span class="absolute -bottom-1 -right-1 px-1.5 py-0.2 rounded-md text-[9px] font-black bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-md z-20 border border-white/40">
+            <span class="absolute bottom-0 right-0 px-1.5 py-0.5 rounded-md text-[9px] font-black bg-gradient-to-r from-amber-500 to-rose-500 text-white shadow-md z-20 border border-white/40">
               LV{{ profile.level || 6 }}
             </span>
           </div>
