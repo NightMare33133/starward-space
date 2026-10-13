@@ -22,33 +22,33 @@
       </router-link>
 
       <!-- 桌面端导航链接 -->
-      <nav class="hidden md:flex items-center space-x-1 glass-card px-4 py-1.5 rounded-full border border-pink-200/40 dark:border-white/10">
+      <nav class="hidden md:flex items-center space-x-1 glass-card px-3 py-1.5 rounded-full border border-pink-200/40 dark:border-white/10 shrink-0">
         <template v-for="item in navItems" :key="item.title">
           <!-- 普通路由链接 -->
           <router-link
             v-if="!item.children"
             :to="item.path!"
-            class="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200"
+            class="px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap"
             :class="$route.path === item.path ? 'text-pink-600 bg-pink-100/70 dark:text-white dark:bg-white/10 shadow-sm font-semibold' : 'text-slate-600 hover:text-pink-600 hover:bg-pink-50/60 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-white/5'"
           >
             <div class="flex items-center space-x-1.5">
-              <component :is="item.icon" class="w-4 h-4" />
+              <component :is="item.icon" class="w-4 h-4 shrink-0" />
               <span>{{ item.title }}</span>
             </div>
           </router-link>
 
-          <!-- 具有二级菜单的下拉项（如：追番观影） -->
+          <!-- 具有二级菜单的下拉项（如：追番观影、星际漫游） -->
           <div
             v-else
             class="relative group"
           >
             <button
-              class="px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center space-x-1.5 cursor-pointer"
+              class="px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center space-x-1.5 cursor-pointer whitespace-nowrap"
               :class="isSubRouteActive(item) ? 'text-pink-600 bg-pink-100/70 dark:text-white dark:bg-white/10 shadow-sm font-semibold' : 'text-slate-600 hover:text-pink-600 hover:bg-pink-50/60 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-white/5'"
             >
-              <component :is="item.icon" class="w-4 h-4" />
+              <component :is="item.icon" class="w-4 h-4 shrink-0" />
               <span>{{ item.title }}</span>
-              <ChevronDown class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180 opacity-70" />
+              <ChevronDown class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180 opacity-70 shrink-0" />
             </button>
 
             <!-- 下拉浮动层 -->
@@ -199,7 +199,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   Home, BookOpen, MessageSquare, Camera, User, Github, Music,
-  Menu, X, Disc3, Sun, Moon, Clapperboard, Tv, Sparkles, ChevronDown
+  Menu, X, Disc3, Sun, Moon, Clapperboard, Tv, Sparkles, ChevronDown, Compass
 } from 'lucide-vue-next';
 import { useMusicStore } from '@/stores/music';
 import { useThemeStore } from '@/stores/theme';
@@ -251,9 +251,15 @@ const navItems = [
       { title: 'Bangumi 番组', path: '/bangumi', desc: 'bgm.tv 动画与游戏评分标记', icon: Sparkles }
     ]
   },
-  { title: '星穹音乐', path: '/music', icon: Disc3 },
-  { title: '星际碎语', path: '/moments', icon: MessageSquare },
-  { title: '摄影视界', path: '/gallery', icon: Camera },
+  {
+    title: '星际漫游',
+    icon: Compass,
+    children: [
+      { title: '摄影视界', path: '/gallery', desc: '现实光影漫游与快门定格', icon: Camera },
+      { title: '星际碎语', path: '/moments', desc: '微动态、日常碎片与灵感', icon: MessageSquare },
+      { title: '星穹音乐', path: '/music', desc: '车载黑胶唱片与常驻歌单', icon: Disc3 }
+    ]
+  },
   { title: '关于我', path: '/about', icon: User },
 ];
 
