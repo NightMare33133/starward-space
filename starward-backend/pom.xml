@@ -63,6 +63,19 @@
             <version>2.6.0</version>
         </dependency>
 
+        <!-- BCrypt 密码加密器 (仅引入轻量加密组件，不引入完整 Spring Security 过滤器链) -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+
+        <!-- JWT 令牌生成与校验 (轻量稳定无多余依赖) -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
         <!-- Test Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

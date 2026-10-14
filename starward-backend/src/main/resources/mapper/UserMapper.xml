@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.starward.mapper.UserMapper">
+
+    <select id="findByUsername" resultType="top.starward.entity.User">
+        SELECT id, username, password, nickname, avatar, email, website, role, status, created_at, updated_at
+        FROM users
+        WHERE username = #{username}
+        LIMIT 1
+    </select>
+
+    <select id="findById" resultType="top.starward.entity.User">
+        SELECT id, username, password, nickname, avatar, email, website, role, status, created_at, updated_at
+        FROM users
+        WHERE id = #{id}
+        LIMIT 1
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (username, password, nickname, avatar, email, website, role, status, created_at, updated_at)
+        VALUES (#{username}, #{password}, #{nickname}, #{avatar}, #{email}, #{website}, #{role}, #{status}, NOW(), NOW())
+    </insert>
+
+    <update id="updateUser">
+        UPDATE users
+        <set>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="website != null">website = #{website},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="status != null">status = #{status},</if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

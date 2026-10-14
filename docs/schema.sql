@@ -70,6 +70,27 @@ CREATE TABLE `moments` (
     KEY `idx_created_at` (`created_at` DESC)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='星际碎语说说表';
 
+-- ------------------------------------------------------------------------------
+-- 5. 用户核心表 (users)
+-- ------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户主键ID',
+    `username` VARCHAR(50) NOT NULL COMMENT '登录用户名 (唯一)',
+    `password` VARCHAR(128) NOT NULL COMMENT '加盐哈希密码 (BCrypt)',
+    `nickname` VARCHAR(50) NOT NULL COMMENT '展示昵称',
+    `avatar` VARCHAR(255) DEFAULT NULL COMMENT '用户头像URL',
+    `email` VARCHAR(100) DEFAULT NULL COMMENT '电子邮箱',
+    `website` VARCHAR(150) DEFAULT NULL COMMENT '个人主页/博客URL',
+    `role` VARCHAR(20) NOT NULL DEFAULT 'USER' COMMENT '角色: ADMIN(管理员) / USER(普通用户/访客)',
+    `status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '账号状态: 1-正常, 0-禁用',
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册创建时间',
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_username` (`username`),
+    KEY `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户核心表';
+
 -- ==============================================================================
 -- 🌟 初始创世种子数据 (Genesis Seed Data)
 -- ==============================================================================
@@ -92,3 +113,8 @@ INSERT INTO `post_tags` (`post_id`, `tag_id`) VALUES (1, 1), (1, 2);
 INSERT INTO `moments` (`id`, `content`, `mood`, `is_pinned`) VALUES
 (1, '第一缕星光在本地闪耀！Spring Boot 3 接口启动耗时 0.69 秒，属于自己的赛博基地正在拔地而起 ✨', '🚀', 1),
 (2, '不赶时间，接纳平凡，一步一个脚印敲出属于自己的宇宙。', '🌱', 0);
+
+-- 初始超级管理员 (账号: starlight, 初始密码: starward-secret-2026, BCrypt 密文)
+INSERT INTO `users` (`id`, `username`, `password`, `nickname`, `avatar`, `email`, `role`, `status`) VALUES
+(1, 'starlight', '$2a$10$yGZWMdB4FUsSVnDugIaaDOq5/tAmv50e9OBeMhWXvHMzk1GBTrp16', '星光 (Starlight)', '/images/pompom.webp', 'starlight@starward.top', 'ADMIN', 1);
+

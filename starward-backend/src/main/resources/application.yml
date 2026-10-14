@@ -36,6 +36,9 @@ springdoc:
 starward:
   auth:
     admin-token: ${STARWARD_ADMIN_TOKEN:starward-secret-token-2026}
+  jwt:
+    secret: ${STARWARD_JWT_SECRET:starward-space-jwt-super-secret-key-2026}
+    expire-days: ${STARWARD_JWT_EXPIRE_DAYS:7}
   upload:
     dir: ${STARWARD_UPLOAD_DIR:${user.dir}/uploads}
 
