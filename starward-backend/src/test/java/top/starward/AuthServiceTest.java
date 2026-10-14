@@ -27,11 +27,11 @@ public class AuthServiceTest {
     @Test
     @DisplayName("验证 JWT 工具生成与解析")
     void testJwtUtils() {
-        String token = jwtUtils.generateToken(1L, "starlight", "ADMIN");
+        String token = jwtUtils.generateToken(1L, "1052935743", "ADMIN");
         assertNotNull(token);
         assertTrue(jwtUtils.isTokenValid(token));
         assertEquals(1L, jwtUtils.getUserId(token));
-        assertEquals("starlight", jwtUtils.getUsername(token));
+        assertEquals("1052935743", jwtUtils.getUsername(token));
         assertEquals("ADMIN", jwtUtils.getRole(token));
 
         // 伪造或非法 Token
@@ -43,20 +43,20 @@ public class AuthServiceTest {
     @DisplayName("验证管理员正常账号密码登录及获取当前信息")
     void testAdminLoginSuccess() {
         LoginRequest req = new LoginRequest();
-        req.setUsername("starlight");
-        req.setPassword("starward-secret-2026");
+        req.setUsername("1052935743");
+        req.setPassword("1111817394");
 
         LoginResponseVO resp = authService.login(req);
         assertNotNull(resp);
         assertNotNull(resp.getToken());
         assertEquals("Bearer", resp.getTokenType());
-        assertEquals("starlight", resp.getUser().getUsername());
+        assertEquals("1052935743", resp.getUser().getUsername());
         assertEquals("ADMIN", resp.getUser().getRole());
 
         // 使用生成的 token 查询当前用户信息
         UserVO me = authService.getCurrentUser(resp.getToken());
         assertNotNull(me);
-        assertEquals("starlight", me.getUsername());
+        assertEquals("1052935743", me.getUsername());
         assertEquals("ADMIN", me.getRole());
     }
 
@@ -65,7 +65,7 @@ public class AuthServiceTest {
     void testLoginFailureDefenses() {
         // 1. 密码错误
         LoginRequest wrongPwdReq = new LoginRequest();
-        wrongPwdReq.setUsername("starlight");
+        wrongPwdReq.setUsername("1052935743");
         wrongPwdReq.setPassword("wrong-password");
 
         BusinessException ex1 = assertThrows(BusinessException.class, () -> {

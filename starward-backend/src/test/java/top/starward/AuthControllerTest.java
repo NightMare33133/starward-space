@@ -33,8 +33,8 @@ public class AuthControllerTest {
     void testFullAuthFlow() throws Exception {
         // 1. 登录成功
         LoginRequest req = new LoginRequest();
-        req.setUsername("starlight");
-        req.setPassword("starward-secret-2026");
+        req.setUsername("1052935743");
+        req.setPassword("1111817394");
 
         MvcResult loginResult = mockMvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -42,7 +42,7 @@ public class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data.token").isNotEmpty())
-                .andExpect(jsonPath("$.data.user.username").value("starlight"))
+                .andExpect(jsonPath("$.data.user.username").value("1052935743"))
                 .andExpect(jsonPath("$.data.user.role").value("ADMIN"))
                 .andReturn();
 
@@ -53,7 +53,7 @@ public class AuthControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.data.username").value("starlight"))
+                .andExpect(jsonPath("$.data.username").value("1052935743"))
                 .andExpect(jsonPath("$.data.role").value("ADMIN"));
 
         // 3. 携带 Bearer JWT 访问管理员受保护接口 /v1/posts/admin
@@ -69,7 +69,7 @@ public class AuthControllerTest {
 
         // 5. 错误密码登录 -> 401 拒绝
         LoginRequest wrongReq = new LoginRequest();
-        wrongReq.setUsername("starlight");
+        wrongReq.setUsername("1052935743");
         wrongReq.setPassword("wrong-pwd");
 
         mockMvc.perform(post("/v1/auth/login")

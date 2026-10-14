@@ -114,7 +114,7 @@ INSERT INTO `moments` (`id`, `content`, `mood`, `is_pinned`) VALUES
 (1, '第一缕星光在本地闪耀！Spring Boot 3 接口启动耗时 0.69 秒，属于自己的赛博基地正在拔地而起 ✨', '🚀', 1),
 (2, '不赶时间，接纳平凡，一步一个脚印敲出属于自己的宇宙。', '🌱', 0);
 
--- 初始超级管理员 (账号: starlight, 初始密码: starward-secret-2026, BCrypt 密文)
+-- 初始超级管理员 (账号: 1052935743, 初始密码: 1111817394, BCrypt 密文)
 INSERT INTO `users` (`id`, `username`, `password`, `nickname`, `avatar`, `email`, `role`, `status`) VALUES
-(1, 'starlight', '$2a$10$yGZWMdB4FUsSVnDugIaaDOq5/tAmv50e9OBeMhWXvHMzk1GBTrp16', '星光 (Starlight)', '/images/pompom.webp', 'starlight@starward.top', 'ADMIN', 1);
+(1, '1052935743', '$2a$10$bewE8U6VAgTtlfG9YTsqveX/aCbEK3/Yo.PZwPmqrcFvsmbfQmM1q', '星光 (Starlight)', '/images/pompom.webp', 'starlight@starward.top', 'ADMIN', 1);
 
