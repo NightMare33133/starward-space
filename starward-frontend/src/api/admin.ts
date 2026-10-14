@@ -7,22 +7,49 @@ import type {
   Tag,
   TagCreateRequest,
   Moment,
-  MomentCreateRequest
+  MomentCreateRequest,
+  User,
+  LoginResponse
 } from '@/types';
 
 /**
- * 验证管理员密令是否有效
+ * 账号密码登录
+ */
+export const login = (username: string, password: string): Promise<LoginResponse> => {
+  return apiClient.post('/v1/auth/login', { username, password });
+};
+
+/**
+ * 获取当前登录用户信息
+ */
+export const getCurrentUser = (token?: string): Promise<User> => {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+    headers['X-Admin-Token'] = token;
+  }
+  return apiClient.get('/v1/auth/me', { headers });
+};
+
+/**
+ * 验证管理员密令/令牌是否有效
  */
 export const verifyAdminToken = async (token: string): Promise<boolean> => {
   try {
-    await apiClient.get('/v1/posts/admin', {
-      headers: {
-        'X-Admin-Token': token,
-      },
-    });
-    return true;
+    const user = await getCurrentUser(token);
+    return !!(user && user.role === 'ADMIN');
   } catch (err) {
-    return false;
+    try {
+      await apiClient.get('/v1/posts/admin', {
+        headers: {
+          'X-Admin-Token': token,
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return true;
+    } catch {
+      return false;
+    }
   }
 };
 

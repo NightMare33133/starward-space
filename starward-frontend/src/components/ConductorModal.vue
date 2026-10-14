@@ -53,43 +53,56 @@
           </div>
 
           <!-- 提示：如果已登录 -->
-          <div v-if="hasExistingToken" class="mb-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-              <ShieldCheck class="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>检测到已保存的列车长凭据</span>
+          <div v-if="currentUser" class="mb-4 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center space-x-2">
+                <ShieldCheck class="w-4 h-4 text-emerald-400 shrink-0" />
+                <span class="font-medium text-emerald-200">已接入列车长凭据: {{ currentUser.nickname || currentUser.username }}</span>
+              </div>
+              <button
+                @click="resetLogin"
+                class="text-[10px] text-slate-400 hover:text-white underline cursor-pointer"
+              >
+                切换账号
+              </button>
             </div>
             <button
               @click="enterDirectly"
-              class="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 font-medium transition-colors"
+              class="w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center space-x-1.5"
             >
-              直接跃迁 →
+              <span>直接跃迁进入管理中枢 →</span>
             </button>
           </div>
 
-          <!-- 密令输入框 -->
-          <form @submit.prevent="handleVerify" class="space-y-4">
+          <!-- 账号密码登录表单 -->
+          <form v-else @submit.prevent="handleVerify" class="space-y-3.5">
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
-                <span class="flex items-center space-x-1">
-                  <Key class="w-3.5 h-3.5 text-amber-400" />
-                  <span>管理员密令 (Admin Token)</span>
-                </span>
-                <span
-                  v-if="isLocalDev"
-                  @click="tokenInput = 'starward-secret-token-2026'"
-                  class="text-[10px] text-amber-400/80 font-mono cursor-pointer hover:underline select-none"
-                  title="仅在本地开发环境显示，点击可自动填入"
-                >
-                  [本地调试] 默认密钥
-                </span>
+              <label class="block text-xs font-medium text-slate-300 mb-1 flex items-center space-x-1">
+                <UserIcon class="w-3.5 h-3.5 text-amber-400" />
+                <span>列车长账号</span>
+              </label>
+              <input
+                v-model="username"
+                type="text"
+                placeholder="请输入管理员账号..."
+                autocomplete="username"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-space-950/80 border border-white/10 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/50 transition-all font-mono"
+                autofocus
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1 flex items-center space-x-1">
+                <Lock class="w-3.5 h-3.5 text-amber-400" />
+                <span>跃迁密钥</span>
               </label>
               <div class="relative">
                 <input
-                  v-model="tokenInput"
+                  v-model="password"
                   :type="showPassword ? 'text' : 'password'"
-                  placeholder="请输入星轨管理密令..."
-                  class="w-full px-4 py-3 rounded-xl bg-space-950/80 border border-white/10 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/50 transition-all font-mono"
-                  autofocus
+                  placeholder="请输入星轨管理密钥..."
+                  autocomplete="current-password"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-space-950/80 border border-white/10 text-slate-100 text-sm placeholder-slate-500 focus:outline-none focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/50 transition-all font-mono"
                 />
                 <button
                   type="button"
@@ -119,7 +132,7 @@
               </button>
               <button
                 type="submit"
-                :disabled="loading || !tokenInput.trim()"
+                :disabled="loading || !username.trim() || !password"
                 class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-rose-500 to-nebula-cyan text-white text-sm font-bold shadow-lg shadow-amber-500/25 hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:pointer-events-none transition-all flex items-center justify-center space-x-1.5"
               >
                 <Loader2 v-if="loading" class="w-4 h-4 animate-spin" />
@@ -135,11 +148,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { X, Key, Eye, EyeOff, Sparkles, Loader2, AlertCircle, ShieldCheck } from 'lucide-vue-next';
+import { X, User as UserIcon, Lock, Eye, EyeOff, Sparkles, Loader2, AlertCircle, ShieldCheck } from 'lucide-vue-next';
 import confetti from 'canvas-confetti';
-import { verifyAdminToken } from '@/api/admin';
+import { login, getCurrentUser } from '@/api/admin';
+import type { User } from '@/types';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -150,24 +164,31 @@ const emit = defineEmits<{
 }>();
 
 const router = useRouter();
-const tokenInput = ref('');
+const username = ref('');
+const password = ref('');
 const showPassword = ref(false);
 const loading = ref(false);
 const errorMessage = ref('');
 const shake = ref(false);
-const hasExistingToken = ref(false);
+const currentUser = ref<User | null>(null);
 
-const isLocalDev = computed(() => {
-  return import.meta.env.DEV || (typeof window !== 'undefined' && ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname));
-});
-
-watch(() => props.modelValue, (isOpen) => {
+watch(() => props.modelValue, async (isOpen) => {
   if (isOpen) {
     errorMessage.value = '';
     const stored = localStorage.getItem('starward_admin_token');
-    hasExistingToken.value = !!stored;
     if (stored) {
-      tokenInput.value = stored;
+      try {
+        const user = await getCurrentUser(stored);
+        if (user && user.role === 'ADMIN') {
+          currentUser.value = user;
+        } else {
+          currentUser.value = null;
+        }
+      } catch {
+        currentUser.value = null;
+      }
+    } else {
+      currentUser.value = null;
     }
   }
 });
@@ -188,31 +209,51 @@ const enterDirectly = () => {
   router.push('/admin/posts');
 };
 
+const resetLogin = () => {
+  localStorage.removeItem('starward_admin_token');
+  localStorage.removeItem('starward_user');
+  currentUser.value = null;
+  username.value = '';
+  password.value = '';
+};
+
 const handleVerify = async () => {
-  const token = tokenInput.value.trim();
-  if (!token) return;
+  const u = username.value.trim();
+  const p = password.value;
+  if (!u || !p) return;
 
   loading.value = true;
   errorMessage.value = '';
 
-  const isValid = await verifyAdminToken(token);
-  loading.value = false;
+  try {
+    const res = await login(u, p);
+    loading.value = false;
 
-  if (isValid) {
-    localStorage.setItem('starward_admin_token', token);
-    // 燃放赛博星轨烟花
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#38bdf8', '#f59e0b', '#ec4899', '#10b981'],
-    });
+    if (res && res.token) {
+      if (res.user.role !== 'ADMIN') {
+        triggerShake();
+        errorMessage.value = '权限受限：该账号不具备列车长管理权限！';
+        return;
+      }
 
-    closeModal();
-    router.push('/admin/posts');
-  } else {
+      localStorage.setItem('starward_admin_token', res.token);
+      localStorage.setItem('starward_user', JSON.stringify(res.user));
+
+      // 燃放赛博星轨烟花
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#38bdf8', '#f59e0b', '#ec4899', '#10b981'],
+      });
+
+      closeModal();
+      router.push('/admin/posts');
+    }
+  } catch (err: any) {
+    loading.value = false;
     triggerShake();
-    errorMessage.value = '跃迁密令校验失败：列车长帕姆拒绝了通行申请！';
+    errorMessage.value = err.message || '跃迁密令校验失败：列车长帕姆拒绝了通行申请！';
   }
 };
 </script>

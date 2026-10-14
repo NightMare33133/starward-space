@@ -14,6 +14,7 @@ apiClient.interceptors.request.use(
   (config) => {
     const adminToken = localStorage.getItem('starward_admin_token');
     if (adminToken) {
+      config.headers['Authorization'] = `Bearer ${adminToken}`;
       config.headers['X-Admin-Token'] = adminToken;
     }
     return config;

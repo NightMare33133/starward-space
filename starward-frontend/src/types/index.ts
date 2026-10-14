@@ -201,3 +201,21 @@ export interface BangumiSummary {
   lastUpdated: string;
 }
 
+export interface User {
+  id: number;
+  username: string;
+  nickname: string;
+  avatar?: string;
+  email?: string;
+  website?: string;
+  role: 'ADMIN' | 'USER';
+  createdAt?: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  tokenType: string;
+  user: User;
+}
+
+
