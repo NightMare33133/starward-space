@@ -33,7 +33,14 @@
               <Key class="w-4 h-4 text-amber-500 dark:text-amber-400" />
               <span>管理员密钥 (X-Admin-Token)</span>
             </span>
-            <span class="text-[10px] text-slate-500">默认: starward-secret-token-2026</span>
+            <span
+              v-if="isLocalDev"
+              @click="tokenInput = 'starward-secret-token-2026'"
+              class="text-[10px] text-amber-600/80 dark:text-amber-400/80 font-mono cursor-pointer hover:underline select-none"
+              title="仅在本地开发环境显示，点击可自动填入"
+            >
+              [本地调试] 默认密钥
+            </span>
           </label>
           <div class="relative">
             <input
@@ -87,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { Key, Eye, EyeOff, Sparkles, Loader2, AlertCircle, ShieldCheck, ArrowLeft } from 'lucide-vue-next';
 import confetti from 'canvas-confetti';
@@ -99,6 +106,10 @@ const tokenInput = ref('');
 const showPassword = ref(false);
 const loading = ref(false);
 const errorMessage = ref('');
+
+const isLocalDev = computed(() => {
+  return import.meta.env.DEV || (typeof window !== 'undefined' && ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname));
+});
 
 onMounted(() => {
   const stored = localStorage.getItem('starward_admin_token');

@@ -74,7 +74,14 @@
                   <Key class="w-3.5 h-3.5 text-amber-400" />
                   <span>管理员密令 (Admin Token)</span>
                 </span>
-                <span class="text-[10px] text-slate-500">开发默认: starward-secret-token-2026</span>
+                <span
+                  v-if="isLocalDev"
+                  @click="tokenInput = 'starward-secret-token-2026'"
+                  class="text-[10px] text-amber-400/80 font-mono cursor-pointer hover:underline select-none"
+                  title="仅在本地开发环境显示，点击可自动填入"
+                >
+                  [本地调试] 默认密钥
+                </span>
               </label>
               <div class="relative">
                 <input
@@ -128,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { X, Key, Eye, EyeOff, Sparkles, Loader2, AlertCircle, ShieldCheck } from 'lucide-vue-next';
 import confetti from 'canvas-confetti';
@@ -149,6 +156,10 @@ const loading = ref(false);
 const errorMessage = ref('');
 const shake = ref(false);
 const hasExistingToken = ref(false);
+
+const isLocalDev = computed(() => {
+  return import.meta.env.DEV || (typeof window !== 'undefined' && ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname));
+});
 
 watch(() => props.modelValue, (isOpen) => {
   if (isOpen) {
